@@ -4,15 +4,27 @@ using UnityEngine;
 
 public class BulletBehaviour : MonoBehaviour
 {
-    public float speed = 3;
+    public float bSpeed;
+    public float bDamage;
+    public bool bPlayer;
 
      // Update is called once per frame
     void Update()
     {
-        transform.position += transform.right * Time.deltaTime * speed;
+        transform.position += transform.right * Time.deltaTime * bSpeed;
     }
 
     void OnCollisionEnter2D(Collision2D other){
-        Destroy(gameObject);
+        if(bPlayer == true && other.gameObject.tag == "Player"){
+
+        }
+        else if(bPlayer == false && other.gameObject.tag == "Enemy"){
+            
+        }
+        else{
+            Destroy(gameObject);
+        }
+        
     }
+
 }

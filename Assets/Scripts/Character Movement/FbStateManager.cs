@@ -42,15 +42,16 @@ public class FbStateManager : MonoBehaviour
     public Rigidbody2D rb; //player rigidbody
 
     [Header("\nShooting")]
-    public float damage;//damage
     public float firerate;//firerate
     public float gunTimer;//keeps track of firerate
-    public BulletBehaviour bulletPrefab;
+    public GameObject bulletPrefab;
     
+    [Header("\nBullet")]
     public int direction = 0;
     public Transform[] launchOffset = new Transform[4];
-
-
+    public float damage = 30;
+    public float speed = 5;
+    public GameObject bullet;
 
 
     // Start is called before the first frame update
@@ -80,7 +81,15 @@ public class FbStateManager : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D other){
-        currentState.Collision(this, other);
+        //currentState.Collision(this, other);
+        if (other.gameObject.tag == "Bullet" && other.gameObject.GetComponent<BulletBehaviour>().bPlayer == false)
+        {
+            health = health - other.gameObject.GetComponent<BulletBehaviour>().bDamage;
+            if(health <= 0){
+                Destroy(gameObject);
+            }
+        }
+
     }
 
     //is called when a transition condition in our current states update is met
@@ -91,6 +100,9 @@ public class FbStateManager : MonoBehaviour
     }
 
     public void Shooting(){    
-        Instantiate(bulletPrefab, launchOffset[direction].position, launchOffset[direction].rotation);    
+        bullet = (GameObject)Instantiate(bulletPrefab, launchOffset[direction].position, launchOffset[direction].rotation);
+        bullet.GetComponent<BulletBehaviour>().bSpeed = speed;
+        bullet.GetComponent<BulletBehaviour>().bDamage = damage;
+        bullet.GetComponent<BulletBehaviour>().bPlayer = true;     
     }
 }
