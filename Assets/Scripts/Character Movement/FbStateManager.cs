@@ -15,13 +15,14 @@ public class FbStateManager : MonoBehaviour
 
     public FbIceblockState IceblockState = new FbIceblockState();
 
+    public FbDeathState DeathState = new FbDeathState();
+
     //Keeps track of our current state.
     public FbBaseState currentState;
 
 
     [Header("Keybinds")]
-
-    public KeyCode[] shootKeys = new KeyCode[4];
+    public KeyCode[] shootKeys = new KeyCode[4];//used for tracking the offsets, matches up with an array
     public KeyCode shootUpKey = KeyCode.UpArrow; //for shooting weapon
     public KeyCode shootLeftKey = KeyCode.LeftArrow; 
     public KeyCode shootDownKey = KeyCode.DownArrow; 
@@ -44,14 +45,14 @@ public class FbStateManager : MonoBehaviour
     [Header("\nShooting")]
     public float firerate;//firerate
     public float gunTimer;//keeps track of firerate
-    public GameObject bulletPrefab;
+    public GameObject bulletPrefab; //bullet prefad
     
     [Header("\nBullet")]
-    public int direction = 0;
-    public Transform[] launchOffset = new Transform[4];
-    public float damage = 30;
-    public float speed = 5;
-    public GameObject bullet;
+    public int direction = 0; //if the bullet is up, down, left or right
+    public Transform[] launchOffset = new Transform[4]; //the offsets for each direction of shooting
+    public float damage = 30; // bullet damage
+    public float speed = 5; //bullet speed
+    public GameObject bullet; //used as a husk to init the bullet
 
 
     // Start is called before the first frame update
@@ -71,6 +72,7 @@ public class FbStateManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //tracks WASD
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
 
@@ -81,15 +83,8 @@ public class FbStateManager : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D other){
-        //currentState.Collision(this, other);
-        if (other.gameObject.tag == "Bullet" && other.gameObject.GetComponent<BulletBehaviour>().bPlayer == false)
-        {
-            health = health - other.gameObject.GetComponent<BulletBehaviour>().bDamage;
-            if(health <= 0){
-                Destroy(gameObject);
-            }
-        }
-
+        //bases collision data to the state
+        currentState.Collision(this, other);
     }
 
     //is called when a transition condition in our current states update is met
@@ -99,7 +94,9 @@ public class FbStateManager : MonoBehaviour
         state.EnterState(this);
     }
 
-    public void Shooting(){    
+    //called by the two shooting states
+    public void Shooting(){
+        //Inits the bullet then sets a bunch of its variables    
         bullet = (GameObject)Instantiate(bulletPrefab, launchOffset[direction].position, launchOffset[direction].rotation);
         bullet.GetComponent<BulletBehaviour>().bSpeed = speed;
         bullet.GetComponent<BulletBehaviour>().bDamage = damage;

@@ -42,7 +42,15 @@ public class FbShootingState : FbBaseState
     }
     
     public override void Collision(FbStateManager fb, Collision2D Collision2D){
-
+        //checks for enemies or enemy bullets
+        if (Collision2D.gameObject.tag == "Enemy" || (Collision2D.gameObject.tag == "Bullet" && Collision2D.gameObject.GetComponent<BulletBehaviour>().bPlayer == false))
+        {
+            //lowers your health based on how much damage you take
+            fb.health = fb.health - Collision2D.gameObject.GetComponent<BulletBehaviour>().bDamage;
+            if(fb.health <= 0){
+                fb.SwitchState(fb.DeathState);
+            }
+        }
     }
 
 }
