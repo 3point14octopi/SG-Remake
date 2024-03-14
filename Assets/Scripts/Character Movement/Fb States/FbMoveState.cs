@@ -12,7 +12,7 @@ public class FbMoveState : FbBaseState
     public override void UpdateState(FbStateManager fb){
 
         //Transition for idle
-        if(fb.horizontalInput == 0f && fb.verticalInput == 0f){
+        if(fb.movement == new Vector2(0 ,0)){
             fb.SwitchState(fb.IdleState);
         }
 
@@ -33,24 +33,31 @@ public class FbMoveState : FbBaseState
             fb.SwitchState(fb.IceblockState);
         }
 
+    }
+
+    public override void FixedUpdateState(FbStateManager fb){ 
         Moving(fb);
     }
     
     public override void Collision(FbStateManager fb, Collision2D Collision2D){
         //checks for enemies or enemy bullets
-        if (Collision2D.gameObject.tag == "Enemy" || (Collision2D.gameObject.tag == "Bullet" && Collision2D.gameObject.GetComponent<BulletBehaviour>().bPlayer == false))
+        if (Collision2D.gameObject.tag == "EnemyBullet")
         {
             //lowers your health based on how much damage you take
-            fb.health = fb.health - Collision2D.gameObject.GetComponent<BulletBehaviour>().bDamage;
+            fb.health = fb.health - Collision2D.gameObject.GetComponent<EnemyBulletBehaviour>().bDamage;
             if(fb.health <= 0){
                 fb.SwitchState(fb.DeathState);
             }
+        }
+        //checks for enemies
+        else if (Collision2D.gameObject.tag == "Enemy"){
+
         }
     }
 
     public void Moving(FbStateManager fb){     
         //WASD movement || finds our vector then gives momentum in that direction
-        fb.rb.velocity = new Vector2 (fb.horizontalInput*fb.movementSpeed, fb.verticalInput*fb.movementSpeed);
+        fb.rb.MovePosition(fb.rb.position + fb.movement * fb.movementSpeed * Time.fixedDeltaTime);
     
     }
 }

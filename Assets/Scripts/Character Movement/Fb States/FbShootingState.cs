@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FbShootingState : FbBaseState
 {
+    public Stack<KeyCode> stack = new Stack<KeyCode>();
     public override void EnterState(FbStateManager fb){
         //debug
         Debug.Log("Shoot TIME");
@@ -17,7 +18,7 @@ public class FbShootingState : FbBaseState
         }
 
         //Transition for move and shoot 
-        else if(fb.horizontalInput != 0f || fb.verticalInput != 0f){
+        else if(fb.movement != new Vector2(0 ,0)){
             fb.SwitchState(fb.MoveShootState);
         }
 
@@ -28,7 +29,7 @@ public class FbShootingState : FbBaseState
 
         //establishes the direction for the bullet
         for (int i = 0; i <= fb.shootKeys.Length - 1; i++){
-            if(Input.GetKeyDown(fb.shootKeys[i])){
+            if(Input.GetKey(fb.shootKeys[i])){
             fb.direction = i;
             Debug.Log( fb.direction);
             }
@@ -40,16 +41,24 @@ public class FbShootingState : FbBaseState
             fb.gunTimer = fb.firerate;
         }
     }
+
+    public override void FixedUpdateState(FbStateManager fb){
+        
+    }
     
     public override void Collision(FbStateManager fb, Collision2D Collision2D){
         //checks for enemies or enemy bullets
-        if (Collision2D.gameObject.tag == "Enemy" || (Collision2D.gameObject.tag == "Bullet" && Collision2D.gameObject.GetComponent<BulletBehaviour>().bPlayer == false))
+        if (Collision2D.gameObject.tag == "EnemyBullet")
         {
             //lowers your health based on how much damage you take
-            fb.health = fb.health - Collision2D.gameObject.GetComponent<BulletBehaviour>().bDamage;
+            fb.health = fb.health - Collision2D.gameObject.GetComponent<EnemyBulletBehaviour>().bDamage;
             if(fb.health <= 0){
                 fb.SwitchState(fb.DeathState);
             }
+        }
+        //checks for enemies
+        else if (Collision2D.gameObject.tag == "Enemy"){
+
         }
     }
 

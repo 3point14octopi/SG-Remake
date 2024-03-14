@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BeanShooter : MonoBehaviour
+public class BeanShooter : MonoBehaviour, EnemyObserver
 {
     public GameObject player; // player so we can shoot at them
     public GameObject bulletPrefab; //bullet prefab
@@ -21,19 +21,23 @@ public class BeanShooter : MonoBehaviour
     public float damage = 50; //bullet damage
     public float speed = 2; //speed of the bullets
    
+   [SerializeField] EnemySubject enemyManager; 
 
     void Start()
     {
         //so we can have the players transform
         player = GameObject.FindWithTag("Player");
         launch = gameObject.transform;
+
+        //find our subject
+        enemyManager.AddObserver(this);
     }
 
     // Update is called once per frame
     void Update()
     {
         //uses a little trig (arc tan) to calculate the angle to shoot at based on the players position and the launch position
-        launchAngle = -(Mathf.Atan2(player.transform.position.x - launch.position.x, player.transform.position.y - launch.position.y) * Mathf.Rad2Deg) + 90;
+        launchAngle = (Mathf.Atan2(player.transform.position.y - launch.position.y, player.transform.position.x - launch.position.x) * Mathf.Rad2Deg);
 
         //finds the player with a raycast and then raycasts up until the player looking for a tree
         RaycastHit2D playerRay = Physics2D.Raycast(transform.position, player.transform.position - transform.position, 20, playerMask);         
@@ -68,12 +72,13 @@ public class BeanShooter : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other){
         //checks if it is hit by a bullet from a player
-        if (other.gameObject.tag == "Bullet" && other.gameObject.GetComponent<BulletBehaviour>().bPlayer == true)
+        if (other.gameObject.tag == "PlayerBullet")
         {
-            health = health - other.gameObject.GetComponent<BulletBehaviour>().bDamage;
+            health = health - other.gameObject.GetComponent<PlayerBulletBehaviour>().bDamage;
 
             //if health is 0 destorys the object
             if(health <= 0){
+                enemyManager.RemoveObserver(this);
                 Destroy(gameObject);
             }
         }
@@ -82,8 +87,11 @@ public class BeanShooter : MonoBehaviour
     //when shooting happens it inits the bullet and updates its variables
     public void Shooting(){    
         activeBullet = (GameObject)Instantiate(bulletPrefab, gameObject.transform.position, launch.rotation);
-        activeBullet.GetComponent<BulletBehaviour>().bSpeed = speed;
-        activeBullet.GetComponent<BulletBehaviour>().bDamage = damage;
-        activeBullet.GetComponent<BulletBehaviour>().bPlayer = false;          
+        activeBullet.GetComponent<EnemyBulletBehaviour>().bSpeed = speed;
+        activeBullet.GetComponent<EnemyBulletBehaviour>().bDamage = damage;          
+    }
+
+    public void OnNotify(){
+        
     }
 }

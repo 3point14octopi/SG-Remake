@@ -36,10 +36,9 @@ public class FbStateManager : MonoBehaviour
     public float maxHealth = 100;//max health
 
     [Header("\nRunning")]
-    public float movementSpeed;//run speed
+    public float movementSpeed = 10;//run speed
     
-    public float horizontalInput; //for W && S
-    public float verticalInput; //for A && D
+    public Vector2 movement;
     public Rigidbody2D rb; //player rigidbody
 
     [Header("\nShooting")]
@@ -52,7 +51,6 @@ public class FbStateManager : MonoBehaviour
     public Transform[] launchOffset = new Transform[4]; //the offsets for each direction of shooting
     public float damage = 30; // bullet damage
     public float speed = 5; //bullet speed
-    public GameObject bullet; //used as a husk to init the bullet
 
 
     // Start is called before the first frame update
@@ -73,13 +71,17 @@ public class FbStateManager : MonoBehaviour
     void Update()
     {
         //tracks WASD
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
 
         currentState.UpdateState(this);
 
         //Manages the gun timer
         gunTimer -= Time.deltaTime;
+    }
+
+    void FixedUpdate(){
+        currentState.FixedUpdateState(this);
     }
 
     void OnCollisionEnter2D(Collision2D other){
@@ -97,9 +99,8 @@ public class FbStateManager : MonoBehaviour
     //called by the two shooting states
     public void Shooting(){
         //Inits the bullet then sets a bunch of its variables    
-        bullet = (GameObject)Instantiate(bulletPrefab, launchOffset[direction].position, launchOffset[direction].rotation);
-        bullet.GetComponent<BulletBehaviour>().bSpeed = speed;
-        bullet.GetComponent<BulletBehaviour>().bDamage = damage;
-        bullet.GetComponent<BulletBehaviour>().bPlayer = true;     
+        var bullet = (GameObject)Instantiate(bulletPrefab, launchOffset[direction].position, launchOffset[direction].rotation);
+        bullet.GetComponent<PlayerBulletBehaviour>().bSpeed = speed;
+        bullet.GetComponent<PlayerBulletBehaviour>().bDamage = damage;     
     }
 }

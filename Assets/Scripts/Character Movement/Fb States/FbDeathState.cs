@@ -13,6 +13,10 @@ public class FbDeathState : FbBaseState
 
         Debug.Log("You died :((");
     }
+
+    public override void FixedUpdateState(FbStateManager fb){
+        
+    }
     
     public override void Collision(FbStateManager fb, Collision2D Collision2D){
 
