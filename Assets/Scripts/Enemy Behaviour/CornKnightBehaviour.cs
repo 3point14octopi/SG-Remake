@@ -3,25 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CornKnightBehaviour : MonoBehaviour, EnemyObserver
-{
+{   
+    private int direction = 1; //direction it is walking in
+    private Animator anim;
+    private bool dead = false;
+    private EnemySubject enemyManager; 
+
+    [Header("Tree Knight Stats")]
     public float health = 100; //enemy health
     public float speed = 1; //walk speed
     public float damage = 50; //damage it deals to player
-    public int direction = 1; //direction it is walking in
 
-   [SerializeField] EnemySubject enemyManager; 
 
     void Start()
     {
-        //find our subject
+        //find our animation
+        anim = gameObject.GetComponent<Animator>();
+
+        //find our subject and become an observer of it
+        enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemySubject>();
         enemyManager.AddObserver(this);
     }
 
      // Update is called once per frame
     void Update()
     {
-        //walk in the current direction
-        transform.position += transform.right * direction * Time.deltaTime * speed;
+        if(!dead){
+            //walk in the current direction
+            transform.position += transform.right * direction * Time.deltaTime * speed;
+ 
+        }
 
 
     }
@@ -30,6 +41,7 @@ public class CornKnightBehaviour : MonoBehaviour, EnemyObserver
         //if the collision was a wall it switches directions
         if (other.gameObject.tag == "Barrier"){
             direction = -direction;
+            anim.SetFloat("Direction", direction);
         }
 
         //if it is hit by a bullet it takes damage
@@ -39,12 +51,21 @@ public class CornKnightBehaviour : MonoBehaviour, EnemyObserver
             
             //if the damage is too much the enemy dies
             if(health <= 0){
+                anim.SetBool("Death", true);
                 enemyManager.RemoveObserver(this);
-                Destroy(gameObject);
+                dead = true;
+                Destroy(gameObject, 1.00f);
             }
+        }
+        
+        //damages the player if we wall into the player
+        else if (other.gameObject.tag == "Player")
+        {
+            other.gameObject.GetComponent<FbStateManager>().health = other.gameObject.GetComponent<FbStateManager>().health - damage;
         }
     }
 
+    //required by our observer interface but currently not used
     public void OnNotify(){
         
     }

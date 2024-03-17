@@ -4,21 +4,36 @@ using UnityEngine;
 
 public class Ghosts : MonoBehaviour, EnemyObserver
 {
-    [SerializeField] EnemySubject enemyManager;
+    private EnemySubject enemyManager;
+    private GameObject player; // player so we can shoot at them
+
+    private bool LOS; //Used to track if we can see the player
+    private LayerMask playerMask; //layer reference for player
+    private LayerMask barrierMask; //layer reference for trees
+
+    private Animator anim;
+    private bool dead = false;
+
+    [Header("Ghost Stats")]
     public float health = 100; //enemy health
     public float speed = 1; //walk speed
     public float damage = 50; //damage it deals to player 
 
-    public Rigidbody2D rb; //player rigidbody
-    public GameObject player; // player so we can shoot at them
-    public bool LOS; //Used to track if we can see the player
-    public LayerMask playerMask; //layer reference for player
-    public LayerMask barrierMask; //layer reference for trees
-
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        //so we can have the players transform
+        player = GameObject.FindWithTag("Player");
+
+        //find our layers used for our raycast masks
+        playerMask |= 0x1 << 6;
+        barrierMask |= 0x1 << 7;
+
+        //find our animation
+        anim = gameObject.GetComponent<Animator>();
+
+        //find our subject and become an observer of it
+        enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemySubject>();
         enemyManager.AddObserver(this);
     }
 
@@ -32,22 +47,29 @@ public class Ghosts : MonoBehaviour, EnemyObserver
         //If it can see the player but not see a tree it sets line of sight to true
         if(playerRay.collider != null){
             if(playerRay.collider.CompareTag("Player") && barrierRay.collider == null){
-                Debug.DrawRay(transform.position, player.transform.position - transform.position, Color.green);
                 LOS = true;
             }
             else{
-                Debug.DrawRay(transform.position, player.transform.position - transform.position, Color.red);
                 LOS = false;
             }
         }
         
         //if we have line of sight we walk towards the player
-        if(LOS){       
-         transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+        if(LOS && !dead){       
+            transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+            
+            //Rest of the stuff in this loop is used for the animation paramaters. Determines what walking direction animation to use
+            anim.SetFloat("playerX",player.transform.position.x - transform.position.x);
+            anim.SetFloat("playerY",player.transform.position.y - transform.position.y);
+
+            if(Mathf.Abs(anim.GetFloat("playerX")) > Mathf.Abs(anim.GetFloat("playerY"))){ anim.SetBool("Vertical", false);}
+            else{anim.SetBool("Vertical", true);}
         }
+
+
     }
 
-        void OnCollisionEnter2D(Collision2D other){
+    void OnCollisionEnter2D(Collision2D other){
         //checks if it is hit by a bullet from a player
         if (other.gameObject.tag == "PlayerBullet")
         {
@@ -55,12 +77,22 @@ public class Ghosts : MonoBehaviour, EnemyObserver
 
             //if health is 0 destorys the object
             if(health <= 0){
+                anim.SetBool("Death", true);
                 enemyManager.RemoveObserver(this);
-                Destroy(gameObject);
+                dead = true;
+                Destroy(gameObject, 1.05f);
+
             }
         }
+
+        //damages the player if we wall into the player
+        else if (other.gameObject.tag == "Player")
+        {
+            other.gameObject.GetComponent<FbStateManager>().health = other.gameObject.GetComponent<FbStateManager>().health - damage;
+        }
     }
-    
+
+    //required by our observer interface but currently not used
     public void OnNotify(){
         
     }
