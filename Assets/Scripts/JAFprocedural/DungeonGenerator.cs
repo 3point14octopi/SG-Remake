@@ -28,8 +28,8 @@ public class DungeonGenerator : MonoBehaviour
     {
         map = SG_MapGen.MakeFloorplan3();
         PrintThing(output, map);
-        room = SG_MapGen.MakeRoom2();
-        PrintThing(roomOutput, room, true);
+        //room = SG_MapGen.MakeRoom2();
+        //PrintThing(roomOutput, room, true);
     }
 
     void PrintThing(Text t, Space2D s, bool showZeroes = false)

@@ -149,16 +149,39 @@ namespace JAFprocedural
 
 
 
-
-
-
-
-
-        public static Space2D MakeRoom1()
+        public static Space2D MakeMasterFloor(Space2D floor)
         {
-            Space2D room = new Space2D(25, 15);
-            room = SetDefaultDoors(room);
+            floor = new Space2D(150, 60);
 
+            Space2D layout = MakeFloorplan3();
+
+            for(int i = 0; i < layout.height; i++)
+            {
+                for(int j = 0; j < layout.width; j++)
+                {
+                    if (layout.GetCell(j, i) != 0)
+                    {
+                        Space2D room = new Space2D(25, 15);
+                        room = SetDoors(room, new Coord(j, i), layout);
+
+                        room = (RNG.GenRand(0, 3) == 0) ? MakeRoom1(room) : MakeRoom2(room);
+                        room.worldOrigin = new Coord(j * 25, i * 15);
+                        room = DetectPerimeter(room);
+                        
+
+                        BasicBuilderFunctions.CopySpaceAToB(room, floor, new List<Cell>());
+                    }
+                }
+            }
+
+            return floor;
+        }
+
+
+
+
+        public static Space2D MakeRoom1(Space2D room)
+        {
             room = DownwardSpill(room, new Coord(12, 1));
             room = DownwardSpill(room, new Coord(12, 13), false);
 
@@ -170,11 +193,9 @@ namespace JAFprocedural
 
             return room;
         }
-        public static Space2D MakeRoom2()
-        {
-            Space2D room = new Space2D(25, 15);
 
-            room = SetDefaultDoors(room);
+        public static Space2D MakeRoom2(Space2D room)
+        {
             room = LittleJimmy(room);
 
             return room;
@@ -192,6 +213,41 @@ namespace JAFprocedural
             room.SetCell(new Coord(23, 7), opening);
             room.SetCell(new Coord(12, 13), opening);
             room.SetCell(new Coord(12, 14), opening);
+
+            return room;
+        }
+
+        public static Space2D SetDoors(Space2D room, Coord roomLoc, Space2D layoutRef)
+        {
+            Cell opening = new Cell(1);
+
+            //up
+            if (roomLoc.y > 0 && layoutRef.GetCell(new Coord(roomLoc.x, roomLoc.y - 1)) != 0)
+            {
+                room.SetCell(new Coord(12, 0), opening);
+                room.SetCell(new Coord(12, 1), opening);
+            }
+
+            //down
+            if (roomLoc.y < layoutRef.height-1 && layoutRef.GetCell(new Coord(roomLoc.x, roomLoc.y+1)) != 0)
+            {
+                room.SetCell(new Coord(12, 13), opening);
+                room.SetCell(new Coord(12, 14), opening);
+            }
+
+            //left
+            if (roomLoc.x > 0 && layoutRef.GetCell(new Coord(roomLoc.x-1, roomLoc.y)) != 0)
+            {
+                room.SetCell(new Coord(0, 7), opening);
+                room.SetCell(new Coord(1, 7), opening);
+            }
+
+            //right
+            if (roomLoc.x < layoutRef.width-1 && layoutRef.GetCell(new Coord(roomLoc.x + 1, roomLoc.y)) != 0)
+            {
+                room.SetCell(new Coord(24, 7), opening);
+                room.SetCell(new Coord(23, 7), opening);
+            }
 
             return room;
         }
@@ -288,18 +344,16 @@ namespace JAFprocedural
             Coord reunion;
             do { reunion = new Coord(RNG.GenRand(2, 20), RNG.GenRand(2, 10)); } while (room.GetCell(reunion) != 1);
 
-            //can override this if you start being SMARTER about door locations
-            BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(12, 1), fill);
-            BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(12, 13), fill);
-            BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(1, 8), fill);
-            BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(23, 8), fill);
+            if (room.GetCell(12, 0) !=0)    BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(12, 1), fill);
+            if (room.GetCell(12, 14) != 0) BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(12, 13), fill);
+            if (room.GetCell(0, 7) != 0)   BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(1, 7), fill);
+            if (room.GetCell(24, 7) != 0)  BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(23, 7), fill);
 
             return room;
         }
         
         public static Space2D LittleTimmy(Space2D room)
         {
-            UnityEngine.Debug.Log("little timmy to the rescue!");
             int timmyPlaced = 0;
             Cell bingChillin = new Cell(0);
 
@@ -319,7 +373,6 @@ namespace JAFprocedural
             }
 
 
-            UnityEngine.Debug.Log("little timmy placed " + timmyPlaced.ToString());
             return room;
         }
 
@@ -327,10 +380,10 @@ namespace JAFprocedural
         {
             List<Coord> points = new List<Coord>();
             //can override this if you start being SMARTER about door locations
-            points.Add(new Coord(1, 7));
-            points.Add(new Coord(12, 1));
-            points.Add(new Coord(23, 7));
-            points.Add(new Coord(12, 13));
+            if (room.GetCell(0, 7) != 0)  points.Add(new Coord(1, 7));
+            if (room.GetCell(12, 0) != 0) points.Add(new Coord(12, 1));
+            if (room.GetCell(12, 14) != 0)points.Add(new Coord(12, 13));
+            if (room.GetCell(24, 7) != 0) points.Add(new Coord(23, 7));
 
 
             int iterations = 10 - points.Count;
@@ -353,8 +406,24 @@ namespace JAFprocedural
 
             return room;
         }
-
+        public static Space2D DetectPerimeter(Space2D room)
+        {
+            for(int i = 0; i < room.height; i++)
+            {
+                for(int j = 0; j < room.width; j++)
+                {
+                    if(room.GetCell(j, i) == 0)
+                    {
+                        Coord data = BasicBuilderFunctions.CheckAdjacentCells(room, new Coord(j, i), true, new Cell(1));
+                        if (data.x + data.y != 4) room.SetCell(new Coord(j, i), new Cell(2));
+                    }
+                }
+            }
+            return room;
+        }
     }
+
+    
 
    
 }
