@@ -14,7 +14,6 @@ public class FbStateManager : MonoBehaviour
     public FbShootingState ShootState = new FbShootingState();
 
     public FbIceblockState IceblockState = new FbIceblockState();
-
     public FbDeathState DeathState = new FbDeathState();
 
     //Keeps track of our current state.
@@ -78,6 +77,10 @@ public class FbStateManager : MonoBehaviour
 
         //Manages the gun timer
         gunTimer -= Time.deltaTime;
+
+        if(health <= 0){
+            currentState = DeathState;
+        }
     }
 
     void FixedUpdate(){

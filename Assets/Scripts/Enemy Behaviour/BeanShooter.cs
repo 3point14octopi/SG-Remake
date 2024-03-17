@@ -4,40 +4,53 @@ using UnityEngine;
 
 public class BeanShooter : MonoBehaviour, EnemyObserver
 {
-    public GameObject player; // player so we can shoot at them
-    public GameObject bulletPrefab; //bullet prefab
-    public GameObject activeBullet; // husk used to init the bullets
+    private GameObject player; // player so we can shoot at them
+    private GameObject activeBullet; // husk used to init the bullets
+    private float beanTimer = 0; //keeps track of firerate
+    private Quaternion launch; // this is where the bullet is launched from
+    private float launchAngle; //this tracks the player so we know when to shoot the bullet
+    private bool LOS; //Used to track if we can see the player
+    private LayerMask playerMask; //layer reference for player
+    private LayerMask barrierMask; //layer reference for trees
+    private EnemySubject enemyManager; //our manager to tell when we are dead
+    
+    //Animation
+    private Animator anim; //our animator
+    private bool dead = false; //a bool to know to stop shooting while we are doing our dead animation
 
-    public float beanRate = 1; //firerate
-    public float beanTimer = 0; //keeps track of firerate
-    public Transform launch; // this is where the bullet is launched from
-    public float launchAngle; //this tracks the player so we know when to shoot the bullet
-    public bool LOS; //Used to track if we can see the player
-    public LayerMask playerMask; //layer reference for player
-    public LayerMask barrierMask; //layer reference for trees
-
-
+    [Header("Bean Shooter Stats")]
     public float health = 100; //bean shooter health
     public float damage = 50; //bullet damage
     public float speed = 2; //speed of the bullets
+    public float beanRate = 1; //firerate
+    public GameObject bulletPrefab; //bullet prefab
    
-   [SerializeField] EnemySubject enemyManager; 
+
+
 
     void Start()
     {
         //so we can have the players transform
         player = GameObject.FindWithTag("Player");
-        launch = gameObject.transform;
 
-        //find our subject
+        //find our layers used for our raycast masks
+        playerMask |= 0x1 << 6;
+        barrierMask |= 0x1 << 7;
+
+        //find our animation and beginning rotation
+        launch = gameObject.transform.rotation;
+        anim = gameObject.GetComponent<Animator>();
+
+        //find our subject and become an observer of it
+        enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemySubject>();
         enemyManager.AddObserver(this);
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         //uses a little trig (arc tan) to calculate the angle to shoot at based on the players position and the launch position
-        launchAngle = (Mathf.Atan2(player.transform.position.y - launch.position.y, player.transform.position.x - launch.position.x) * Mathf.Rad2Deg);
+        launchAngle = (Mathf.Atan2(player.transform.position.y - gameObject.transform.position.y, player.transform.position.x - gameObject.transform.position.x) * Mathf.Rad2Deg);
 
         //finds the player with a raycast and then raycasts up until the player looking for a tree
         RaycastHit2D playerRay = Physics2D.Raycast(transform.position, player.transform.position - transform.position, 20, playerMask);         
@@ -46,20 +59,20 @@ public class BeanShooter : MonoBehaviour, EnemyObserver
         //If it can see the player but not see a tree it sets line of sight to true
         if(playerRay.collider != null){
             if(playerRay.collider.CompareTag("Player") && barrierRay.collider == null){
-                //Debug.DrawRay(transform.position, player.transform.position - transform.position, Color.green);
                 LOS = true;
+                anim.SetBool("LOS", true);
             }
             else{
-                //Debug.DrawRay(transform.position, player.transform.position - transform.position, Color.red);
                 LOS = false;
+                anim.SetBool("LOS", false);
             }
         }
 
         //only shoots when the firerate timer is done
-        if(beanTimer <= 0 && LOS){
+        if(beanTimer <= 0 && LOS && !dead){
 
             //sets out launch angle and location
-            launch.rotation = Quaternion.Euler(0, 0, launchAngle);
+            launch = Quaternion.Euler(0, 0, launchAngle);
 
             //calls shooting and resets the firerate timer
             Shooting();
@@ -76,21 +89,24 @@ public class BeanShooter : MonoBehaviour, EnemyObserver
         {
             health = health - other.gameObject.GetComponent<PlayerBulletBehaviour>().bDamage;
 
-            //if health is 0 destorys the object
+            //if health is 0; start death anim, tell subject to take us off the list and delete the gameobject after the anim is done
             if(health <= 0){
+                anim.SetBool("Death", true);
                 enemyManager.RemoveObserver(this);
-                Destroy(gameObject);
+                dead = true;
+                Destroy(gameObject, 1.00f);
             }
         }
     }
 
     //when shooting happens it inits the bullet and updates its variables
     public void Shooting(){    
-        activeBullet = (GameObject)Instantiate(bulletPrefab, gameObject.transform.position, launch.rotation);
+        activeBullet = (GameObject)Instantiate(bulletPrefab, gameObject.transform.position, launch);
         activeBullet.GetComponent<EnemyBulletBehaviour>().bSpeed = speed;
         activeBullet.GetComponent<EnemyBulletBehaviour>().bDamage = damage;          
     }
 
+    //required by our observer interface but currently not used
     public void OnNotify(){
         
     }
