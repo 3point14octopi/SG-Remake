@@ -26,7 +26,7 @@ public class DungeonGenerator : MonoBehaviour
 
     void GenThing()
     {
-        map = SG_MapGen.MakeFloorplan3();
+        map = SG_MapGen.MakeFloorplan();
         PrintThing(output, map);
         //room = SG_MapGen.MakeRoom2();
         //PrintThing(roomOutput, room, true);

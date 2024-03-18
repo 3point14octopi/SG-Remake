@@ -3,83 +3,58 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEngine.UI;
 
 namespace JAFprocedural
 {
+    public class SG_Level
+    {
+        public Space2D minimap;
+        public Space2D megaMap;
+        public Dictionary<Coord, Space2D> rooms = new Dictionary<Coord, Space2D>();
+
+        public SG_Level()
+        {
+            minimap = SG_MapGen.MakeFloorplan();
+
+            megaMap = new Space2D(150, 60);
+
+            for(int i = 0; i < minimap.height; i++)
+            {
+                for(int j = 0; j < minimap.width; j++)
+                {
+                    if(minimap.GetCell(j, i) > 0)
+                    {
+                        Coord location = new Coord(j, i);
+                        Space2D room = new Space2D(25, 15);
+                        room = SG_MapGen.SetDoors(room, location, minimap);
+
+                        if(minimap.GetCell(j, i) == 1)
+                        {
+                            room = SG_MapGen.MakeStartingRoom(room);
+                        }
+                        else
+                        {
+                            room = (minimap.GetCell(j, i) < 5) ? SG_MapGen.MakeRoom1(room) : SG_MapGen.MakeRoom2(room);
+                        }
+                        room.worldOrigin = new Coord(j * 25, i * 15);
+                        room = SG_MapGen.DetectPerimeter(room);
+
+                        rooms.Add(location, room);
+                        BasicBuilderFunctions.CopySpaceAToB(room, megaMap, new List<Cell>());
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
     //static builder functions for SG rooms
     public static class SG_MapGen
     {
         public static Space2D MakeFloorplan()
-        {
-            Space2D floorPlan = new Space2D(5, 5);
-            List<Coord> points = new List<Coord>();
-
-            for(int i = 0; i < 3;)
-            {
-                Coord c = RNG.GenRandCoord(floorPlan, true);
-                if (floorPlan.GetCell(c) == 0)
-                {
-                    floorPlan.SetCell(c, new Cell(i + 1));
-                    points.Add(c);
-                    i++;
-                }
-            }
-
-            Space2D cover = new Space2D(5, 5);
-            BasicBuilderFunctions.ConnectCoords(cover, points[0], points[1], new Cell(4));
-            BasicBuilderFunctions.ConnectCoords(cover, points[0], points[2], new Cell(4));
-
-            for(int i = 0; i < cover.height; i++)
-            {
-                for(int j = 0; j < cover.width; j++)
-                {
-                    if(cover.GetCell(j, i) == 4 && floorPlan.GetCell(j, i) == 0)
-                    {
-                        floorPlan.SetCell(new Coord(j, i), new Cell(4));
-                    }
-                }
-            }
-
-
-            return floorPlan;
-        }
-
-        public static Space2D MakeFloorplan2()
-        {
-            Space2D floorPlan = new Space2D(6, 4);
-            List<Coord> points = new List<Coord>();
-
-            for (int i = 0; i < 4;)
-            {
-                Coord c = RNG.GenRandCoord(floorPlan, true);
-                if (floorPlan.GetCell(c) == 0)
-                {
-                    floorPlan.SetCell(c, new Cell(i + 1));
-                    points.Add(c);
-                    i++;
-                }
-            }
-
-            Space2D cover = new Space2D(6, 4);
-            BasicBuilderFunctions.Connect3(cover, points[0], points[1], points[2], new Cell(5));
-            BasicBuilderFunctions.ConnectCoords(cover, points[2], points[3], new Cell(5));
-
-            for (int i = 0; i < cover.height; i++)
-            {
-                for (int j = 0; j < cover.width; j++)
-                {
-                    if (cover.GetCell(j, i) == 5 && floorPlan.GetCell(j, i) == 0)
-                    {
-                        floorPlan.SetCell(new Coord(j, i), new Cell(5));
-                    }
-                }
-            }
-
-
-            return floorPlan;
-        }
-
-        public static Space2D MakeFloorplan3()
         {
             Space2D floorPlan = new Space2D(6, 4);
             List<Coord> points = new List<Coord>();
@@ -149,37 +124,6 @@ namespace JAFprocedural
 
 
 
-        public static Space2D MakeMasterFloor(Space2D floor)
-        {
-            floor = new Space2D(150, 60);
-
-            Space2D layout = MakeFloorplan3();
-
-            for(int i = 0; i < layout.height; i++)
-            {
-                for(int j = 0; j < layout.width; j++)
-                {
-                    if (layout.GetCell(j, i) != 0)
-                    {
-                        Space2D room = new Space2D(25, 15);
-                        room = SetDoors(room, new Coord(j, i), layout);
-
-                        room = (RNG.GenRand(0, 3) == 0) ? MakeRoom1(room) : MakeRoom2(room);
-                        room.worldOrigin = new Coord(j * 25, i * 15);
-                        room = DetectPerimeter(room);
-                        
-
-                        BasicBuilderFunctions.CopySpaceAToB(room, floor, new List<Cell>());
-                    }
-                }
-            }
-
-            return floor;
-        }
-
-
-
-
         public static Space2D MakeRoom1(Space2D room)
         {
             room = DownwardSpill(room, new Coord(12, 1));
@@ -197,6 +141,34 @@ namespace JAFprocedural
         public static Space2D MakeRoom2(Space2D room)
         {
             room = LittleJimmy(room);
+
+            return room;
+        }
+
+        public static Space2D MakeStartingRoom(Space2D room)
+        {
+            BasicBuilderFunctions.Flood(room, new Cell(0), new Cell(1), 1, 1, room.width - 1, room.height - 1);
+            BasicBuilderFunctions.Flood(room, new Cell(1), new Cell(0), 13, 0, 24, 7);
+
+            room.SetCell(new Coord(13, 13), new Cell(0));
+            BasicBuilderFunctions.HorizontalPath(room, new Cell(0), new Coord(13, 13), BasicBuilderFunctions.CalculateStride(new Coord(24, 13), new Coord(13, 13), true));
+            room.SetCell(new Coord(23, 8), new Cell(0));
+            BasicBuilderFunctions.VerticalPath(room, new Cell(0), new Coord(23, 8), BasicBuilderFunctions.CalculateStride(new Coord(23, 13), new Coord(23, 8), false));
+
+            room.SetCell(new Coord(11, 13), new Cell(0));
+            BasicBuilderFunctions.HorizontalPath(room, new Cell(0), new Coord(11, 13), BasicBuilderFunctions.CalculateStride(new Coord(0, 13), new Coord(11, 13), true));
+            room.SetCell(new Coord(1, 8), new Cell(0));
+            BasicBuilderFunctions.VerticalPath(room, new Cell(0), new Coord(1, 8), BasicBuilderFunctions.CalculateStride(new Coord(1, 13), new Coord(1, 8), false));
+
+            BasicBuilderFunctions.Flood(room, new Cell(1), new Cell(0), 1, 1, 12, 3);
+            BasicBuilderFunctions.HorizontalPath(room, new Cell(0), new Coord(8, 3), BasicBuilderFunctions.CalculateStride(new Coord(0, 3), new Coord(8, 3), true));
+            BasicBuilderFunctions.HorizontalPath(room, new Cell(0), new Coord(6, 4), BasicBuilderFunctions.CalculateStride(new Coord(0, 4), new Coord(6, 4), true));
+            BasicBuilderFunctions.HorizontalPath(room, new Cell(0), new Coord(4, 5), BasicBuilderFunctions.CalculateStride(new Coord(0, 5), new Coord(4, 5), true));
+            room.SetCell(new Coord(1, 6), new Cell(0));
+
+            if (room.GetCell(12, 14) == 0) room.SetCell(new Coord(12, 13), new Cell(0));
+
+            room = DetectPerimeter(room);
 
             return room;
         }

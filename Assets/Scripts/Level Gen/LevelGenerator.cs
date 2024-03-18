@@ -9,14 +9,15 @@ using UnityEngine.Tilemaps;
 
 public class LevelGenerator : MonoBehaviour
 {
+    public CamShift camRef;
     public JAFGridLayer[] layers = new JAFGridLayer[3];
-   
     private Space2D room;
+    private SG_Level dungeon;
     // Start is called before the first frame update
     void Start()
-    { 
-        room = SG_MapGen.MakeMasterFloor(room);
-        PrintRoom();
+    {
+        dungeon = new SG_Level();
+        PrintFullMap();
     }
 
     // Update is called once per frame
@@ -24,29 +25,43 @@ public class LevelGenerator : MonoBehaviour
     {
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space)){
-            room = SG_MapGen.MakeMasterFloor(room);
-            PrintRoom();
+            dungeon = new SG_Level();
+            PrintFullMap();
         }
 #endif
     }
 
-    private void PrintRoom()
+    private void PrintFullMap()
     {
         for(int i = 0; i < layers.Length; i++)
         {
             layers[i].Clear();
         }
 
-        for(int y = 0; y < room.height; y++)
+        for(int y = 0; y < dungeon.megaMap.height; y++)
         {
-            for(int x = room.width-1; x >= 0; x--)
+            for(int x = dungeon.megaMap.width-1; x >= 0; x--)
             {
-                int index = room.GetCell(x, y);
+                int index = dungeon.megaMap.GetCell(x, y);
                 if(index >=0 && index < layers.Length)
                 {
-                    layers[index].Draw(new Vector3Int(room.width - x - 1, -y, 0));
+                    layers[index].Draw(new Vector3Int(x, -y, 0));
+                }
+            }
+        }
+
+        for(int i = 0; i < dungeon.minimap.height; i++)
+        {
+            for(int j = 0; j < dungeon.minimap.width; j++)
+            {
+                if(dungeon.minimap.GetCell(j, i) == 1)
+                {
+                    camRef.SetPosition(new Coord(j, i));
+                    GameObject.Find("Frostbite").transform.position = new Vector2((j * 25) + 8, (i * -15) - 2);
                 }
             }
         }
     }
+
+    
 }
