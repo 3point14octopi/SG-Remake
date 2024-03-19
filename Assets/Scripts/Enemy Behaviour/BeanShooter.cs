@@ -19,8 +19,8 @@ public class BeanShooter : MonoBehaviour, EnemyObserver
     private bool dead = false; //a bool to know to stop shooting while we are doing our dead animation
 
     [Header("Bean Shooter Stats")]
-    public float health = 100; //bean shooter health
-    public float damage = 50; //bullet damage
+    public int health = 50; //bean shooter health
+    public int damage = 1; //bullet damage
     public float speed = 2; //speed of the bullets
     public float beanRate = 1; //firerate
     public GameObject bulletPrefab; //bullet prefab
@@ -50,7 +50,7 @@ public class BeanShooter : MonoBehaviour, EnemyObserver
     void Update()
     {
         //uses a little trig (arc tan) to calculate the angle to shoot at based on the players position and the launch position
-        launchAngle = (Mathf.Atan2(player.transform.position.y - gameObject.transform.position.y, player.transform.position.x - gameObject.transform.position.x) * Mathf.Rad2Deg);
+        launchAngle = (Mathf.Atan2(player.transform.position.y - gameObject.transform.position.y, player.transform.position.x - gameObject.transform.position.x) * Mathf.Rad2Deg - 90);
 
         //finds the player with a raycast and then raycasts up until the player looking for a tree
         RaycastHit2D playerRay = Physics2D.Raycast(transform.position, player.transform.position - transform.position, 20, playerMask);         

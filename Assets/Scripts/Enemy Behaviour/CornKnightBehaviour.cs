@@ -10,9 +10,9 @@ public class CornKnightBehaviour : MonoBehaviour, EnemyObserver
     private EnemySubject enemyManager; 
 
     [Header("Tree Knight Stats")]
-    public float health = 100; //enemy health
+    public int health = 50; //enemy health
     public float speed = 1; //walk speed
-    public float damage = 50; //damage it deals to player
+    public int damage = 1; //damage it deals to player
 
 
     void Start()

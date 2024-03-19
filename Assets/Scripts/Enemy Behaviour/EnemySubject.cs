@@ -5,25 +5,25 @@ using UnityEngine.Tilemaps;
 
 public class EnemySubject : MonoBehaviour
 {
-    private List<EnemyObserver> observers = new List<EnemyObserver>();
-    public Tilemap doors;
+    private List<EnemyObserver> observers = new List<EnemyObserver>(); //list of observers, we can also use this to reference how many enemies are alive currently
+    public Tilemap doors; //so we can clear the doors
 
-     void Update(){
+    //called when observers enable, they add themselves to the list
+    public void AddObserver(EnemyObserver observer){
+        observers.Add(observer);
+    }
+
+    //called when observers die
+    public void RemoveObserver(EnemyObserver observer){
+        observers.Remove(observer);
+
+        //opens the doors after we run out of observers/enemies
         if(observers.Count == 0){
-            Debug.Log("Level Cleared");
             doors.ClearAllTiles();
         }
     }
-    public void AddObserver(EnemyObserver observer){
-        observers.Add(observer);
-        Debug.Log("Added observer");
-    }
 
-    public void RemoveObserver(EnemyObserver observer){
-        observers.Remove(observer);
-        Debug.Log("Deleted observer");
-    }
-
+    //don't currently use this but it is an observer pattern standard, can be used for something like buffing the last 3 enemies
     protected void NotifyObservers(){
         observers.ForEach((observers) => {
             observers.OnNotify(); 

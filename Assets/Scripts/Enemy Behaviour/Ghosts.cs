@@ -15,9 +15,9 @@ public class Ghosts : MonoBehaviour, EnemyObserver
     private bool dead = false;
 
     [Header("Ghost Stats")]
-    public float health = 100; //enemy health
+    public int health = 50; //enemy health
     public float speed = 1; //walk speed
-    public float damage = 50; //damage it deals to player 
+    public int damage = 1; //damage it deals to player 
 
     // Start is called before the first frame update
     void Start()

@@ -7,12 +7,14 @@ public class FbIceblockState : FbBaseState
     public override void EnterState(FbStateManager fb){
         //debug
         Debug.Log("Ice Block Time");
+        fb.anim.SetBool("Iceblock", true);
     }
 
     public override void UpdateState(FbStateManager fb){
 
         //Transition for idle 
         if(Input.GetKeyUp(fb.iceBlockKey)){
+            fb.anim.SetBool("Iceblock", false);
             fb.SwitchState(fb.IdleState);
         }
     }
