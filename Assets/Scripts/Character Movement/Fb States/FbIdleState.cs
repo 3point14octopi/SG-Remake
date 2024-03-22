@@ -41,7 +41,7 @@ public class FbIdleState : FbBaseState
         }
 
         //Transition for ice block 
-        else if(Input.GetKey(fb.iceBlockKey)){
+        else if(Input.GetKey(fb.iceBlockKey) && fb.iceBlockHP > 0){
             fb.SwitchState(fb.IceblockState);
         }
     }

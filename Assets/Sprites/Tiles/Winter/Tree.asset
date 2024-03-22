@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: Tree
+  m_EditorClassIdentifier: 
+  m_AnimatedSprites:
+  - {fileID: 21300000, guid: fa589dc25bb0b304b8a6e834b9a07816, type: 3}
+  - {fileID: 21300000, guid: bc8f8a0436ec5be40ae08cd4c3301c8f, type: 3}
+  - {fileID: 21300000, guid: 1537a97f230bc3e40bd7aa723680188a, type: 3}
+  - {fileID: 21300000, guid: a25d75eff90483d4c85f89f04d263076, type: 3}
+  - {fileID: 21300000, guid: a16d631572b6bf9419fee5e3278abc97, type: 3}
+  - {fileID: 21300000, guid: 41e7ff3e4a83daf41bb005b49ee1c4e9, type: 3}
+  m_MinSpeed: 4
+  m_MaxSpeed: 4
+  m_AnimationStartTime: 0
+  m_AnimationStartFrame: 0
+  m_TileColliderType: 1

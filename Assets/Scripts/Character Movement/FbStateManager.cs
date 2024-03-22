@@ -1,4 +1,4 @@
-using System.Collections;
+    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,12 +15,13 @@ public class FbStateManager : MonoBehaviour
 
     public FbIceblockState IceblockState = new FbIceblockState();
     public FbDeathState DeathState = new FbDeathState();
+    
+    //Keeps track of our current state.
     public FbBaseState currentState;
 
-    //Keeps track of our current state.
- 
     public Animator anim;
     public GameObject healthbar;
+    public GameObject iceBar;
 
     [Header("Keybinds")]
     public KeyCode[] shootKeys = new KeyCode[4];//used for tracking the offsets, matches up with an array
@@ -35,9 +36,13 @@ public class FbStateManager : MonoBehaviour
     [Header("\nPlayer Stats")]
     public int health = 10;//current
     public int maxHealth = 10;//max health
+    public float movementSpeed = 10;//run speed
+
+    public int iceBlockHP = 5;//hits on the ice block
+    public float iceBlockHealRate = 2f;//time it tkes for the iceblock to go back a level
+    public float iceBlockTimer = 0;
 
     [Header("\nRunning")]
-    public float movementSpeed = 10;//run speed
     public Vector2 movement;
     public Rigidbody2D rb; //player rigidbody
 
@@ -78,6 +83,15 @@ public class FbStateManager : MonoBehaviour
 
         //Manages the gun timer
         gunTimer -= Time.deltaTime;
+
+        //Manages the iceblock timer
+        if(iceBlockTimer <= 0){
+            if(iceBlockHP < 5 && currentState != IceblockState){
+                iceBlockHP++;
+                iceBar.GetComponent<FBIceBar>().IceBar(iceBlockHP);
+                iceBlockTimer = iceBlockHealRate;
+            }
+        }else{iceBlockTimer -= Time.deltaTime;}
     }
 
     void FixedUpdate(){

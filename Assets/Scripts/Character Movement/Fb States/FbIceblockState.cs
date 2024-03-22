@@ -8,12 +8,19 @@ public class FbIceblockState : FbBaseState
         //debug
         Debug.Log("Ice Block Time");
         fb.anim.SetBool("Iceblock", true);
+        fb.anim.SetInteger("IceblockHits", fb.iceBlockHP);
     }
 
     public override void UpdateState(FbStateManager fb){
 
         //Transition for idle 
         if(Input.GetKeyUp(fb.iceBlockKey)){
+            fb.anim.SetBool("Iceblock", false);
+            fb.SwitchState(fb.IdleState);
+        }
+
+        //Check for if iceblock cracks
+        if(fb.iceBlockHP <= 0){
             fb.anim.SetBool("Iceblock", false);
             fb.SwitchState(fb.IdleState);
         }
@@ -27,12 +34,17 @@ public class FbIceblockState : FbBaseState
                 //checks for enemies or enemy bullets
         if (Collision2D.gameObject.tag == "EnemyBullet")
         {
-            //Since it is Ice block everything will be blocked
+            fb.iceBlockHP--;
+            fb.iceBar.GetComponent<FBIceBar>().IceBar(fb.iceBlockHP);
+            fb.anim.SetInteger("IceblockHits", fb.iceBlockHP);
             Debug.Log("Blocked");
         }
         //checks for enemies
         else if (Collision2D.gameObject.tag == "Enemy"){
             //Since it is Ice block everything will be blocked
+            fb.iceBlockHP--;
+            fb.iceBar.GetComponent<FBIceBar>().IceBar(fb.iceBlockHP);
+            fb.anim.SetInteger("IceblockHits", fb.iceBlockHP);
             Debug.Log("Blocked");
         }
     }
