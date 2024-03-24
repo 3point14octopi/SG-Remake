@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
-public class BeanShooter : MonoBehaviour, EnemyObserver
+public class BeanShooter : MonoBehaviour
 {
     private GameObject player; // player so we can shoot at them
     private GameObject activeBullet; // husk used to init the bullets
@@ -12,21 +13,35 @@ public class BeanShooter : MonoBehaviour, EnemyObserver
     private bool LOS; //Used to track if we can see the player
     private LayerMask playerMask; //layer reference for player
     private LayerMask barrierMask; //layer reference for trees
-    private EnemySubject enemyManager; //our manager to tell when we are dead
     
     //Animation
     private Animator anim; //our animator
     private bool dead = false; //a bool to know to stop shooting while we are doing our dead animation
 
     [Header("Bean Shooter Stats")]
-    public float health = 100; //bean shooter health
-    public float damage = 50; //bullet damage
+    public float health = 50; //bean shooter health
+    public float damage = 10; //bullet damage
     public float speed = 2; //speed of the bullets
     public float beanRate = 1; //firerate
     public GameObject bulletPrefab; //bullet prefab
-   
 
 
+    private float[] stats = new float[4];
+    private bool instantiated = false;
+
+    void OnEnable()
+    {
+        if (instantiated)
+        {
+            health = stats[0];
+            damage = stats[1];
+            speed = stats[2];
+            beanRate = stats[3];
+
+            dead = false;
+            anim.SetBool("Death", false);
+        }
+    }
 
     void Start()
     {
@@ -41,9 +56,13 @@ public class BeanShooter : MonoBehaviour, EnemyObserver
         launch = gameObject.transform.rotation;
         anim = gameObject.GetComponent<Animator>();
 
-        //find our subject and become an observer of it
-        enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemySubject>();
-        enemyManager.AddObserver(this);
+        
+
+        instantiated = true;
+        Assign(health, 0);
+        Assign(damage, 1);
+        Assign(speed, 2);
+        Assign(beanRate, 3);
     }
 
 
@@ -90,11 +109,8 @@ public class BeanShooter : MonoBehaviour, EnemyObserver
             health = health - other.gameObject.GetComponent<PlayerBulletBehaviour>().bDamage;
 
             //if health is 0; start death anim, tell subject to take us off the list and delete the gameobject after the anim is done
-            if(health <= 0){
-                anim.SetBool("Death", true);
-                enemyManager.RemoveObserver(this);
-                dead = true;
-                Destroy(gameObject, 1.00f);
+            if(health <= 0 && !dead){
+                StartCoroutine(Death());
             }
         }
     }
@@ -107,7 +123,23 @@ public class BeanShooter : MonoBehaviour, EnemyObserver
     }
 
     //required by our observer interface but currently not used
-    public void OnNotify(){
-        
+    public void OnNotify(Vector3 pos){
+        gameObject.transform.position = pos;
+        dead = false;
+    }
+
+    IEnumerator Death()
+    {
+        dead = true;
+        anim.SetBool("Death", true);
+        RoomPop.Instance.EnemyKilled();
+        yield return new WaitForSeconds(1);
+        gameObject.SetActive(false);
+    }
+
+    void Assign(float val, int index)
+    {
+        float temp = val;
+        stats[index] = temp;
     }
 }

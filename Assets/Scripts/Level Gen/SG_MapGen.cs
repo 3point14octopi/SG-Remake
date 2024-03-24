@@ -35,7 +35,8 @@ namespace JAFprocedural
                         }
                         else
                         {
-                            room = (minimap.GetCell(j, i) < 5) ? SG_MapGen.MakeRoom1(room) : SG_MapGen.MakeRoom2(room);
+                            room = (minimap.GetCell(j, i) < 5) ? SG_MapGen.MakeRoom1(room) : 
+                                (minimap.GetCell(j, i) == 7) ? SG_MapGen.MakeBossRoom(room) : SG_MapGen.MakeRoom2(room);
                         }
                         room.worldOrigin = new Coord(j * 25, i * 15);
                         room = SG_MapGen.DetectPerimeter(room);
@@ -69,7 +70,7 @@ namespace JAFprocedural
                 else
                 {
                     c = RNG.GenRandCoord(new Space2D(2, 4), true);
-                    if (RNG.GenRand(0, 3) == 1) c.x += 4;
+                    if (RNG.GenRand(0, 2) == 1) c.x += 4;
                 }
                 
                 if (floorPlan.GetCell(c) == 0)
@@ -87,6 +88,7 @@ namespace JAFprocedural
 
             int extraCount = 0;
 
+            //places the connector rooms without overwriting the old ones
             for (int i = 0; i < cover.height; i++)
             {
                 for (int j = 0; j < cover.width; j++)
@@ -99,6 +101,7 @@ namespace JAFprocedural
                 }
             }
 
+            //ensures that there are at least 7 rooms
             while(extraCount < 3)
             {
                 Coord addition = RNG.GenRandCoord(floorPlan, true);
@@ -115,6 +118,23 @@ namespace JAFprocedural
                         {
                             UnityEngine.Debug.Log("man");
                         }
+                    }
+                }
+            }
+
+            //places the boss room
+            for(bool bossPlaced = false; !bossPlaced;)
+            {
+                Coord bossRoom = RNG.GenRandCoord(floorPlan, true);
+
+                if(floorPlan.GetCell(bossRoom) == 0)
+                {
+                    Coord surrounding = BasicBuilderFunctions.CheckAdjacentCells(floorPlan, bossRoom);
+
+                    if(surrounding.x + surrounding.y != 4)
+                    {
+                        floorPlan.SetCell(bossRoom, new Cell(7));
+                        bossPlaced = true;
                     }
                 }
             }
@@ -173,6 +193,11 @@ namespace JAFprocedural
             return room;
         }
 
+        public static Space2D MakeBossRoom(Space2D room)
+        {
+            BasicBuilderFunctions.Flood(room, new Cell(0), new Cell(1), 1, 1, room.width-1, room.height-1);
+            return room;
+        }
 
         public static Space2D SetDefaultDoors(Space2D room)
         {
@@ -262,7 +287,7 @@ namespace JAFprocedural
                     room.SetCell(leftPoints.Last<Coord>(), fill);
                 }
             }
-            int newLeftStart = (leftPoints.Count <= DetermineChokeValue(iteration)) ? -1:RNG.GenRand(0, leftPoints.Count + 1);
+            int newLeftStart = (leftPoints.Count <= DetermineChokeValue(iteration)) ? -1:RNG.GenRand(0, leftPoints.Count);
 
 
             int rLimit = (rightStride < 7) ? rightStride : 7;
@@ -284,7 +309,7 @@ namespace JAFprocedural
                     room.SetCell(rightPoints.Last<Coord>(), fill);
                 }
             }
-            int newRightStart = (rightPoints.Count <= DetermineChokeValue(iteration))?-1:RNG.GenRand(0, rightPoints.Count + 1);
+            int newRightStart = (rightPoints.Count <= DetermineChokeValue(iteration))?-1:RNG.GenRand(0, rightPoints.Count);
             
 
             if(iteration <= 2 || RNG.GenRand(1, 4) > 1)
@@ -316,10 +341,10 @@ namespace JAFprocedural
             Coord reunion;
             do { reunion = new Coord(RNG.GenRand(2, 20), RNG.GenRand(2, 10)); } while (room.GetCell(reunion) != 1);
 
-            if (room.GetCell(12, 0) !=0)    BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(12, 1), fill);
-            if (room.GetCell(12, 14) != 0) BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(12, 13), fill);
-            if (room.GetCell(0, 7) != 0)   BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(1, 7), fill);
-            if (room.GetCell(24, 7) != 0)  BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(23, 7), fill);
+            BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(12, 1), fill);
+            BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(12, 13), fill);
+            BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(1, 7), fill);
+            BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(23, 7), fill);
 
             return room;
         }

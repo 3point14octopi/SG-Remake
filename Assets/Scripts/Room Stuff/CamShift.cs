@@ -7,16 +7,17 @@ using UnityEngine.UIElements;
 public class CamShift : MonoBehaviour
 {
     private Coord currentPosition = new Coord();
-    [SerializeField]public Vector3[] tpPositions = new Vector3[24];
-
+    public MiniMap mm;
     
 
     public void SetPosition(Coord position)
     {
-        transform.position = new Vector3((position.x * 25) + 8, (position.y * -15) -2, -5);
+        transform.position = new Vector3((position.x * 25) + 12.65f, (position.y * -15) -5.85f, -5);
         Debug.Log("teleported");
 
         currentPosition = position;
+
+        EnemiesAndDoors(currentPosition);
     }
 
     public void Shift(int xOffset, int yOffset)
@@ -24,7 +25,15 @@ public class CamShift : MonoBehaviour
         currentPosition.x += xOffset;
         currentPosition.y += yOffset;
 
-        transform.position = new Vector3((currentPosition.x * 25) + 8, (currentPosition.y * -15) - 2, -5);
-        Debug.Log("shifted");
+        transform.position = new Vector3((currentPosition.x * 25) + 12.65f, (currentPosition.y * -15) - 5.85f, -5);
+        Debug.Log("shifted to " + currentPosition.x.ToString() + ',' + currentPosition.y.ToString());
+
+        EnemiesAndDoors(currentPosition);
+    }
+
+    public void EnemiesAndDoors(Coord room)
+    {
+        ERoomManager.Instance.OnRoomEnter(room);
+        mm.OnRoomEnter(room);
     }
 }

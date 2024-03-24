@@ -25,9 +25,19 @@ public class EnemySubject : MonoBehaviour
     }
 
     protected void NotifyObservers(){
-        observers.ForEach((observers) => {
-            observers.OnNotify(); 
-        });
+        
 
+    }
+
+    public void IdkMan(int index, Vector3 location)
+    {
+        observers[index].OnNotify(location);
+    }
+
+    public void AlertOfDeath(EnemyObserver observer)
+    {
+        int index = observers.IndexOf(observer);
+        Debug.Log("enemy " + index.ToString() + " has died, lmao");
+        //tell the object manager to turn it off
     }
 }

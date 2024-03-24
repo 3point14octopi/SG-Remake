@@ -1,28 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class CornKnightBehaviour : MonoBehaviour, EnemyObserver
+public class CornKnightBehaviour : MonoBehaviour
 {   
     private int direction = 1; //direction it is walking in
     private Animator anim;
     private bool dead = false;
-    private EnemySubject enemyManager; 
 
     [Header("Tree Knight Stats")]
-    public float health = 100; //enemy health
+    public float health = 50; //enemy health
     public float speed = 1; //walk speed
-    public float damage = 50; //damage it deals to player
+    public float damage = 10; //damage it deals to player
 
+    private float[] stats = new float[3];
+    bool instantiated = false;
+
+    private void OnEnable()
+    {
+        if (instantiated)
+        {
+            health = stats[0];
+            speed = stats[1];
+            damage = stats[2];
+
+            dead = false;
+            anim.SetBool("Death", false);
+        }
+    }
 
     void Start()
     {
         //find our animation
         anim = gameObject.GetComponent<Animator>();
 
-        //find our subject and become an observer of it
-        enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemySubject>();
-        enemyManager.AddObserver(this);
+        instantiated = true;
+        Assign(health, 0);
+        Assign(speed, 1);
+        Assign(damage, 2);
     }
 
      // Update is called once per frame
@@ -50,11 +66,8 @@ public class CornKnightBehaviour : MonoBehaviour, EnemyObserver
             health = health - other.gameObject.GetComponent<PlayerBulletBehaviour>().bDamage;
             
             //if the damage is too much the enemy dies
-            if(health <= 0){
-                anim.SetBool("Death", true);
-                enemyManager.RemoveObserver(this);
-                dead = true;
-                Destroy(gameObject, 1.00f);
+            if(health <= 0 && !dead){
+                StartCoroutine(Death());
             }
         }
         
@@ -65,8 +78,20 @@ public class CornKnightBehaviour : MonoBehaviour, EnemyObserver
         }
     }
 
-    //required by our observer interface but currently not used
-    public void OnNotify(){
-        
+    IEnumerator Death()
+    {
+        anim.SetBool("Death", true);
+        dead = true;
+        RoomPop.Instance.EnemyKilled();
+        yield return new WaitForSeconds(1);
+        gameObject.SetActive(false);
+    }
+
+
+
+    void Assign(float val, int index)
+    {
+        float temp = val;
+        stats[index] = temp;
     }
 }

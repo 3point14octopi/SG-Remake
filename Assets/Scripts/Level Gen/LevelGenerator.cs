@@ -9,6 +9,7 @@ using UnityEngine.Tilemaps;
 
 public class LevelGenerator : MonoBehaviour
 {
+    public CurrentDoors doorManager;
     public CamShift camRef;
     public JAFGridLayer[] layers = new JAFGridLayer[3];
     private Space2D room;
@@ -17,18 +18,21 @@ public class LevelGenerator : MonoBehaviour
     void Start()
     {
         dungeon = new SG_Level();
+
+        Debug.Log(dungeon.rooms.Count);
+        doorManager.floorMap = dungeon.minimap;
+        foreach(KeyValuePair<Coord, Space2D> kvp in dungeon.rooms)
+        {
+            ERoomManager.Instance.CreateDataForRoom(dungeon.minimap.GetCell(kvp.Key), kvp.Value, kvp.Key);
+        }
+
         PrintFullMap();
     }
 
     // Update is called once per frame
     void Update()
     {
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.Space)){
-            dungeon = new SG_Level();
-            PrintFullMap();
-        }
-#endif
+
     }
 
     private void PrintFullMap()
@@ -57,7 +61,7 @@ public class LevelGenerator : MonoBehaviour
                 if(dungeon.minimap.GetCell(j, i) == 1)
                 {
                     camRef.SetPosition(new Coord(j, i));
-                    GameObject.Find("Frostbite").transform.position = new Vector2((j * 25) + 8, (i * -15) - 2);
+                    GameObject.Find("Frostbite").transform.position = new Vector2((j * 25) + 12, (i * -15) - 8);
                 }
             }
         }

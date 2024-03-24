@@ -23,13 +23,13 @@ namespace JAFprocedural
 
         public static int GenRand(int min, int range)
         {
-            return UnityEngine.Random.Range(min, (min + range) - ((min == 0)?1:0));
+            return UnityEngine.Random.Range(min, (min + range));
         }
         public static Coord GenRandCoord(Space2D space, bool includeBorder = false)
         {
             int inclusive = (!includeBorder) ? 1 : 0;
 
-            return new Coord((GenRand(inclusive, space.width + ((includeBorder)?1:-2))), (GenRand(inclusive, space.height + ((includeBorder) ? 1 : -2))));
+            return new Coord((GenRand(inclusive, space.width + ((includeBorder)?0:-2))), (GenRand(inclusive, space.height + ((includeBorder) ? 0 : -2))));
 
         }
         public static Coord CircleSelect(List<Coord> coords, int start)

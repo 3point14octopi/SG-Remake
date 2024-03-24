@@ -4,8 +4,6 @@ using UnityEngine;
 
 public interface EnemyObserver
 {
-    public void OnNotify(){
-
-    }
+    void OnNotify(Vector3 position);
 
 }

@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ghosts : MonoBehaviour, EnemyObserver
+public class Ghosts : MonoBehaviour
 {
-    private EnemySubject enemyManager;
+    
     private GameObject player; // player so we can shoot at them
 
     private bool LOS; //Used to track if we can see the player
@@ -15,9 +15,27 @@ public class Ghosts : MonoBehaviour, EnemyObserver
     private bool dead = false;
 
     [Header("Ghost Stats")]
-    public float health = 100; //enemy health
+    public float health = 50; //enemy health
     public float speed = 1; //walk speed
-    public float damage = 50; //damage it deals to player 
+    public float damage = 10; //damage it deals to player 
+
+
+    private float[] stats = new float[3];
+    private bool instantiated = false;
+
+    //this lets us reset the ghost by re-enabling the game object without having to hardcode our stats
+    void OnEnable()
+    {
+        if (instantiated)
+        {
+            health = stats[0];
+            speed = stats[1];
+            damage = stats[2];
+
+            dead = false;
+            anim.SetBool("Death", false);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -32,9 +50,13 @@ public class Ghosts : MonoBehaviour, EnemyObserver
         //find our animation
         anim = gameObject.GetComponent<Animator>();
 
-        //find our subject and become an observer of it
-        enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemySubject>();
-        enemyManager.AddObserver(this);
+        
+
+        //spooky stuff
+        instantiated = true;
+        Assign(health, 0);
+        Assign(speed, 1);
+        Assign(damage, 2);
     }
 
     // Update is called once per frame
@@ -76,12 +98,8 @@ public class Ghosts : MonoBehaviour, EnemyObserver
             health = health - other.gameObject.GetComponent<PlayerBulletBehaviour>().bDamage;
 
             //if health is 0 destorys the object
-            if(health <= 0){
-                anim.SetBool("Death", true);
-                enemyManager.RemoveObserver(this);
-                dead = true;
-                Destroy(gameObject, 1.05f);
-
+            if(health <= 0 && !dead){
+                StartCoroutine(Death());
             }
         }
 
@@ -92,8 +110,22 @@ public class Ghosts : MonoBehaviour, EnemyObserver
         }
     }
 
-    //required by our observer interface but currently not used
-    public void OnNotify(){
-        
+
+
+    void Assign(float val, int index)
+    {
+        float temp = val;
+        stats[index] = temp;
+    }
+
+
+
+    IEnumerator Death()
+    {
+        dead = true;
+        anim.SetBool("Death", true);
+        RoomPop.Instance.EnemyKilled();
+        yield return new WaitForSeconds(1);
+        gameObject.SetActive(false);
     }
 }
