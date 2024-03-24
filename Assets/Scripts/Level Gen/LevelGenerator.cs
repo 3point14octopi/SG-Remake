@@ -60,8 +60,8 @@ public class LevelGenerator : MonoBehaviour
             {
                 if(dungeon.minimap.GetCell(j, i) == 1)
                 {
-                    camRef.SetPosition(new Coord(j, i));
                     GameObject.Find("Frostbite").transform.position = new Vector2((j * 25) + 12, (i * -15) - 8);
+                    camRef.SetPosition(new Coord(j, i));
                 }
             }
         }

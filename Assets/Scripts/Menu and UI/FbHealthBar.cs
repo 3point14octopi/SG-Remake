@@ -11,14 +11,14 @@ public class FbHealthBar : MonoBehaviour
     public Sprite emptyHead;
     private int head = 0; //int so we can keep our place in the array when traversing for loops
 
-    public void HealthBar(int health){
+    public void HealthBar(float health){
         //Sets our full heads
-        for(int i = head; i < (health / 2); i++){
+        for(int i = head; i < (Mathf.FloorToInt(health) / 2); i++){
             heads[i].sprite = fullHead;
             head++;
         }
         //Sets our half head (if we need it)
-        if(health%2 == 1){
+        if(Mathf.FloorToInt(health)%2 == 1){
             heads[head].sprite = halfHead;
             head++;
         }

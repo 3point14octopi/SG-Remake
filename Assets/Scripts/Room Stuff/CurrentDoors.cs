@@ -76,6 +76,7 @@ public class CurrentDoors : MonoBehaviour
     public void OnRoomEnter(Coord location)
     {
         doorLayer.Clear();
+        doors = new Door[4];
         openDoors = new bool[] { false, false, false, false };
         pos = location;
 
@@ -113,6 +114,7 @@ public class CurrentDoors : MonoBehaviour
 
     private void InitDoor(int index, bool bossDoor = false)
     {
+        Debug.Log("Index is " + index.ToString());
         doors[index] = new Door();
         if (bossDoor)
         {

@@ -69,7 +69,7 @@ public class BeanShooter : MonoBehaviour
     void Update()
     {
         //uses a little trig (arc tan) to calculate the angle to shoot at based on the players position and the launch position
-        launchAngle = (Mathf.Atan2(player.transform.position.y - gameObject.transform.position.y, player.transform.position.x - gameObject.transform.position.x) * Mathf.Rad2Deg);
+        launchAngle = (Mathf.Atan2(player.transform.position.y - gameObject.transform.position.y, player.transform.position.x - gameObject.transform.position.x) * Mathf.Rad2Deg - 90f);
 
         //finds the player with a raycast and then raycasts up until the player looking for a tree
         RaycastHit2D playerRay = Physics2D.Raycast(transform.position, player.transform.position - transform.position, 20, playerMask);         

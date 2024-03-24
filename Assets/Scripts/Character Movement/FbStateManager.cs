@@ -34,8 +34,8 @@ public class FbStateManager : MonoBehaviour
 
 
     [Header("\nPlayer Stats")]
-    public int health = 10;//current
-    public int maxHealth = 10;//max health
+    public float health = 10;//current
+    public float maxHealth = 10;//max health
     public float movementSpeed = 10;//run speed
 
     public int iceBlockHP = 5;//hits on the ice block

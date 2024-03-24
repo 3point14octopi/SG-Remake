@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 50
-  damage: 10
+  damage: 1
   speed: 2
   beanRate: 1
   bulletPrefab: {fileID: 7514329530815829435, guid: 1cc0247fcf0cb0246b9702ec00f014fd, type: 3}
