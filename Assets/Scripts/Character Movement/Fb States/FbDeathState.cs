@@ -7,11 +7,12 @@ public class FbDeathState : FbBaseState
     public override void EnterState(FbStateManager fb){
         
         Debug.Log("DEATH TIME");
+        fb.anim.Play("FrostbiteDeath");
+        fb.rb.bodyType = RigidbodyType2D.Kinematic;
     }
 
     public override void UpdateState(FbStateManager fb){
 
-        Debug.Log("You died :((");
     }
 
     public override void FixedUpdateState(FbStateManager fb){

@@ -6,7 +6,7 @@ public class PlayerBulletBehaviour : MonoBehaviour
 {
     //all 3 of these things are updated by the person that calls them
     public float bSpeed; //bullet speed
-    public float bDamage; //bullet damage
+    public int bDamage; //bullet damage
 
      // Update is called once per frame
     void Update()

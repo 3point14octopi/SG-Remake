@@ -1,4 +1,4 @@
-using System.Collections;
+    using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,28 +15,34 @@ public class FbStateManager : MonoBehaviour
 
     public FbIceblockState IceblockState = new FbIceblockState();
     public FbDeathState DeathState = new FbDeathState();
-
+    
     //Keeps track of our current state.
     public FbBaseState currentState;
 
+    public Animator anim;
+    public GameObject healthbar;
+    public GameObject iceBar;
 
     [Header("Keybinds")]
     public KeyCode[] shootKeys = new KeyCode[4];//used for tracking the offsets, matches up with an array
+    public Stack<int> keyHistory = new Stack<int>();
     public KeyCode shootUpKey = KeyCode.UpArrow; //for shooting weapon
     public KeyCode shootLeftKey = KeyCode.LeftArrow; 
     public KeyCode shootDownKey = KeyCode.DownArrow; 
     public KeyCode shootRightKey = KeyCode.RightArrow; 
-
     public KeyCode iceBlockKey = KeyCode.LeftShift;//for ice block power
 
 
     [Header("\nPlayer Stats")]
-    public float health = 100;//current
-    public float maxHealth = 100;//max health
+    public int health = 10;//current
+    public int maxHealth = 10;//max health
+    public float movementSpeed = 10;//run speed
+
+    public int iceBlockHP = 5;//hits on the ice block
+    public float iceBlockHealRate = 2f;//time it tkes for the iceblock to go back a level
+    public float iceBlockTimer = 0;
 
     [Header("\nRunning")]
-    public float movementSpeed = 10;//run speed
-    
     public Vector2 movement;
     public Rigidbody2D rb; //player rigidbody
 
@@ -48,8 +54,8 @@ public class FbStateManager : MonoBehaviour
     [Header("\nBullet")]
     public int direction = 0; //if the bullet is up, down, left or right
     public Transform[] launchOffset = new Transform[4]; //the offsets for each direction of shooting
-    public float damage = 30; // bullet damage
-    public float speed = 5; //bullet speed
+    public int damage = 5; // bullet damage
+    public float speed = 8; //bullet speed
 
 
     // Start is called before the first frame update
@@ -78,9 +84,14 @@ public class FbStateManager : MonoBehaviour
         //Manages the gun timer
         gunTimer -= Time.deltaTime;
 
-        if(health <= 0){
-            currentState = DeathState;
-        }
+        //Manages the iceblock timer
+        if(iceBlockTimer <= 0){
+            if(iceBlockHP < 5 && currentState != IceblockState){
+                iceBlockHP++;
+                iceBar.GetComponent<FBIceBar>().IceBar(iceBlockHP);
+                iceBlockTimer = iceBlockHealRate;
+            }
+        }else{iceBlockTimer -= Time.deltaTime;}
     }
 
     void FixedUpdate(){
@@ -88,7 +99,7 @@ public class FbStateManager : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D other){
-        //bases collision data to the state
+        //Offloads collision data to the state
         currentState.Collision(this, other);
     }
 
@@ -101,9 +112,23 @@ public class FbStateManager : MonoBehaviour
 
     //called by the two shooting states
     public void Shooting(){
-        //Inits the bullet then sets a bunch of its variables    
-        var bullet = (GameObject)Instantiate(bulletPrefab, launchOffset[direction].position, launchOffset[direction].rotation);
-        bullet.GetComponent<PlayerBulletBehaviour>().bSpeed = speed;
-        bullet.GetComponent<PlayerBulletBehaviour>().bDamage = damage;     
+
+        for (int i = 1; i <= keyHistory.Count; ++i) {
+            //Inits the bullet then sets a bunch of its variables 
+            if (Input.GetKey(shootKeys[keyHistory.Peek()])){
+                var bullet = (GameObject)Instantiate(bulletPrefab, launchOffset[keyHistory.Peek()].position, launchOffset[keyHistory.Peek()].rotation);
+                bullet.GetComponent<PlayerBulletBehaviour>().bSpeed = speed;
+                bullet.GetComponent<PlayerBulletBehaviour>().bDamage = damage;
+
+                if(keyHistory.Peek() == 0){anim.Play("FrostbiteThrowUp");} 
+                else if(keyHistory.Peek() == 1){anim.Play("FrostbiteThrowDown");}     
+                else if(keyHistory.Peek() == 2){anim.Play("FrostbiteThrowLeft");}     
+                else if(keyHistory.Peek() == 3){anim.Play("FrostbiteThrowRight");}    
+                break; 
+            }
+            else{
+                keyHistory.Pop();
+            }
+        }
     }
 }

@@ -8,12 +8,13 @@ public class FbShootingState : FbBaseState
     public override void EnterState(FbStateManager fb){
         //debug
         Debug.Log("Shoot TIME");
+        fb.anim.SetBool("Throwing", true);
     }
 
     public override void UpdateState(FbStateManager fb){
 
         //Transition for move
-        if(Input.GetKey(fb.shootUpKey) == false && Input.GetKey(fb.shootLeftKey) == false && Input.GetKey(fb.shootDownKey) == false && Input.GetKey(fb.shootRightKey) == false){
+        if(fb.keyHistory.Count == 0){
             fb.SwitchState(fb.IdleState);
         }
 
@@ -23,16 +24,28 @@ public class FbShootingState : FbBaseState
         }
 
         //Transition for ice block 
-        else if(Input.GetKey(fb.iceBlockKey)){
+        else if(Input.GetKeyDown(fb.iceBlockKey) && fb.iceBlockHP > 0){
             fb.SwitchState(fb.IceblockState);
         }
 
-        //establishes the direction for the bullet
-        for (int i = 0; i <= fb.shootKeys.Length - 1; i++){
-            if(Input.GetKey(fb.shootKeys[i])){
-            fb.direction = i;
-            Debug.Log( fb.direction);
-            }
+        //Transition for shooting up
+        else if(Input.GetKeyDown(fb.shootUpKey)){
+            fb.keyHistory.Push(0);
+        }
+
+        //Transition for shooting down
+        else if(Input.GetKeyDown(fb.shootDownKey)){
+            fb.keyHistory.Push(1);
+        }
+
+        //Transition for shooting left
+        else if(Input.GetKeyDown(fb.shootLeftKey)){
+            fb.keyHistory.Push(2);
+        }
+
+        //Transition for shooting right
+        else if(Input.GetKeyDown(fb.shootRightKey)){
+            fb.keyHistory.Push(3);
         }
 
         //Calls the shooting function
@@ -52,13 +65,18 @@ public class FbShootingState : FbBaseState
         {
             //lowers your health based on how much damage you take
             fb.health = fb.health - Collision2D.gameObject.GetComponent<EnemyBulletBehaviour>().bDamage;
-            if(fb.health <= 0){
-                fb.SwitchState(fb.DeathState);
-            }
         }
         //checks for enemies
         else if (Collision2D.gameObject.tag == "Enemy"){
 
+        }
+          
+        //Updates our health bar
+        fb.healthbar.GetComponent<FbHealthBar>().HealthBar(fb.health);
+
+        //Checks if we died
+        if(fb.health <= 0){
+            fb.SwitchState(fb.DeathState);
         }
     }
 
