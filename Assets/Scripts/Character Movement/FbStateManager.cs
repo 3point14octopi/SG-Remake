@@ -57,6 +57,12 @@ public class FbStateManager : MonoBehaviour
     public int damage = 5; // bullet damage
     public float speed = 8; //bullet speed
 
+   [Header("Flash Hit")]
+    public Material flash;
+    private Material material;
+    public float flashDuration;
+    private Coroutine flashRoutine;
+
 
     // Start is called before the first frame update
     void Start()
@@ -70,6 +76,9 @@ public class FbStateManager : MonoBehaviour
 
         //Calls the enter state function of the current state.
         currentState.EnterState(this);
+
+        //grabs our material for flash effect
+        material = gameObject.GetComponent<SpriteRenderer>().material;
     }
 
     // Update is called once per frame
@@ -130,5 +139,25 @@ public class FbStateManager : MonoBehaviour
                 keyHistory.Pop();
             }
         }
+    }
+
+    public IEnumerator FlashRoutine(){
+
+        gameObject.GetComponent<SpriteRenderer>().material = flash;
+        
+        yield return new WaitForSeconds(flashDuration);
+
+        gameObject.GetComponent<SpriteRenderer>().material = material;
+
+        flashRoutine = null;
+
+    }
+
+    public void Flash(){
+        if(flashRoutine != null){
+            StopCoroutine(flashRoutine);
+        }
+
+        flashRoutine = StartCoroutine(FlashRoutine());
     }
 }

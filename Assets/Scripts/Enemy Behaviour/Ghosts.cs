@@ -23,6 +23,12 @@ public class Ghosts : MonoBehaviour
     private float[] stats = new float[3];
     private bool instantiated = false;
 
+    [Header("Flash Hit")]
+    public Material flash;
+    private Material material;
+    public float flashDuration;
+    private Coroutine flashRoutine;
+
     //this lets us reset the ghost by re-enabling the game object without having to hardcode our stats
     void OnEnable()
     {
@@ -57,6 +63,9 @@ public class Ghosts : MonoBehaviour
         Assign(health, 0);
         Assign(speed, 1);
         Assign(damage, 2);
+
+        //grabs our material for flash effect
+        material = gameObject.GetComponent<SpriteRenderer>().material;
     }
 
     // Update is called once per frame
@@ -96,7 +105,7 @@ public class Ghosts : MonoBehaviour
         if (other.gameObject.tag == "PlayerBullet")
         {
             health = health - other.gameObject.GetComponent<PlayerBulletBehaviour>().bDamage;
-
+            Flash();
             //if health is 0 destorys the object
             if(health <= 0 && !dead){
                 StartCoroutine(Death());
@@ -127,5 +136,26 @@ public class Ghosts : MonoBehaviour
         RoomPop.Instance.EnemyKilled();
         yield return new WaitForSeconds(1);
         gameObject.SetActive(false);
+    }
+
+    
+    IEnumerator FlashRoutine(){
+
+        gameObject.GetComponent<SpriteRenderer>().material = flash;
+        
+        yield return new WaitForSeconds(flashDuration);
+
+        gameObject.GetComponent<SpriteRenderer>().material = material;
+
+        flashRoutine = null;
+
+    }
+
+    void Flash(){
+        if(flashRoutine != null){
+            StopCoroutine(flashRoutine);
+        }
+
+        flashRoutine = StartCoroutine(FlashRoutine());
     }
 }

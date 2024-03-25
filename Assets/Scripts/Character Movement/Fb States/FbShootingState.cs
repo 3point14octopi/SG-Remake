@@ -65,10 +65,11 @@ public class FbShootingState : FbBaseState
         {
             //lowers your health based on how much damage you take
             fb.health = fb.health - Collision2D.gameObject.GetComponent<EnemyBulletBehaviour>().bDamage;
+            fb.Flash();
         }
         //checks for enemies
         else if (Collision2D.gameObject.tag == "Enemy"){
-
+            fb.Flash();
         }
           
         //Updates our health bar

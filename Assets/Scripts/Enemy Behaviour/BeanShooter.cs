@@ -25,6 +25,12 @@ public class BeanShooter : MonoBehaviour
     public float beanRate = 1; //firerate
     public GameObject bulletPrefab; //bullet prefab
 
+    [Header("Flash Hit")]
+    public Material flash;
+    private Material material;
+    public float flashDuration;
+    private Coroutine flashRoutine;
+
 
     private float[] stats = new float[4];
     private bool instantiated = false;
@@ -63,6 +69,9 @@ public class BeanShooter : MonoBehaviour
         Assign(damage, 1);
         Assign(speed, 2);
         Assign(beanRate, 3);
+
+        //grabs our material for flash effect
+        material = gameObject.GetComponent<SpriteRenderer>().material;
     }
 
 
@@ -107,6 +116,7 @@ public class BeanShooter : MonoBehaviour
         if (other.gameObject.tag == "PlayerBullet")
         {
             health = health - other.gameObject.GetComponent<PlayerBulletBehaviour>().bDamage;
+            Flash();
 
             //if health is 0; start death anim, tell subject to take us off the list and delete the gameobject after the anim is done
             if(health <= 0 && !dead){
@@ -141,5 +151,25 @@ public class BeanShooter : MonoBehaviour
     {
         float temp = val;
         stats[index] = temp;
+    }
+
+    IEnumerator FlashRoutine(){
+
+        gameObject.GetComponent<SpriteRenderer>().material = flash;
+        
+        yield return new WaitForSeconds(flashDuration);
+
+        gameObject.GetComponent<SpriteRenderer>().material = material;
+
+        flashRoutine = null;
+
+    }
+
+    void Flash(){
+        if(flashRoutine != null){
+            StopCoroutine(flashRoutine);
+        }
+
+        flashRoutine = StartCoroutine(FlashRoutine());
     }
 }

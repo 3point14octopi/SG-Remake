@@ -103,6 +103,8 @@ MonoBehaviour:
   health: 100
   speed: 1
   damage: 1
+  flash: {fileID: 2100000, guid: 57b09bca6b8c648429a388570af8be0a, type: 2}
+  flashDuration: 0.1
 --- !u!58 &3801810974425564147
 CircleCollider2D:
   m_ObjectHideFlags: 0

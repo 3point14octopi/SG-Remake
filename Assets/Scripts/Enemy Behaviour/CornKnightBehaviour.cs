@@ -17,6 +17,12 @@ public class CornKnightBehaviour : MonoBehaviour
     private float[] stats = new float[3];
     bool instantiated = false;
 
+    [Header("Flash Hit")]
+    public Material flash;
+    private Material material;
+    public float flashDuration;
+    private Coroutine flashRoutine;
+
     private void OnEnable()
     {
         if (instantiated)
@@ -39,6 +45,9 @@ public class CornKnightBehaviour : MonoBehaviour
         Assign(health, 0);
         Assign(speed, 1);
         Assign(damage, 2);
+
+        //grabs our material for flash effect
+        material = gameObject.GetComponent<SpriteRenderer>().material;
     }
 
      // Update is called once per frame
@@ -64,7 +73,7 @@ public class CornKnightBehaviour : MonoBehaviour
         else if (other.gameObject.tag == "PlayerBullet")
         {
             health = health - other.gameObject.GetComponent<PlayerBulletBehaviour>().bDamage;
-            
+            Flash();
             //if the damage is too much the enemy dies
             if(health <= 0 && !dead){
                 StartCoroutine(Death());
@@ -93,5 +102,25 @@ public class CornKnightBehaviour : MonoBehaviour
     {
         float temp = val;
         stats[index] = temp;
+    }
+
+    IEnumerator FlashRoutine(){
+
+        gameObject.GetComponent<SpriteRenderer>().material = flash;
+        
+        yield return new WaitForSeconds(flashDuration);
+
+        gameObject.GetComponent<SpriteRenderer>().material = material;
+
+        flashRoutine = null;
+
+    }
+
+    void Flash(){
+        if(flashRoutine != null){
+            StopCoroutine(flashRoutine);
+        }
+
+        flashRoutine = StartCoroutine(FlashRoutine());
     }
 }

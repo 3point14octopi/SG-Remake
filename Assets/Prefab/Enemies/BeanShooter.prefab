@@ -105,6 +105,8 @@ MonoBehaviour:
   speed: 2
   beanRate: 1
   bulletPrefab: {fileID: 7514329530815829435, guid: 1cc0247fcf0cb0246b9702ec00f014fd, type: 3}
+  flash: {fileID: 2100000, guid: 57b09bca6b8c648429a388570af8be0a, type: 2}
+  flashDuration: 0.1
 --- !u!58 &6314510192383934002
 CircleCollider2D:
   m_ObjectHideFlags: 0
