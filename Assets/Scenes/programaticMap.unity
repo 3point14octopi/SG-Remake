@@ -442,7 +442,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -820.35754, y: -3.0009}
+  m_AnchoredPosition: {x: -820, y: -3}
   m_SizeDelta: {x: 285, y: 1086}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1378786763
@@ -698,6 +698,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 336aac3dcf01b5440b86d196cce6c57c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  anim: {fileID: 0}
+  healthbar: {fileID: 0}
+  iceBar: {fileID: 0}
   shootKeys: 11010000120100001401000013010000
   shootUpKey: 273
   shootLeftKey: 276
@@ -707,6 +710,9 @@ MonoBehaviour:
   health: 100
   maxHealth: 100
   movementSpeed: 5
+  iceBlockHP: 5
+  iceBlockHealRate: 2
+  iceBlockTimer: 0
   movement: {x: 0, y: 0}
   rb: {fileID: 2042452970}
   firerate: 0.3

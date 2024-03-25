@@ -6,8 +6,9 @@ using UnityEngine;
 public class RoomPop : MonoBehaviour
 {
     public CurrentDoors doorManager;
+    public BossRoomManager bossStuff;
 
-    public RoomWithEnemies currentRoom;
+    public RoomWithEnemies currentRoom = new RoomWithEnemies();
 
     public Space2D floorPlan;
     public Coord position;
@@ -41,6 +42,15 @@ public class RoomPop : MonoBehaviour
         }
 
         position = currentPos;
+
+        if (currentRoom.isBossRoom)
+        {
+            Debug.Log("why do i hear boss music?");
+            bossStuff.LoadMap(ERoomManager.Instance.RequestRoom(position));
+            bossStuff.Attack1();
+        }
+
+
         InitDoors();
     }
 

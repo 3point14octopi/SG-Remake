@@ -66,7 +66,14 @@ public class ERoomManager : MonoBehaviour
 
     //private Dictionary<Coord, RoomWithEnemies> enemyLists = new Dictionary<Coord, RoomWithEnemies>();
     private RoomWithEnemies[,] enemyLists = new RoomWithEnemies[4, 6];
+    private Space2D[,] layouts = new Space2D[4, 6];
+    private Space2D bossRoom = null;
     List<Coord> usedRooms = new List<Coord>();
+
+    public Space2D RequestRoom(Coord id)
+    {
+        return layouts[id.y, id.x];
+    }
 
     public bool IsFloorCleared()
     {
@@ -363,7 +370,8 @@ public class ERoomManager : MonoBehaviour
             enemyLists[location.y, location.x] = BossRoom(room);
         }
 
-       
+        BasicBuilderFunctions.Flood(room, new Cell(99), new Cell(1));
+        layouts[location.y, location.x] = room;
     }
 
     public void OnRoomEnter(Coord roomLoc)

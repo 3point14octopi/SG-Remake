@@ -87,7 +87,7 @@ public class CurrentDoors : MonoBehaviour
 
 
         //check north door
-        if (pos.y > 0 && floorMap.GetCell(pos.x, pos.y - 1) != 0) InitDoor(0, floorMap.GetCell(pos.x, pos.y-1) == 7);
+        if (pos.y > 0 && floorMap.GetCell(pos.x, pos.y - 1) != 0) InitDoor(0, floorMap.GetCell(pos.x, pos.y - 1) == 7);
         //we automatically assume the door is "open" otherwise
         else openDoors[0] = true;
 
