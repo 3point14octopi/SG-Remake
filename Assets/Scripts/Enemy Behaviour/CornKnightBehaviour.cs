@@ -83,7 +83,7 @@ public class CornKnightBehaviour : MonoBehaviour
         //damages the player if we wall into the player
         else if (other.gameObject.tag == "Player")
         {
-            other.gameObject.GetComponent<FbStateManager>().health = other.gameObject.GetComponent<FbStateManager>().health - damage;
+            other.gameObject.GetComponent<FbStateManager>().TakeDamage(damage);
         }
     }
 

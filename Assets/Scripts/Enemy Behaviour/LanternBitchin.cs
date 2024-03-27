@@ -26,8 +26,7 @@ public class LanternBitchin : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            Debug.Log("GOTCHA BITCH!");
-            collision.gameObject.GetComponent<FbStateManager>().health = collision.gameObject.GetComponent<FbStateManager>().health - damage;
+            collision.gameObject.GetComponent<FbStateManager>().TakeDamage(damage);
         }
     }
 }

@@ -34,8 +34,8 @@ public class FbStateManager : MonoBehaviour
 
 
     [Header("\nPlayer Stats")]
-    public float health = 10;//current
-    public float maxHealth = 10;//max health
+    public int health = 10;//current
+    public int maxHealth = 10;//max health
     public float movementSpeed = 10;//run speed
 
     public int iceBlockHP = 5;//hits on the ice block
@@ -57,12 +57,6 @@ public class FbStateManager : MonoBehaviour
     public int damage = 5; // bullet damage
     public float speed = 8; //bullet speed
 
-   [Header("Flash Hit")]
-    public Material flash;
-    private Material material;
-    public float flashDuration;
-    private Coroutine flashRoutine;
-
 
     // Start is called before the first frame update
     void Start()
@@ -76,9 +70,6 @@ public class FbStateManager : MonoBehaviour
 
         //Calls the enter state function of the current state.
         currentState.EnterState(this);
-
-        //grabs our material for flash effect
-        material = gameObject.GetComponent<SpriteRenderer>().material;
     }
 
     // Update is called once per frame
@@ -108,8 +99,9 @@ public class FbStateManager : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D other){
-        //Offloads collision data to the state
-        currentState.Collision(this, other);
+        if(currentState == IceblockState){
+            currentState.Collision(this, other);
+        }
     }
 
     //is called when a transition condition in our current states update is met
@@ -140,6 +132,8 @@ public class FbStateManager : MonoBehaviour
             }
         }
     }
+<<<<<<< Updated upstream
+=======
 
     public IEnumerator FlashRoutine(){
 
@@ -153,11 +147,21 @@ public class FbStateManager : MonoBehaviour
 
     }
 
-    public void Flash(){
-        if(flashRoutine != null){
-            StopCoroutine(flashRoutine);
-        }
+    public void TakeDamage(float damage){
+        if(currentState != IceblockState && currentState != DeathState){
+            health = health - damage;
+            healthbar.GetComponent<FbHealthBar>().HealthBar(health);
 
-        flashRoutine = StartCoroutine(FlashRoutine());
+            if(health <= 0){
+                SwitchState(DeathState);
+            }
+
+            if(flashRoutine != null){
+                StopCoroutine(flashRoutine);
+            }
+
+            flashRoutine = StartCoroutine(FlashRoutine());
+        }
     }
+>>>>>>> Stashed changes
 }

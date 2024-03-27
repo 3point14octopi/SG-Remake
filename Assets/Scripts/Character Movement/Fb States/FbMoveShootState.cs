@@ -65,6 +65,7 @@ public class FbMoveShootState : FbBaseState
     }
     
     public override void Collision(FbStateManager fb, Collision2D Collision2D){
+<<<<<<< Updated upstream
         //checks for enemies or enemy bullets
         if (Collision2D.gameObject.tag == "EnemyBullet")
         {
@@ -76,13 +77,8 @@ public class FbMoveShootState : FbBaseState
         else if (Collision2D.gameObject.tag == "Enemy"){
             fb.Flash();
         }
+=======
+>>>>>>> Stashed changes
 
-        //Updates our health bar
-        fb.healthbar.GetComponent<FbHealthBar>().HealthBar(fb.health);
-
-        //Checks if we died
-        if(fb.health <= 0){
-            fb.SwitchState(fb.DeathState);
-        }
     }
 }

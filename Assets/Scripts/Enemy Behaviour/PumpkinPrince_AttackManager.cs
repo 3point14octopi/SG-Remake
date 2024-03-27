@@ -67,6 +67,7 @@ public class PumpkinPrince_AttackManager : MonoBehaviour
         }
 
         leftLantern = GameObject.Instantiate(leftLantern, transform, true);
+        leftLantern.GetComponent<Animator>().Play("Lantern Right");
         rightLantern = GameObject.Instantiate(rightLantern, transform, true);
         leftMotion = new PrinceAttack_Motion();
         rightMotion = new PrinceAttack_Motion();
@@ -128,10 +129,10 @@ public class PumpkinPrince_AttackManager : MonoBehaviour
             fireballs[i].SetActive(true);
             fireballs[i].GetComponent<FireballObj>().ToggleFalling(true);
             Coord targ = RNG.GenRandCoord(room);
-            Vector3 pos = new Vector3(targ.x + room.worldOrigin.x + 0.5f, -targ.y - room.worldOrigin.y + 0.5f, -1);
+            Vector3 pos = new Vector3(targ.x + room.worldOrigin.x + 0.5f, -targ.y - room.worldOrigin.y + 0.5f, -2);
             fireballShadow[i].SetActive(true);
-            fireballShadow[i].transform.position = new Vector3(pos.x, pos.y, 0);
-            fireballs[i].transform.position = new Vector3(pos.x, pos.y + 16, -1);
+            fireballShadow[i].transform.position = new Vector3(pos.x, pos.y, 0.5f);
+            fireballs[i].transform.position = new Vector3(pos.x, pos.y + 16, -2);
 
             fireballMoving[i].destination = pos;
             fireballMoving[i].isMoving = true;
@@ -149,7 +150,7 @@ public class PumpkinPrince_AttackManager : MonoBehaviour
                 if (fireballs[i].transform.position.y <= fireballMoving[i].destination.y)
                 {
                     Debug.Log("doin a fall thing");
-                    fireballs[i].transform.position = fireballMoving[i].destination;
+                    fireballs[i].transform.position = new Vector3(fireballMoving[i].destination.x, fireballMoving[i].destination.y, 0.4f);
                     fireballMoving[i].isMoving = false;
                     Debug.Log("calling fall function");
                     fireballs[i].GetComponent<FireballObj>().ToggleFalling(false);
@@ -193,7 +194,7 @@ public class PumpkinPrince_AttackManager : MonoBehaviour
                 }
                 Coord vLoc = new Coord((start.x + (directions[j].x * (i + subtract[j])) + add[j].x), (start.y + (directions[j].y * (i + subtract[j])) + add[j].y));
                 //directions[j] = new Coord(directions[j].x + add.x, directions[j].y + add.y);
-                vineWaves[(i * 4) + j].transform.position = new Vector3(vLoc.x + room.worldOrigin.x + 0.5f, -vLoc.y - room.worldOrigin.y + 0.5f, -1);
+                vineWaves[(i * 4) + j].transform.position = new Vector3(vLoc.x + room.worldOrigin.x + 0.5f, -vLoc.y - room.worldOrigin.y + 0.5f, 0.5f);
 
                 vineIndexes.Push((i * 4) + j);
             }
@@ -251,36 +252,43 @@ public class PumpkinPrince_AttackManager : MonoBehaviour
         yield return new WaitForSeconds(5);
 
         windup = false;
-
-        yield return new WaitForSeconds(0.5f);
+        leftLantern.GetComponent<Animator>().Play("Lantern Blast Right");
+        rightLantern.GetComponent<Animator>().Play("Lantern Blast Left");
+        yield return new WaitForSeconds(1f);
 
         for(int i = 2; i < 24; i++)
         {
-            //leftLantern.GetComponent<BoxCollider2D>().offset = new Vector2((float)((i - 1) / 2), 0);
-            //leftLantern.GetComponent<BoxCollider2D>().size = new Vector2(i, 1);
+            leftLantern.GetComponent<BoxCollider2D>().offset = new Vector2((float)((i - 1) / 2), 0);
+            leftLantern.GetComponent<BoxCollider2D>().size = new Vector2(i, 1);
 
-            //rightLantern.GetComponent<BoxCollider2D>().offset = new Vector2((float)((i - 1) / -2), 0);
-            //rightLantern.GetComponent<BoxCollider2D>().size = new Vector2(i, 1);
 
-            leftLantern.transform.position = new Vector2(room.worldOrigin.x + 1.5f + (float)((i - 1) / 2), leftLantern.transform.position.y);
-            leftLantern.transform.localScale = new Vector3(i, 1, 1);
+            rightLantern.GetComponent<BoxCollider2D>().offset = new Vector2((float)((i - 1) / -2), 0);
+            rightLantern.GetComponent<BoxCollider2D>().size = new Vector2(i, 1);
 
-            rightLantern.transform.position = new Vector2(room.worldOrigin.x + 23.5f + (float)((i - 1) / -2), rightLantern.transform.position.y);
-            rightLantern.transform.localScale = new Vector3(i, 1, 1);
+            // leftLantern.transform.position = new Vector2(room.worldOrigin.x + 1.5f + (float)((i - 1) / 2), leftLantern.transform.position.y);
+            // leftLantern.transform.localScale = new Vector3(i, 1, 1);
+
+            // rightLantern.transform.position = new Vector2(room.worldOrigin.x + 23.5f + (float)((i - 1) / -2), rightLantern.transform.position.y);
+            // rightLantern.transform.localScale = new Vector3(i, 1, 1);
 
             yield return null;
         }
 
         yield return new WaitForSeconds(2);
 
-        //leftLantern.GetComponent<BoxCollider2D>().offset = new Vector2(0, 0);
-        //leftLantern.GetComponent<BoxCollider2D>().size = new Vector2(1, 1);
-        //rightLantern.GetComponent<BoxCollider2D>().offset = new Vector2(0, 0);
-        //rightLantern.GetComponent<BoxCollider2D>().size = new Vector2(1, 1);
-        leftLantern.transform.position = new Vector2(room.worldOrigin.x + 1.5f, leftLantern.transform.position.y);
-        leftLantern.transform.localScale = new Vector2(1, 1);
-        rightLantern.transform.position = new Vector2(room.worldOrigin.x + 23.5f, rightLantern.transform.position.y);
-        rightLantern.transform.localScale = new Vector2(1, 1);
+        leftLantern.GetComponent<BoxCollider2D>().offset = new Vector2(0, 0);
+        leftLantern.GetComponent<BoxCollider2D>().size = new Vector2(1, 1);
+        leftLantern.GetComponent<Animator>().Play("Lantern Right");
+
+        rightLantern.GetComponent<BoxCollider2D>().offset = new Vector2(0, 0);
+        rightLantern.GetComponent<BoxCollider2D>().size = new Vector2(1, 1);
+        rightLantern.GetComponent<Animator>().Play("Lantern Left");
+        
+ 
+        // leftLantern.transform.position = new Vector2(room.worldOrigin.x + 1.5f, leftLantern.transform.position.y);
+        // leftLantern.transform.localScale = new Vector2(1, 1);
+        // rightLantern.transform.position = new Vector2(room.worldOrigin.x + 23.5f, rightLantern.transform.position.y);
+        // rightLantern.transform.localScale = new Vector2(1, 1);
 
         currentAttack = Prince_Attack.NONE;
     }
