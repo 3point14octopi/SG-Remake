@@ -99,8 +99,9 @@ public class FbStateManager : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D other){
-        //Offloads collision data to the state
-        currentState.Collision(this, other);
+        if(currentState == IceblockState){
+            currentState.Collision(this, other);
+        }
     }
 
     //is called when a transition condition in our current states update is met
@@ -131,4 +132,36 @@ public class FbStateManager : MonoBehaviour
             }
         }
     }
+<<<<<<< Updated upstream
+=======
+
+    public IEnumerator FlashRoutine(){
+
+        gameObject.GetComponent<SpriteRenderer>().material = flash;
+        
+        yield return new WaitForSeconds(flashDuration);
+
+        gameObject.GetComponent<SpriteRenderer>().material = material;
+
+        flashRoutine = null;
+
+    }
+
+    public void TakeDamage(float damage){
+        if(currentState != IceblockState && currentState != DeathState){
+            health = health - damage;
+            healthbar.GetComponent<FbHealthBar>().HealthBar(health);
+
+            if(health <= 0){
+                SwitchState(DeathState);
+            }
+
+            if(flashRoutine != null){
+                StopCoroutine(flashRoutine);
+            }
+
+            flashRoutine = StartCoroutine(FlashRoutine());
+        }
+    }
+>>>>>>> Stashed changes
 }
