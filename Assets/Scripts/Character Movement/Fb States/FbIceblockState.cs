@@ -31,21 +31,9 @@ public class FbIceblockState : FbBaseState
     }
     
     public override void Collision(FbStateManager fb, Collision2D Collision2D){
-                //checks for enemies or enemy bullets
-        if (Collision2D.gameObject.tag == "EnemyBullet")
-        {
-            fb.iceBlockHP--;
-            fb.iceBar.GetComponent<FBIceBar>().IceBar(fb.iceBlockHP);
-            fb.anim.SetInteger("IceblockHits", fb.iceBlockHP);
-            Debug.Log("Blocked");
-        }
-        //checks for enemies
-        else if (Collision2D.gameObject.tag == "Enemy"){
-            //Since it is Ice block everything will be blocked
-            fb.iceBlockHP--;
-            fb.iceBar.GetComponent<FBIceBar>().IceBar(fb.iceBlockHP);
-            fb.anim.SetInteger("IceblockHits", fb.iceBlockHP);
-            Debug.Log("Blocked");
-        }
+
+        fb.iceBlockHP--;
+        fb.iceBar.GetComponent<FBIceBar>().IceBar(fb.iceBlockHP);
+        fb.anim.SetInteger("IceblockHits", fb.iceBlockHP);
     }
 }
