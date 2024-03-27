@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ghosts : MonoBehaviour, EnemyObserver
+public class Ghosts : MonoBehaviour
 {
-    private EnemySubject enemyManager;
+    
     private GameObject player; // player so we can shoot at them
 
     private bool LOS; //Used to track if we can see the player
@@ -15,11 +15,8 @@ public class Ghosts : MonoBehaviour, EnemyObserver
     private bool dead = false;
 
     [Header("Ghost Stats")]
-    public int health = 50; //enemy health
+    public float health = 50; //enemy health
     public float speed = 1; //walk speed
-<<<<<<< Updated upstream
-    public int damage = 1; //damage it deals to player 
-=======
     public float damage = 10; //damage it deals to player 
 
 
@@ -40,11 +37,11 @@ public class Ghosts : MonoBehaviour, EnemyObserver
             health = stats[0];
             speed = stats[1];
             damage = stats[2];
+
             dead = false;
             anim.SetBool("Death", false);
         }
     }
->>>>>>> Stashed changes
 
     // Start is called before the first frame update
     void Start()
@@ -59,9 +56,16 @@ public class Ghosts : MonoBehaviour, EnemyObserver
         //find our animation
         anim = gameObject.GetComponent<Animator>();
 
-        //find our subject and become an observer of it
-        enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemySubject>();
-        enemyManager.AddObserver(this);
+        
+
+        //spooky stuff
+        instantiated = true;
+        Assign(health, 0);
+        Assign(speed, 1);
+        Assign(damage, 2);
+
+        //grabs our material for flash effect
+        material = gameObject.GetComponent<SpriteRenderer>().material;
     }
 
     // Update is called once per frame
@@ -101,26 +105,57 @@ public class Ghosts : MonoBehaviour, EnemyObserver
         if (other.gameObject.tag == "PlayerBullet")
         {
             health = health - other.gameObject.GetComponent<PlayerBulletBehaviour>().bDamage;
-
+            Flash();
             //if health is 0 destorys the object
-            if(health <= 0){
-                anim.SetBool("Death", true);
-                enemyManager.RemoveObserver(this);
-                dead = true;
-                Destroy(gameObject, 1.05f);
-
+            if(health <= 0 && !dead){
+                StartCoroutine(Death());
             }
         }
 
         //damages the player if we wall into the player
         else if (other.gameObject.tag == "Player")
         {
-            other.gameObject.GetComponent<FbStateManager>().TakeDamage(damage);
+            other.gameObject.GetComponent<FbStateManager>().health = other.gameObject.GetComponent<FbStateManager>().health - damage;
         }
     }
 
-    //required by our observer interface but currently not used
-    public void OnNotify(){
+
+
+    void Assign(float val, int index)
+    {
+        float temp = val;
+        stats[index] = temp;
+    }
+
+
+
+    IEnumerator Death()
+    {
+        dead = true;
+        anim.SetBool("Death", true);
+        RoomPop.Instance.EnemyKilled();
+        yield return new WaitForSeconds(1);
+        gameObject.SetActive(false);
+    }
+
+    
+    IEnumerator FlashRoutine(){
+
+        gameObject.GetComponent<SpriteRenderer>().material = flash;
         
+        yield return new WaitForSeconds(flashDuration);
+
+        gameObject.GetComponent<SpriteRenderer>().material = material;
+
+        flashRoutine = null;
+
+    }
+
+    void Flash(){
+        if(flashRoutine != null){
+            StopCoroutine(flashRoutine);
+        }
+
+        flashRoutine = StartCoroutine(FlashRoutine());
     }
 }

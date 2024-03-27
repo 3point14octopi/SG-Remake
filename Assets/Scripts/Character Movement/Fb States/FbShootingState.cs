@@ -60,23 +60,6 @@ public class FbShootingState : FbBaseState
     }
     
     public override void Collision(FbStateManager fb, Collision2D Collision2D){
-<<<<<<< Updated upstream
-        //checks for enemies or enemy bullets
-        if (Collision2D.gameObject.tag == "EnemyBullet")
-        {
-            //lowers your health based on how much damage you take
-            fb.health = fb.health - Collision2D.gameObject.GetComponent<EnemyBulletBehaviour>().bDamage;
-            fb.Flash();
-        }
-        //checks for enemies
-        else if (Collision2D.gameObject.tag == "Enemy"){
-            fb.Flash();
-        }
-          
-        //Updates our health bar
-        fb.healthbar.GetComponent<FbHealthBar>().HealthBar(fb.health);
-=======
->>>>>>> Stashed changes
 
     }
 

@@ -2573,7 +2573,7 @@ PrefabInstance:
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
       propertyPath: enemyPrefabs.Array.data[5]
       value: 
-      objectReference: {fileID: 5353378109183891165, guid: ed6adc99adb077c40b982c7b44416858, type: 3}
+      objectReference: {fileID: 5353378109183891165, guid: f2a5d28a7ab41c1408dbd97440bb93a2, type: 3}
     - target: {fileID: 3153403619609351041, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
       propertyPath: m_Name
       value: Enemies
@@ -2760,13 +2760,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   firePrefab: {fileID: 7727314641718151637, guid: 145ca3b39f53529408115d3992c8a563, type: 3}
-  fireShadowPrefab: {fileID: 5249718965483220853, guid: 2e35a2b9ad362b340b1a942ed30cb4b2, type: 3}
+  fireShadowPrefab: {fileID: 2417970130363686709, guid: af3117620a44e994bb62e212b4b05dc8, type: 3}
   fireballs: []
   fireballShadow: []
-  vinePrefab: {fileID: 4890414333185944774, guid: 458c24cfe8bc07847a8125dbf0706f4e, type: 3}
+  vinePrefab: {fileID: 4890414333185944774, guid: 5ad9fb54252264747862bdb815642abe, type: 3}
   vineWaves: []
-  leftLantern: {fileID: 8984788871021939123, guid: cd2483bf2c287fb4e9e4e1b0bf16958e, type: 3}
-  rightLantern: {fileID: 8984788871021939123, guid: cd2483bf2c287fb4e9e4e1b0bf16958e, type: 3}
+  leftLantern: {fileID: 1211695872418527914, guid: c65ad518588d282468d1c552f38eaf4f, type: 3}
+  rightLantern: {fileID: 3071057629094251506, guid: 3473d66ac816207499854688ad256a01, type: 3}
 --- !u!1001 &1813858082
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3231,8 +3231,8 @@ MonoBehaviour:
   - {fileID: 1944763855}
   damage: 5
   speed: 8
-  flash: {fileID: 0}
-  flashDuration: 0
+  flash: {fileID: 2100000, guid: 57b09bca6b8c648429a388570af8be0a, type: 2}
+  flashDuration: 0.1
 --- !u!212 &2042452968
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -34,7 +34,7 @@ public class FbStateManager : MonoBehaviour
 
 
     [Header("\nPlayer Stats")]
-    public int health = 10;//current
+    public float health = 10;//current
     public int maxHealth = 10;//max health
     public float movementSpeed = 10;//run speed
 
@@ -57,6 +57,12 @@ public class FbStateManager : MonoBehaviour
     public int damage = 5; // bullet damage
     public float speed = 8; //bullet speed
 
+    [Header("Flash Hit")]
+    public Material flash;
+    private Material material;
+    public float flashDuration;
+    private Coroutine flashRoutine;
+
 
     // Start is called before the first frame update
     void Start()
@@ -70,6 +76,8 @@ public class FbStateManager : MonoBehaviour
 
         //Calls the enter state function of the current state.
         currentState.EnterState(this);
+
+        material = gameObject.GetComponent<SpriteRenderer>().material;
     }
 
     // Update is called once per frame
@@ -132,8 +140,6 @@ public class FbStateManager : MonoBehaviour
             }
         }
     }
-<<<<<<< Updated upstream
-=======
 
     public IEnumerator FlashRoutine(){
 
@@ -163,5 +169,4 @@ public class FbStateManager : MonoBehaviour
             flashRoutine = StartCoroutine(FlashRoutine());
         }
     }
->>>>>>> Stashed changes
 }
