@@ -20,11 +20,10 @@ public class EnemyBulletBehaviour : MonoBehaviour
             
         }
         //anything else the bullet explodes
-        else if(other.gameObject.tag == "Player"){
-            other.gameObject.GetComponent<FbStateManager>().TakeDamage(bDamage);
+        else{
+        
             Destroy(gameObject);
-        }     
-        else{Destroy(gameObject);}   
+        }        
     }
 
 }

@@ -17,34 +17,7 @@ public class Ghosts : MonoBehaviour, EnemyObserver
     [Header("Ghost Stats")]
     public int health = 50; //enemy health
     public float speed = 1; //walk speed
-<<<<<<< Updated upstream
     public int damage = 1; //damage it deals to player 
-=======
-    public float damage = 10; //damage it deals to player 
-
-
-    private float[] stats = new float[3];
-    private bool instantiated = false;
-
-    [Header("Flash Hit")]
-    public Material flash;
-    private Material material;
-    public float flashDuration;
-    private Coroutine flashRoutine;
-
-    //this lets us reset the ghost by re-enabling the game object without having to hardcode our stats
-    void OnEnable()
-    {
-        if (instantiated)
-        {
-            health = stats[0];
-            speed = stats[1];
-            damage = stats[2];
-            dead = false;
-            anim.SetBool("Death", false);
-        }
-    }
->>>>>>> Stashed changes
 
     // Start is called before the first frame update
     void Start()
@@ -115,7 +88,7 @@ public class Ghosts : MonoBehaviour, EnemyObserver
         //damages the player if we wall into the player
         else if (other.gameObject.tag == "Player")
         {
-            other.gameObject.GetComponent<FbStateManager>().TakeDamage(damage);
+            other.gameObject.GetComponent<FbStateManager>().health = other.gameObject.GetComponent<FbStateManager>().health - damage;
         }
     }
 
