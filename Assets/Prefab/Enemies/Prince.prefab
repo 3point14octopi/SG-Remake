@@ -104,7 +104,7 @@ MonoBehaviour:
   health: 1350
   speed: 0
   contactDamage: 1
-  princeAnim: {fileID: 0}
+  princeAnim: {fileID: 4651046338545151978}
 --- !u!50 &-2549555203947612670
 Rigidbody2D:
   serializedVersion: 4

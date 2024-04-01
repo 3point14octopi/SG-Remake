@@ -1516,7 +1516,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 8f617e0ba1305f14abc12ee307a6e006, type: 2}
   m_audioClip: {fileID: 8300000, guid: 020d919749cfa9a459bd4929f7f7221c, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.15
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -2307,6 +2307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
+  maxSpeed: {x: 0, y: 0}
   avoidance: 1.2
   obstacleAvoid: 1.75
   targetRange: 1
@@ -2816,11 +2817,11 @@ PrefabInstance:
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
       propertyPath: enemyPrefabs.Array.data[4]
       value: 
-      objectReference: {fileID: 6895741540013403418, guid: f0bd541dda4a18a4f901ef7840193fff, type: 3}
+      objectReference: {fileID: 4246893914652902662, guid: 6b6cc686ae7fb3844a7c16a0736da0d2, type: 3}
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
       propertyPath: enemyPrefabs.Array.data[5]
       value: 
-      objectReference: {fileID: 5353378109183891165, guid: ed6adc99adb077c40b982c7b44416858, type: 3}
+      objectReference: {fileID: 5353378109183891165, guid: 11a052b258f2dcc438d3d895acce7da8, type: 3}
     - target: {fileID: 3153403619609351041, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
       propertyPath: m_Name
       value: Enemies
@@ -3006,14 +3007,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f6ce952e0d8a2a4cb6512267fdab498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firePrefab: {fileID: 7727314641718151637, guid: 145ca3b39f53529408115d3992c8a563, type: 3}
-  fireShadowPrefab: {fileID: 5249718965483220853, guid: 2e35a2b9ad362b340b1a942ed30cb4b2, type: 3}
+  firePrefab: {fileID: 7727314641718151637, guid: 369fe49830bc106489120bdbf9c9b17e, type: 3}
+  fireShadowPrefab: {fileID: 2417970130363686709, guid: af3117620a44e994bb62e212b4b05dc8, type: 3}
   fireballs: []
   fireballShadow: []
-  vinePrefab: {fileID: 4890414333185944774, guid: 458c24cfe8bc07847a8125dbf0706f4e, type: 3}
+  vinePrefab: {fileID: 4890414333185944774, guid: 5ad9fb54252264747862bdb815642abe, type: 3}
   vineWaves: []
-  leftLantern: {fileID: 8984788871021939123, guid: cd2483bf2c287fb4e9e4e1b0bf16958e, type: 3}
-  rightLantern: {fileID: 8984788871021939123, guid: cd2483bf2c287fb4e9e4e1b0bf16958e, type: 3}
+  leftLantern: {fileID: 1211695872418527914, guid: c65ad518588d282468d1c552f38eaf4f, type: 3}
+  rightLantern: {fileID: 3071057629094251506, guid: 3473d66ac816207499854688ad256a01, type: 3}
 --- !u!1001 &1813858082
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3478,8 +3479,8 @@ MonoBehaviour:
   - {fileID: 1944763855}
   damage: 5
   speed: 8
-  flash: {fileID: 0}
-  flashDuration: 0
+  flash: {fileID: 2100000, guid: 57b09bca6b8c648429a388570af8be0a, type: 2}
+  flashDuration: 0.1
 --- !u!212 &2042452968
 SpriteRenderer:
   m_ObjectHideFlags: 0

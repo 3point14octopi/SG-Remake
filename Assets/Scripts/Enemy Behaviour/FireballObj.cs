@@ -19,7 +19,7 @@ public class FireballObj : MonoBehaviour
     {
         if (!falling && collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<FbStateManager>().health = collision.gameObject.GetComponent<FbStateManager>().health - damage;
+            collision.gameObject.GetComponent<FbStateManager>().TakeDamage(damage);
         }
     }
 }

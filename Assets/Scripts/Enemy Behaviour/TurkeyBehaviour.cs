@@ -69,7 +69,7 @@ public class TurkeyBehaviour : MonoBehaviour
 
     IEnumerator TurkeyStart()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(RNG.GenRand(1, 3));
         StartCoroutine(TurkeyJump());
 
     }
