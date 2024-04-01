@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using JAFprocedural;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -273,48 +274,23 @@ public class ERoomManager : MonoBehaviour
     {
         RoomWithEnemies eList = new RoomWithEnemies();
 
-        Coord startPos = new Coord();
-        Coord a = new Coord();
-        Coord b = new Coord();
-        Coord c = new Coord();
-        Coord[] options = new Coord[3];
+        Coord[] options = new Coord[8];
 
-        for(bool startFound = false; !startFound;)
+
+        for(int i = 0; i < 8;)
         {
-            startPos = new Coord(RNG.GenRand(10, 5), RNG.GenRand(5, 5));
-            if(room.GetCell(startPos) == 1)
+            Coord location = new Coord(RNG.GenRand(10, 5), RNG.GenRand(5, 5));
+            if(room.GetCell(location) == 1)
             {
-                Coord surrounding = BasicBuilderFunctions.CheckAdjacentCells(room, startPos, true, new Cell(1));
-
-                if(surrounding.x + surrounding.y != 4)
+                Coord sur = BasicBuilderFunctions.CheckAdjacentCells(room, location, true, new Cell(1));
+                if(sur.x + sur.y != 4 && !options.Contains<Coord>(location))
                 {
-                    if(Mathf.Abs(surrounding.x) + Mathf.Abs(surrounding.y) == 2)
-                    {
-                        a = startPos;
-                        b = new Coord(startPos.x + surrounding.x, startPos.y);
-                        c = new Coord(startPos.x, startPos.y + surrounding.y);
-                    }
-                    else
-                    {
-                        if(surrounding.x == 0)
-                        {
-                            a = startPos;
-                            b = new Coord(startPos.x + 1, startPos.y);
-                            c = new Coord(startPos.x -1, startPos.y);
-                        }
-                        else
-                        {
-                            a = startPos;
-                            b = new Coord(startPos.x, startPos.y + 1);
-                            c = new Coord(startPos.x, startPos.y - 1);
-                        }
-                    }
-                    startFound = true;
+                    options[i] = location;
+                    i++;
                 }
             }
         }
 
-        options = new Coord[3] { a, b, c };
         foreach (Coord place in options)
         {
             place.x += room.worldOrigin.x;
@@ -325,7 +301,7 @@ public class ERoomManager : MonoBehaviour
         {
 
             int temp = i;
-            RoomEnemy r = new RoomEnemy(15 + temp, options[RNG.GenRand(0, 3)]);
+            RoomEnemy r = new RoomEnemy(15 + temp, options[i]);
             eList.Add(r);
         }
 

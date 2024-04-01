@@ -214,6 +214,24 @@ namespace JAFprocedural
                 }
             }
         }
+
+        public static void SampleBFromA(Space2D a, Space2D b, bool bwCopy = true)
+        {
+            Cell sample = new Cell(1);
+
+            for(int y = b.worldOrigin.y; y < b.height + b.worldOrigin.y; y++)
+            {
+                for (int x = b.worldOrigin.x; x < b.width + b.worldOrigin.x; x++)
+                {
+                    if (a.GetCell(x, y) != 0)
+                    {
+                        UnityEngine.Debug.Log("copy that!");
+                        Cell val = (bwCopy) ? sample : a.GetCellObj(x, y);
+                        b.SetCell(new Coord(x - b.worldOrigin.x, y - b.worldOrigin.y), val);
+                    }
+                }
+            }
+        }
         public static Coord CheckAdjacentCells(Space2D space, Coord start, bool mustMatchCType = false, Cell cType = null)
         {
             Coord surrounding = new Coord();

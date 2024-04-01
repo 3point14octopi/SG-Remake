@@ -83,6 +83,25 @@ namespace JAFprocedural
         {
             return grid[y][x].value;
         }
+
+        public bool FindFirstInstance(int cellValue, out Coord location)
+        {
+            for(int i = 0; i < height; i++)
+            {
+                for(int j = 0; j < width; j++)
+                {
+                    if(GetCell(j, i) == cellValue)
+                    {
+                        location = new Coord(j, i);
+                        return true;
+                    }
+                }
+            }
+
+            location = new Coord(-1, -1);
+            return false;
+        }
+
         public void SetCell(Coord location, Cell val)
         {
             grid[location.y][location.x] = val;

@@ -8,7 +8,6 @@ public class CamShift : MonoBehaviour
 {
     private Coord currentPosition = new Coord();
     public MiniMap mm;
-    
 
     public void SetPosition(Coord position)
     {

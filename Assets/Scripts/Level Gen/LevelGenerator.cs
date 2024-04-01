@@ -30,10 +30,30 @@ public class LevelGenerator : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+#if UNITY_EDITOR
+    private void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            //teleport to the boss room
+            Coord location = new Coord();
+            if(dungeon.minimap.FindFirstInstance(7, out location))
+            {
+                GameObject.Find("Frostbite").transform.position = new Vector2((location.x * 25) + 12, (location.y * -15) - 13);
+                camRef.SetPosition(location);
+            }
+        }else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            //teleport to the wisp room
+            Coord location = new Coord();
+            if (dungeon.minimap.FindFirstInstance(3, out location))
+            {
+                GameObject.Find("Frostbite").transform.position = new Vector2((location.x * 25) + 12, (location.y * -15) - 13);
+                camRef.SetPosition(location);
+            }
+        }
     }
+#endif
 
     private void PrintFullMap()
     {
@@ -54,17 +74,12 @@ public class LevelGenerator : MonoBehaviour
             }
         }
 
-        for(int i = 0; i < dungeon.minimap.height; i++)
-        {
-            for(int j = 0; j < dungeon.minimap.width; j++)
-            {
-                if(dungeon.minimap.GetCell(j, i) == 1)
-                {
-                    GameObject.Find("Frostbite").transform.position = new Vector2((j * 25) + 12, (i * -15) - 8);
-                    camRef.SetPosition(new Coord(j, i));
-                }
-            }
-        }
+
+        Coord startRoom = new Coord();
+        dungeon.minimap.FindFirstInstance(1, out startRoom);
+        GameObject.Find("Frostbite").transform.position = new Vector2((startRoom.x * 25) + 12, (startRoom.y * -15) - 8);
+        camRef.SetPosition(new Coord(startRoom.x, startRoom.y));
+
     }
 
     

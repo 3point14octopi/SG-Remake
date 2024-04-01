@@ -48,6 +48,10 @@ public class RoomPop : MonoBehaviour
             Debug.Log("why do i hear boss music?");
             bossStuff.LoadMap(ERoomManager.Instance.RequestRoom(position));
             bossStuff.Attack1();
+        }else if(currentRoom.enemies.Count > 0 && currentRoom.enemies[0].enemyID == 15)//wisp
+        {
+            Debug.Log("not these bitches again!");
+            WispManager.Instance.AssignMap(ERoomManager.Instance.RequestRoom(position));
         }
 
 
