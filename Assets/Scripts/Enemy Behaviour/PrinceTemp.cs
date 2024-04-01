@@ -10,7 +10,7 @@ public interface PrincePhase
 {
 
     void Update(PrinceTemp p);
-    void PickAttack();
+    void PickAttack(PrinceTemp p);
     void UpdateState(PrinceTemp p);
 }
 
@@ -27,9 +27,9 @@ public class HighHealth : PrincePhase
         }
         else
         {
-            if(sinceLastAttack >= 5f)
+            if(sinceLastAttack >= 7f)
             {
-                PickAttack();
+                PickAttack(p);
                 sinceLastAttack = 0f;
             }
             else
@@ -41,14 +41,16 @@ public class HighHealth : PrincePhase
         
     }
 
-    public void PickAttack()
+    public void PickAttack(PrinceTemp p)
     {
         if(RNG.GenRand(1, 5) > 3)
         {
+            p.princeAnim.Play("Pumpkin Prince Vine Attack");
             BossRoomManager.Instance.princeAttacks.VineWaves();
         }
         else
         {
+            p.princeAnim.Play("Pumpkin Prince Fire Attack");
             BossRoomManager.Instance.princeAttacks.FireRain();
         }
     }
@@ -72,9 +74,9 @@ public class MediumHealth : PrincePhase
         }
         else
         {
-            if (sinceLastAttack >= 5f)
+            if (sinceLastAttack >= 7f)
             {
-                PickAttack();
+                PickAttack(p);
                 sinceLastAttack = 0f;
             }
             else
@@ -85,14 +87,16 @@ public class MediumHealth : PrincePhase
 
     }
 
-    public void PickAttack()
+    public void PickAttack(PrinceTemp p)
     {
         if (RNG.GenRand(1, 5) > 3)
         {
+            p.princeAnim.Play("Pumpkin Prince Fire Attack");            
             BossRoomManager.Instance.princeAttacks.FireRain();
         }
         else
         {
+            p.princeAnim.Play("Pumpkin Prince Vine Attack");
             BossRoomManager.Instance.princeAttacks.VineWaves();
         }
     }
@@ -116,9 +120,9 @@ public class LowHealth : PrincePhase
         }
         else
         {
-            if (sinceLastAttack >= 5f)
+            if (sinceLastAttack >= 7f)
             {
-                PickAttack();
+                PickAttack(p);
                 sinceLastAttack = 0f;
             }
             else
@@ -129,19 +133,22 @@ public class LowHealth : PrincePhase
 
     }
 
-    public void PickAttack()
+    public void PickAttack(PrinceTemp p)
     {
         int attack = RNG.GenRand(1, 5);
         if (attack <= 3)
         {
+            p.princeAnim.Play("Pumpkin Prince Lantern Attack");            
             BossRoomManager.Instance.princeAttacks.HorizontalLasers();
         }
         else if(attack <= 4)
         {
+            p.princeAnim.Play("Pumpkin Prince Fire Attack");
             BossRoomManager.Instance.princeAttacks.FireRain();
         }
         else
         {
+            p.princeAnim.Play("Pumpkin Prince Vine Attack");
             BossRoomManager.Instance.princeAttacks.VineWaves();
         }
     }
@@ -170,6 +177,9 @@ public class PrinceTemp : MonoBehaviour
     private bool instantiated = false;
     public PrincePhase phase = new HighHealth();
 
+    [Header("Animators")]
+    public Animator princeAnim;
+
 
     private void OnEnable()
     {
@@ -179,7 +189,6 @@ public class PrinceTemp : MonoBehaviour
             speed = stats[1];
             contactDamage = stats[2];
             dead = false;
-            //anim.SetBool("Death", false);
         }
     }
     // Start is called before the first frame update
@@ -209,11 +218,6 @@ public class PrinceTemp : MonoBehaviour
         }
     }
 
-    public void Die()
-    {
-        Debug.Log("HE FUCKIN DIED");
-        StartCoroutine(Death());
-    }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
@@ -225,15 +229,31 @@ public class PrinceTemp : MonoBehaviour
             //if the damage is too much the enemy dies
             if (health <= 0 && !dead)
             {
-                StartCoroutine(Death());
+                Die();
             }
         }
 
         //damages the player if we wall into the player
-        else if (other.gameObject.tag == "Player")
+        else if (other.gameObject.tag == "Player" && !dead)
         {
-            other.gameObject.GetComponent<FbStateManager>().health = other.gameObject.GetComponent<FbStateManager>().health - contactDamage;
+            other.gameObject.GetComponent<FbStateManager>().TakeDamage(contactDamage);
         }
+    }
+
+    public void Die()
+    {
+        princeAnim.Play("Pumpkin Prince Death");
+        Debug.Log("HE FUCKIN DIED");
+        StartCoroutine(Death());
+    }
+
+
+    IEnumerator Death()
+    {
+        dead = true;
+        RoomPop.Instance.EnemyKilled();
+        yield return new WaitForSeconds(5);
+        gameObject.SetActive(false);
     }
 
     void Assign(float value, int index)
@@ -242,12 +262,4 @@ public class PrinceTemp : MonoBehaviour
         stats[index] = temp;
     }
 
-    IEnumerator Death()
-    {
-        //anim.SetBool("Death", true);
-        dead = true;
-        RoomPop.Instance.EnemyKilled();
-        yield return new WaitForSeconds(1);
-        gameObject.SetActive(false);
-    }
 }

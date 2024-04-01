@@ -13,7 +13,7 @@ public class SpikyVinesBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        anim.Play("VineSpawn");
+        anim.Play("Vine Spawn");
         alive = true;
     }
 
@@ -22,7 +22,7 @@ public class SpikyVinesBehaviour : MonoBehaviour
         //damages the player if they walk into us
         if (other.gameObject.tag == "Player" && alive == true)
         {
-            other.gameObject.GetComponent<FbStateManager>().health = other.gameObject.GetComponent<FbStateManager>().health - damage;
+            other.gameObject.GetComponent<FbStateManager>().TakeDamage(damage);
         }
     }
 

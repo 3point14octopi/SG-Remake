@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using JAFprocedural;
 
 public class BeanShooter : MonoBehaviour
 {
@@ -14,9 +15,14 @@ public class BeanShooter : MonoBehaviour
     private LayerMask playerMask; //layer reference for player
     private LayerMask barrierMask; //layer reference for trees
     
-    //Animation
+    [Header("Animators & Sounds")]
     private Animator anim; //our animator
     private bool dead = false; //a bool to know to stop shooting while we are doing our dead animation
+
+    private AudioSource audioSource;
+    public AudioClip shoot1Sound;
+    public AudioClip shoot2Sound;
+    public AudioClip deathSound;
 
     [Header("Bean Shooter Stats")]
     public float health = 50; //bean shooter health
@@ -61,6 +67,7 @@ public class BeanShooter : MonoBehaviour
         //find our animation and beginning rotation
         launch = gameObject.transform.rotation;
         anim = gameObject.GetComponent<Animator>();
+        audioSource = gameObject.GetComponent<AudioSource>();
 
         
 
@@ -88,7 +95,7 @@ public class BeanShooter : MonoBehaviour
         if(playerRay.collider != null){
             if(playerRay.collider.CompareTag("Player") && barrierRay.collider == null){
                 LOS = true;
-                anim.SetBool("LOS", true);
+
             }
             else{
                 LOS = false;
@@ -104,6 +111,7 @@ public class BeanShooter : MonoBehaviour
 
             //calls shooting and resets the firerate timer
             Shooting();
+
             beanTimer = beanRate;
         }
 
@@ -129,7 +137,12 @@ public class BeanShooter : MonoBehaviour
     public void Shooting(){    
         activeBullet = (GameObject)Instantiate(bulletPrefab, gameObject.transform.position, launch);
         activeBullet.GetComponent<EnemyBulletBehaviour>().bSpeed = speed;
-        activeBullet.GetComponent<EnemyBulletBehaviour>().bDamage = damage;          
+        activeBullet.GetComponent<EnemyBulletBehaviour>().bDamage = damage;   
+        anim.SetBool("LOS", true);
+        
+        if(RNG.GenRand(1, 2) == 1){audioSource.clip = shoot1Sound;}
+        else{audioSource.clip = shoot2Sound;}
+        audioSource.Play();       
     }
 
     //required by our observer interface but currently not used
@@ -142,6 +155,8 @@ public class BeanShooter : MonoBehaviour
     {
         dead = true;
         anim.SetBool("Death", true);
+        audioSource.clip = deathSound;
+        audioSource.Play();
         RoomPop.Instance.EnemyKilled();
         yield return new WaitForSeconds(1);
         gameObject.SetActive(false);

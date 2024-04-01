@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JAFprocedural;
 
 public class Ghosts : MonoBehaviour
 {
@@ -11,8 +12,14 @@ public class Ghosts : MonoBehaviour
     private LayerMask playerMask; //layer reference for player
     private LayerMask barrierMask; //layer reference for trees
 
+    [Header("Animators & Sounds")]
     private Animator anim;
     private bool dead = false;
+
+    private AudioSource audioSource;
+    public AudioClip ooh1Sound;
+    public AudioClip ooh2Sound;
+    public AudioClip deathSound;
 
     [Header("Ghost Stats")]
     public float health = 50; //enemy health
@@ -55,6 +62,7 @@ public class Ghosts : MonoBehaviour
 
         //find our animation
         anim = gameObject.GetComponent<Animator>();
+        audioSource = gameObject.GetComponent<AudioSource>();
 
         
 
@@ -96,7 +104,11 @@ public class Ghosts : MonoBehaviour
             if(Mathf.Abs(anim.GetFloat("playerX")) > Mathf.Abs(anim.GetFloat("playerY"))){ anim.SetBool("Vertical", false);}
             else{anim.SetBool("Vertical", true);}
         }
-
+        if(audioSource.isPlaying == false){
+            if(RNG.GenRand(1, 2) == 1){audioSource.clip = ooh1Sound;}
+            else{audioSource.clip = ooh2Sound;}
+            audioSource.Play();  
+        }
 
     }
 
@@ -133,6 +145,8 @@ public class Ghosts : MonoBehaviour
     {
         dead = true;
         anim.SetBool("Death", true);
+        audioSource.clip = deathSound;
+        audioSource.Play();
         RoomPop.Instance.EnemyKilled();
         yield return new WaitForSeconds(1);
         gameObject.SetActive(false);
