@@ -13,7 +13,7 @@ public class SpikyVinesBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
-        anim.Play("VineSpawn");
+        anim.Play("Vine Spawn");
         alive = true;
     }
 
