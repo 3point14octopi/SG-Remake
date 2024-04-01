@@ -2,12 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using JAFprocedural;
 
-public class CornKnightBehaviour : MonoBehaviour
+public class TreeKnightBehaviour : MonoBehaviour
 {   
+    [Header("Animators & Sounds")]
     private int direction = 1; //direction it is walking in
     private Animator anim;
     private bool dead = false;
+    private AudioSource audioSource;
+    public AudioClip walk1Sound;
+    public AudioClip walk2Sound;
+    public AudioClip deathSound;
+
 
     [Header("Tree Knight Stats")]
     public float health = 50; //enemy health
@@ -40,6 +47,7 @@ public class CornKnightBehaviour : MonoBehaviour
     {
         //find our animation
         anim = gameObject.GetComponent<Animator>();
+        audioSource = gameObject.GetComponent<AudioSource>();
 
         instantiated = true;
         Assign(health, 0);
@@ -58,7 +66,11 @@ public class CornKnightBehaviour : MonoBehaviour
             transform.position += transform.right * direction * Time.deltaTime * speed;
  
         }
-
+        if(audioSource.isPlaying == false){
+            if(RNG.GenRand(1, 2) == 1){audioSource.clip = walk1Sound;}
+            else{audioSource.clip = walk2Sound;}
+            audioSource.Play();  
+        }
 
     }
 
@@ -89,8 +101,10 @@ public class CornKnightBehaviour : MonoBehaviour
 
     IEnumerator Death()
     {
-        anim.SetBool("Death", true);
         dead = true;
+        anim.SetBool("Death", true);
+        audioSource.clip = deathSound;
+        audioSource.Play();
         RoomPop.Instance.EnemyKilled();
         yield return new WaitForSeconds(1);
         gameObject.SetActive(false);

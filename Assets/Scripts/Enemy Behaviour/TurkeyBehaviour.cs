@@ -1,14 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JAFprocedural;
 
 public class TurkeyBehaviour : MonoBehaviour
 {
     private GameObject player; // player so we can shoot at them
     public GameObject shadow; 
 
+
+    [Header("Animators & Sounds")]
     private Animator anim;
     private bool dead = false;
+
+    private AudioSource audioSource;
+    public AudioClip jumpSound;
+    public AudioClip landSound;
+    public AudioClip deathSound;
 
     [Header("Turkey Stats")]
     public float health = 50; //enemy health
@@ -51,6 +59,7 @@ public class TurkeyBehaviour : MonoBehaviour
 
         //find our animation
         anim = gameObject.GetComponent<Animator>();
+        audioSource = gameObject.GetComponent<AudioSource>();
 
         //grabs our material for flash effect
         material = gameObject.GetComponent<SpriteRenderer>().material;
@@ -68,7 +77,8 @@ public class TurkeyBehaviour : MonoBehaviour
     IEnumerator TurkeyJump()
     {
         anim.Play("TurkeyJump");
-
+        audioSource.clip = jumpSound;
+        audioSource.Play();
         yield return new WaitForSeconds(1);
 
         gameObject.GetComponent<CircleCollider2D>().enabled = false;
@@ -128,8 +138,10 @@ public class TurkeyBehaviour : MonoBehaviour
     {
         dead = true;
         anim.Play("TurkeyDeath");
-        //RoomPop.Instance.EnemyKilled();
-        yield return new WaitForSeconds(1);
+        audioSource.clip = deathSound;
+        audioSource.Play();
+        RoomPop.Instance.EnemyKilled();
+        yield return new WaitForSeconds(1.25f);
         gameObject.SetActive(false);
     }
 
