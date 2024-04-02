@@ -119,7 +119,7 @@ public class TurkeyBehaviour : MonoBehaviour
         }
 
         //damages the player if we wall into the player
-        else if (other.gameObject.tag == "Player")
+        else if (other.gameObject.tag == "Player" && !dead)
         {
             other.gameObject.GetComponent<FbStateManager>().TakeDamage(damage);
         }

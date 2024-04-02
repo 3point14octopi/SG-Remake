@@ -104,6 +104,7 @@ public class FbStateManager : MonoBehaviour
 
     void FixedUpdate(){
         currentState.FixedUpdateState(this);
+        gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 
     void OnCollisionEnter2D(Collision2D other){

@@ -6,9 +6,18 @@ using Unity.VisualScripting;
 
 public class WispTemp : MonoBehaviour
 {
-    private bool dead = false;
+
     public int wispIndex = -1;
     public Vector3 addPosition = Vector3.zero;
+
+    [Header("Animators & Sounds")]
+    private Animator anim; //our animator
+    private bool dead = false; //a bool to know to stop shooting while we are doing our dead animation
+
+    // private AudioSource audioSource;
+    // public AudioClip shoot1Sound;
+    // public AudioClip shoot2Sound;
+    // public AudioClip deathSound;
 
     [Header("Wisp Stats")]
     public float health = 10;
@@ -19,6 +28,12 @@ public class WispTemp : MonoBehaviour
     private bool instantiated = false;
 
     public LayerMask cLayermask;
+
+    [Header("Flash Hit")]
+    public Material flash;
+    private Material material;
+    public float flashDuration;
+    private Coroutine flashRoutine;
 
     void OnEnable()
     {
@@ -41,6 +56,12 @@ public class WispTemp : MonoBehaviour
         Assign(speed, 1);
         Assign(damage, 2);
 
+        anim = gameObject.GetComponent<Animator>();
+
+        
+        //grabs our material for flash effect
+        material = gameObject.GetComponent<SpriteRenderer>().material;
+
     }
 
     // Update is called once per frame
@@ -54,6 +75,7 @@ public class WispTemp : MonoBehaviour
         if (other.gameObject.tag == "PlayerBullet")
         {
             health = health - other.gameObject.GetComponent<PlayerBulletBehaviour>().bDamage;
+            Flash();
 
             //if the damage is too much the enemy dies
             if (health <= 0 && !dead)
@@ -63,9 +85,9 @@ public class WispTemp : MonoBehaviour
         }
 
         //damages the player if we wall into the player
-        else if (other.gameObject.tag == "Player")
+        else if (other.gameObject.tag == "Player" && !dead)
         {
-            other.gameObject.GetComponent<FbStateManager>().health = other.gameObject.GetComponent<FbStateManager>().health - damage;
+            other.gameObject.GetComponent<FbStateManager>().TakeDamage(damage);
         }
     }
 
@@ -80,8 +102,10 @@ public class WispTemp : MonoBehaviour
     IEnumerator Death()
     {
         dead = true;
+        anim.Play("WispDeath");
         RoomPop.Instance.EnemyKilled();
         WispManager.Instance.RemoveWisp(wispIndex);
+        gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         yield return new WaitForSeconds(1);
         gameObject.SetActive(false);
     }
@@ -97,5 +121,26 @@ public class WispTemp : MonoBehaviour
             transform.Rotate(0, 0, rotVal);
             yield return new WaitForNextFrameUnit();
         }
+    }
+
+
+    IEnumerator FlashRoutine(){
+
+        gameObject.GetComponent<SpriteRenderer>().material = flash;
+        
+        yield return new WaitForSeconds(flashDuration);
+
+        gameObject.GetComponent<SpriteRenderer>().material = material;
+
+        flashRoutine = null;
+
+    }
+
+    void Flash(){
+        if(flashRoutine != null){
+            StopCoroutine(flashRoutine);
+        }
+
+        flashRoutine = StartCoroutine(FlashRoutine());
     }
 }
