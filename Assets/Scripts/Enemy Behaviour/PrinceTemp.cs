@@ -32,6 +32,8 @@ public class HighHealth : PrincePhase
                 if (!BossRoomManager.Instance.princeAttacks.IsFireballing())
                 {
                     p.princeAnim.Play("Pumpkin Prince Fire Attack");
+                    p.audioSource.clip = p.meteorSound;
+                    p.audioSource.Play(); 
                     BossRoomManager.Instance.princeAttacks.FireRain();
                     fireCount = 0f;
                 }
@@ -43,6 +45,8 @@ public class HighHealth : PrincePhase
             else if (sinceLastAttack >= 10f)
             {
                 p.princeAnim.Play("Pumpkin Prince Vine Attack");
+                p.audioSource.clip = p.vineSound;
+                p.audioSource.Play(); 
                 BossRoomManager.Instance.princeAttacks.VineWaves();
                 sinceLastAttack = 0f;
             }
@@ -81,6 +85,8 @@ public class MediumHealth : PrincePhase
                 if (!BossRoomManager.Instance.princeAttacks.IsFireballing())
                 {
                     p.princeAnim.Play("Pumpkin Prince Fire Attack");
+                    p.audioSource.clip = p.meteorSound;
+                    p.audioSource.Play(); 
                     BossRoomManager.Instance.princeAttacks.FireRain();
                     fireCount = 0f;
                 }
@@ -92,6 +98,8 @@ public class MediumHealth : PrincePhase
             else if (sinceLastAttack >= 10f)
             {
                 p.princeAnim.Play("Pumpkin Prince Vine Attack");
+                p.audioSource.clip = p.vineSound;
+                p.audioSource.Play(); 
                 BossRoomManager.Instance.princeAttacks.VineWaves();
                 sinceLastAttack = 0f;
             }
@@ -129,6 +137,8 @@ public class LowHealth : PrincePhase
                 if (!BossRoomManager.Instance.princeAttacks.IsFireballing())
                 {
                     p.princeAnim.Play("Pumpkin Prince Fire Attack");
+                    p.audioSource.clip = p.meteorSound;
+                    p.audioSource.Play(); 
                     BossRoomManager.Instance.princeAttacks.FireRain();
                     fireCount = 0f;
                 }
@@ -156,12 +166,16 @@ public class LowHealth : PrincePhase
         int attack = RNG.GenRand(1, 5);
         if (attack <= 4)
         {
-            p.princeAnim.Play("Pumpkin Prince Lantern Attack");            
+            p.princeAnim.Play("Pumpkin Prince Lantern Attack");
+            p.audioSource.clip = p.laserSound;
+            p.audioSource.Play(); 
             BossRoomManager.Instance.princeAttacks.HorizontalLasers();
         }
         else
         {
             p.princeAnim.Play("Pumpkin Prince Vine Attack");
+            p.audioSource.clip = p.vineSound;
+            p.audioSource.Play(); 
             BossRoomManager.Instance.princeAttacks.VineWaves();
         }
     }
@@ -193,6 +207,19 @@ public class PrinceTemp : MonoBehaviour
     [Header("Animators")]
     public Animator princeAnim;
 
+    public AudioSource audioSource;
+    public AudioClip vineSound;
+    public AudioClip meteorSound;
+    public AudioClip meteorLandSound;
+    public AudioClip laserSound;
+
+    
+    [Header("Flash Hit")]
+    public Material flash;
+    private Material material;
+    public float flashDuration;
+    private Coroutine flashRoutine;
+
 
     private void OnEnable()
     {
@@ -215,6 +242,9 @@ public class PrinceTemp : MonoBehaviour
         Assign(health, 0);
         Assign(speed, 0);
         Assign(contactDamage, 0);
+
+        //grabs our material for flash effect
+        material = gameObject.GetComponent<SpriteRenderer>().material;
     }
 
     // Update is called once per frame
@@ -236,13 +266,8 @@ public class PrinceTemp : MonoBehaviour
         //if it is hit by a bullet it takes damage
         if (other.gameObject.tag == "PlayerBullet")
         {
-            health = health - other.gameObject.GetComponent<PlayerBulletBehaviour>().bDamage;
+            TakeDamage(other.gameObject.GetComponent<PlayerBulletBehaviour>().bDamage);
 
-            //if the damage is too much the enemy dies
-            if (health <= 0 && !dead)
-            {
-                Die();
-            }
         }
 
         //damages the player if we wall into the player
@@ -250,6 +275,30 @@ public class PrinceTemp : MonoBehaviour
         {
             other.gameObject.GetComponent<FbStateManager>().TakeDamage(contactDamage);
         }
+    }
+
+    public void TakeDamage(float damage){
+
+        health = health - damage;
+        //if the damage is too much the enemy dies
+        if (health <= 0 && !dead)
+        {
+            Die();
+        }
+        else if(!dead){
+            StartCoroutine(FlashRoutine());
+        }
+
+    }
+
+    IEnumerator FlashRoutine(){
+
+        gameObject.GetComponent<SpriteRenderer>().material = flash;    
+        yield return new WaitForSeconds(flashDuration);
+        gameObject.GetComponent<SpriteRenderer>().material = material;
+
+        flashRoutine = null;
+
     }
 
     public void Die()
