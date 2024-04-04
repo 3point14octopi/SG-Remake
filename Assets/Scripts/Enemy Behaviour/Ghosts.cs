@@ -74,6 +74,7 @@ public class Ghosts : MonoBehaviour
 
         //grabs our material for flash effect
         material = gameObject.GetComponent<SpriteRenderer>().material;
+        gameObject.GetComponent<SpriteRenderer>().material = material;
     }
 
     // Update is called once per frame
@@ -149,6 +150,7 @@ public class Ghosts : MonoBehaviour
         audioSource.Play();
         RoomPop.Instance.EnemyKilled();
         yield return new WaitForSeconds(1);
+        gameObject.GetComponent<SpriteRenderer>().material = material;
         gameObject.SetActive(false);
     }
 

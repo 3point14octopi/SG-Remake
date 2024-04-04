@@ -9,6 +9,7 @@ TagManager:
   - PlayerBullet
   - EnemyBullet
   - TempCollision
+  - DDOL
   layers:
   - Default
   - TransparentFX

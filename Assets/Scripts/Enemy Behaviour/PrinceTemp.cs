@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 
@@ -253,7 +254,8 @@ public class PrinceTemp : MonoBehaviour
         dead = true;
         RoomPop.Instance.EnemyKilled();
         yield return new WaitForSeconds(5);
-        gameObject.SetActive(false);
+        GameObject.FindGameObjectWithTag("DDOL").GetComponent<DontDestroy>().win = true;
+        SceneManager.LoadScene("EndGame");
     }
 
     void Assign(float value, int index)
