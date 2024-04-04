@@ -3007,6 +3007,8 @@ MonoBehaviour:
   vineWaves: []
   leftLantern: {fileID: 1211695872418527914, guid: c65ad518588d282468d1c552f38eaf4f, type: 3}
   rightLantern: {fileID: 3071057629094251506, guid: 3473d66ac816207499854688ad256a01, type: 3}
+  ss1: {fileID: 8114990362644272754, guid: 13370251cf92a9a4e94463d0e5e46b83, type: 3}
+  ss2: {fileID: 8114990362644272754, guid: 13370251cf92a9a4e94463d0e5e46b83, type: 3}
 --- !u!1001 &1813858082
 PrefabInstance:
   m_ObjectHideFlags: 0

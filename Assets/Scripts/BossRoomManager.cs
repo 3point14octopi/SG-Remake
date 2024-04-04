@@ -23,7 +23,7 @@ public class PumpkinPrinceAttacks : BossAttackManager
 
     public void LoadMap(BossRoomManager b, Space2D map)
     {
-        b.princeAttacks.room = map;
+        b.princeAttacks.LoadRoom(map);
     }
 
     public void Attack1(BossRoomManager b)

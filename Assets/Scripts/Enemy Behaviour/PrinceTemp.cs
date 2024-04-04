@@ -9,62 +9,63 @@ using UnityEngine.SceneManagement;
 
 public interface PrincePhase
 {
-
     void Update(PrinceTemp p);
-    void PickAttack(PrinceTemp p);
     void UpdateState(PrinceTemp p);
 }
 
 public class HighHealth : PrincePhase
 {
-    float sinceLastAttack = 4f;
+    float sinceLastAttack = 0f;
+    float fireCount = 0f;
     public void Update(PrinceTemp p)
     {
-        Debug.Log("HIGH HEALTH");
         if(p.health <= 900)
         {
             sinceLastAttack = 0f;
+            fireCount = 0f;
             UpdateState(p);
         }
         else
         {
-            if(sinceLastAttack >= 7f)
+            if (fireCount >= 14f)
             {
-                PickAttack(p);
+                if (!BossRoomManager.Instance.princeAttacks.IsFireballing())
+                {
+                    p.princeAnim.Play("Pumpkin Prince Fire Attack");
+                    BossRoomManager.Instance.princeAttacks.FireRain();
+                    fireCount = 0f;
+                }
+                else
+                {
+                    fireCount -= 3;
+                }
+            }
+            else if (sinceLastAttack >= 10f)
+            {
+                p.princeAnim.Play("Pumpkin Prince Vine Attack");
+                BossRoomManager.Instance.princeAttacks.VineWaves();
                 sinceLastAttack = 0f;
             }
             else
             {
-                Debug.Log(sinceLastAttack.ToString());
                 sinceLastAttack += Time.deltaTime;
+                fireCount += Time.deltaTime;
             }
         }
         
     }
 
-    public void PickAttack(PrinceTemp p)
-    {
-        if(RNG.GenRand(1, 5) > 3)
-        {
-            p.princeAnim.Play("Pumpkin Prince Vine Attack");
-            BossRoomManager.Instance.princeAttacks.VineWaves();
-        }
-        else
-        {
-            p.princeAnim.Play("Pumpkin Prince Fire Attack");
-            BossRoomManager.Instance.princeAttacks.FireRain();
-        }
-    }
-
     public void UpdateState(PrinceTemp p)
     {
         p.phase = new MediumHealth();
+        BossRoomManager.Instance.princeAttacks.ActivateBouncer();
     }
 }
 
 public class MediumHealth : PrincePhase
 {
     float sinceLastAttack = 0f;
+    float fireCount = 0f;
     public void Update(PrinceTemp p)
     {
 
@@ -75,31 +76,32 @@ public class MediumHealth : PrincePhase
         }
         else
         {
-            if (sinceLastAttack >= 7f)
+            if (fireCount >= 12f)
             {
-                PickAttack(p);
+                if (!BossRoomManager.Instance.princeAttacks.IsFireballing())
+                {
+                    p.princeAnim.Play("Pumpkin Prince Fire Attack");
+                    BossRoomManager.Instance.princeAttacks.FireRain();
+                    fireCount = 0f;
+                }
+                else
+                {
+                    fireCount -= 3;
+                }
+            }
+            else if (sinceLastAttack >= 10f)
+            {
+                p.princeAnim.Play("Pumpkin Prince Vine Attack");
+                BossRoomManager.Instance.princeAttacks.VineWaves();
                 sinceLastAttack = 0f;
             }
             else
             {
                 sinceLastAttack += Time.deltaTime;
+                fireCount += Time.deltaTime;
             }
         }
 
-    }
-
-    public void PickAttack(PrinceTemp p)
-    {
-        if (RNG.GenRand(1, 5) > 3)
-        {
-            p.princeAnim.Play("Pumpkin Prince Fire Attack");            
-            BossRoomManager.Instance.princeAttacks.FireRain();
-        }
-        else
-        {
-            p.princeAnim.Play("Pumpkin Prince Vine Attack");
-            BossRoomManager.Instance.princeAttacks.VineWaves();
-        }
     }
 
     public void UpdateState(PrinceTemp p)
@@ -111,6 +113,7 @@ public class MediumHealth : PrincePhase
 public class LowHealth : PrincePhase
 {
     float sinceLastAttack = 0f;
+    float fireCount = 5f;
     public void Update(PrinceTemp p)
     {
 
@@ -121,7 +124,20 @@ public class LowHealth : PrincePhase
         }
         else
         {
-            if (sinceLastAttack >= 7f)
+            if(fireCount >= 10f)
+            {
+                if (!BossRoomManager.Instance.princeAttacks.IsFireballing())
+                {
+                    p.princeAnim.Play("Pumpkin Prince Fire Attack");
+                    BossRoomManager.Instance.princeAttacks.FireRain();
+                    fireCount = 0f;
+                }
+                else
+                {
+                    fireCount -= 3;
+                }
+            }
+            else if(sinceLastAttack >= 10f)
             {
                 PickAttack(p);
                 sinceLastAttack = 0f;
@@ -129,6 +145,7 @@ public class LowHealth : PrincePhase
             else
             {
                 sinceLastAttack += Time.deltaTime;
+                fireCount += Time.deltaTime;
             }
         }
 
@@ -137,15 +154,10 @@ public class LowHealth : PrincePhase
     public void PickAttack(PrinceTemp p)
     {
         int attack = RNG.GenRand(1, 5);
-        if (attack <= 3)
+        if (attack <= 4)
         {
             p.princeAnim.Play("Pumpkin Prince Lantern Attack");            
             BossRoomManager.Instance.princeAttacks.HorizontalLasers();
-        }
-        else if(attack <= 4)
-        {
-            p.princeAnim.Play("Pumpkin Prince Fire Attack");
-            BossRoomManager.Instance.princeAttacks.FireRain();
         }
         else
         {
@@ -210,7 +222,6 @@ public class PrinceTemp : MonoBehaviour
     {
         if (!dead)
         {
-            Debug.Log("HIGH HEALTH UPDATING");
             phase.Update(this);
         }
         else
@@ -253,7 +264,7 @@ public class PrinceTemp : MonoBehaviour
     {
         dead = true;
         RoomPop.Instance.EnemyKilled();
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3);
         GameObject.FindGameObjectWithTag("DDOL").GetComponent<DontDestroy>().win = true;
         SceneManager.LoadScene("EndGame");
     }

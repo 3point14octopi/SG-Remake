@@ -20,14 +20,14 @@ public class TempLaternB : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(transform.position.x - roomCenter.x > 11){xMovement = -1;}
+        if (transform.position.x - roomCenter.x > 11) { xMovement = -1; }
 
-        else if(transform.position.x - roomCenter.x < -11){xMovement = 1;}
+        else if (transform.position.x - roomCenter.x < -11) { xMovement = 1; }
 
-        else if(transform.position.y - roomCenter.y > 6){yMovement = -1;}
+        else if (transform.position.y - roomCenter.y > 6) { yMovement = -1; }
 
-        else if(transform.position.y - roomCenter.y < -6){yMovement = 1;}
-        
+        else if (transform.position.y - roomCenter.y < -6) { yMovement = 1; }
+
         transform.position += new Vector3(xMovement, yMovement, 0) * Time.deltaTime * roamSpeed;
         
     }
