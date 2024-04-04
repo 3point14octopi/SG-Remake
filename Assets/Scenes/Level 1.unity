@@ -3007,6 +3007,8 @@ MonoBehaviour:
   vineWaves: []
   leftLantern: {fileID: 1211695872418527914, guid: c65ad518588d282468d1c552f38eaf4f, type: 3}
   rightLantern: {fileID: 3071057629094251506, guid: 3473d66ac816207499854688ad256a01, type: 3}
+  ss1: {fileID: 8114990362644272754, guid: 13370251cf92a9a4e94463d0e5e46b83, type: 3}
+  ss2: {fileID: 8114990362644272754, guid: 13370251cf92a9a4e94463d0e5e46b83, type: 3}
 --- !u!1001 &1813858082
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3029,6 +3031,10 @@ PrefabInstance:
     - target: {fileID: 4649522288464565314, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4649522289251431606, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4649522289253119128, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
       propertyPath: m_Layer

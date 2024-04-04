@@ -68,7 +68,6 @@ public class LevelGenerator : MonoBehaviour
                 int index = room.GetCell(x-room.worldOrigin.x, y-room.worldOrigin.y);
                 if((index >= 0 && index < layers.Length) && index != backgroundLayer)
                 {
-                    Debug.Log("layer: " + index.ToString());
                     layers[index].Draw(new Vector3Int(x, -y, 0));
                 }
             }
@@ -87,21 +86,6 @@ public class LevelGenerator : MonoBehaviour
             PrintRoom(room.Value);
         }
         
-
-        
-
-        //for(int y = 0; y < dungeon.megaMap.height; y++)
-        //{
-        //    for(int x = dungeon.megaMap.width-1; x >= 0; x--)
-        //    {
-        //        int index = dungeon.megaMap.GetCell(x, y);
-        //        if((index >=0 && index < layers.Length) && index != backgroundLayer)
-        //        {
-        //            layers[index].Draw(new Vector3Int(x, -y, 0));
-        //        }
-        //    }
-        //}
-
 
         Coord startRoom = new Coord();
         dungeon.minimap.FindFirstInstance(1, out startRoom);

@@ -23,6 +23,7 @@ public class PumpkinPrince_AttackManager : MonoBehaviour
 {
     public Space2D room;
     Prince_Attack currentAttack = Prince_Attack.NONE;
+    private bool fireballAttacking = false;
 
 
     [Header("Fire Rain Attack")]
@@ -41,12 +42,16 @@ public class PumpkinPrince_AttackManager : MonoBehaviour
         { { new Coord(1, 0), new Coord(-1, 0) },
         { new Coord(0, -1), new Coord(0, 1) } };
 
-    [Header("Lantern Attack")]
+    [Header("Lantern Blast Attack")]
     public GameObject leftLantern;
     public GameObject rightLantern;
     private PrinceAttack_Motion leftMotion;
     private PrinceAttack_Motion rightMotion;
     private bool windup = false;
+
+    [Header("Screen Saver Attack")]
+    public GameObject ss1;
+    public GameObject ss2;
 
 
     public void OnStart()
@@ -68,20 +73,25 @@ public class PumpkinPrince_AttackManager : MonoBehaviour
 
         leftLantern = GameObject.Instantiate(leftLantern, transform, true);
         leftLantern.GetComponent<Animator>().Play("Lantern Right");
+        leftLantern.SetActive(false);
         rightLantern = GameObject.Instantiate(rightLantern, transform, true);
+        rightLantern.SetActive(false);
         leftMotion = new PrinceAttack_Motion();
         rightMotion = new PrinceAttack_Motion();
+
+        
     }
     public void Update()
     {
         //move fireballs
-        if (currentAttack == Prince_Attack.FIRE)
+        if (fireballAttacking)
         {
             MoveFireballs();
-        }else if (currentAttack == Prince_Attack.LANTERN)
+        }
+        if (windup)
         {
             //shift the lanterns up and down the wall
-            if(windup)WindingLanterns();
+           WindingLanterns();
         }
     }
 
@@ -89,32 +99,36 @@ public class PumpkinPrince_AttackManager : MonoBehaviour
     {
         room = r;
         //tell lanterns they can slay now
+        ss1 = GameObject.Instantiate(ss1, transform, true);
+        ss1.GetComponent<TempLaternB>().roomCenter = new Vector2(room.worldOrigin.x + 12.5f, -room.worldOrigin.y - 6.5f);
+        ss1.SetActive(false);
+        ss2 = GameObject.Instantiate(ss2, transform, true);
+        ss2.GetComponent<TempLaternB>().roomCenter = new Vector2(room.worldOrigin.x + 12.5f, -room.worldOrigin.y -6.5f);
+        ss2.SetActive(false);
     }
 
 
+    public bool IsFireballing() { return (fireballAttacking == true); }
     public void FireRain()
     {
-        if (currentAttack == Prince_Attack.NONE)
+        if (fireballAttacking)
         {
-            currentAttack = Prince_Attack.FIRE;
+            return;
+        }
+        else
+        {
+            fireballAttacking = true;
             StartCoroutine(FireAttack());
         }
+
     }
     public void VineWaves()
     {
-        if (currentAttack == Prince_Attack.NONE)
-        {
-            currentAttack = Prince_Attack.VINE;
-            StartCoroutine(RootSpawn());
-        }
+        StartCoroutine(RootSpawn());
     }
     public void HorizontalLasers()
     {
-        if(currentAttack == Prince_Attack.NONE)
-        {
-            currentAttack = Prince_Attack.LANTERN;
-            StartCoroutine(StartLanternWindup());
-        }
+        StartCoroutine(StartLanternWindup());
     }
 
 
@@ -168,8 +182,7 @@ public class PumpkinPrince_AttackManager : MonoBehaviour
             fireballShadow[i].SetActive(false);
             yield return new WaitForSeconds(0.2f);
         }
-
-        currentAttack = Prince_Attack.NONE;
+        fireballAttacking = false;
     }
 
     //Vine Wave functions
@@ -214,16 +227,19 @@ public class PumpkinPrince_AttackManager : MonoBehaviour
             }
             yield return new WaitForSeconds(0.1f);
         }
-        currentAttack = Prince_Attack.NONE;
     }
 
 
     //Lantern Beam functions
     IEnumerator StartLanternWindup()
     {
+        ss1.SetActive(false);
+        leftLantern.SetActive(true);
         leftLantern.transform.position = new Vector3(room.worldOrigin.x + 1.5f, -room.worldOrigin.y - RNG.GenRand(1, room.height - 2) + 0.5f, -1);
         leftMotion.destination = new Vector3(room.worldOrigin.x + 1.5f, -room.worldOrigin.y - RNG.GenRand(1, room.height - 2) + 0.5f, -1);
 
+        ss2.SetActive(false);
+        rightLantern.SetActive(true);
         rightLantern.transform.position = new Vector3(room.worldOrigin.x + 23.5f, -room.worldOrigin.y - RNG.GenRand(1, room.height - 2) + 0.5f, -1);
         rightMotion.destination = new Vector3(room.worldOrigin.x + 23.5f, -room.worldOrigin.y - RNG.GenRand(1, room.height - 2) + 0.5f, -1);
 
@@ -265,12 +281,6 @@ public class PumpkinPrince_AttackManager : MonoBehaviour
             rightLantern.GetComponent<BoxCollider2D>().offset = new Vector2((float)((i - 1) / -2), 0);
             rightLantern.GetComponent<BoxCollider2D>().size = new Vector2(i, 1);
 
-            // leftLantern.transform.position = new Vector2(room.worldOrigin.x + 1.5f + (float)((i - 1) / 2), leftLantern.transform.position.y);
-            // leftLantern.transform.localScale = new Vector3(i, 1, 1);
-
-            // rightLantern.transform.position = new Vector2(room.worldOrigin.x + 23.5f + (float)((i - 1) / -2), rightLantern.transform.position.y);
-            // rightLantern.transform.localScale = new Vector3(i, 1, 1);
-
             yield return null;
         }
 
@@ -283,13 +293,23 @@ public class PumpkinPrince_AttackManager : MonoBehaviour
         rightLantern.GetComponent<BoxCollider2D>().offset = new Vector2(0, 0);
         rightLantern.GetComponent<BoxCollider2D>().size = new Vector2(1, 1);
         rightLantern.GetComponent<Animator>().Play("Lantern Left");
-        
- 
-        // leftLantern.transform.position = new Vector2(room.worldOrigin.x + 1.5f, leftLantern.transform.position.y);
-        // leftLantern.transform.localScale = new Vector2(1, 1);
-        // rightLantern.transform.position = new Vector2(room.worldOrigin.x + 23.5f, rightLantern.transform.position.y);
-        // rightLantern.transform.localScale = new Vector2(1, 1);
 
-        currentAttack = Prince_Attack.NONE;
+        yield return null;
+        leftLantern.SetActive(false);
+        rightLantern.SetActive(false);
+        ss1.SetActive(true);
+        ss2.SetActive(true);
+    }
+
+    //Screensaver Activation
+    public void ActivateBouncer()
+    {
+        ss1.SetActive(true);
+        Coord loc = RNG.GenRandCoord(room);
+        ss1.transform.position = new Vector3(loc.x + room.worldOrigin.x + 0.5f, -loc.y - room.worldOrigin.y + 0.5f, 0);
+        
+        ss2.SetActive(true);
+        loc = RNG.GenRandCoord(room);
+        ss2.transform.position = new Vector3(loc.x + room.worldOrigin.x + 0.5f, -loc.y - room.worldOrigin.y + 0.5f, 0);
     }
 }
