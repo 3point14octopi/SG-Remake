@@ -61,6 +61,7 @@ public class WispTemp : MonoBehaviour
         
         //grabs our material for flash effect
         material = gameObject.GetComponent<SpriteRenderer>().material;
+        gameObject.GetComponent<SpriteRenderer>().material = material;
 
     }
 
@@ -107,6 +108,7 @@ public class WispTemp : MonoBehaviour
         WispManager.Instance.RemoveWisp(wispIndex);
         gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         yield return new WaitForSeconds(1);
+        gameObject.GetComponent<SpriteRenderer>().material = material;
         gameObject.SetActive(false);
     }
 

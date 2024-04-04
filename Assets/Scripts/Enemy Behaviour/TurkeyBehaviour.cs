@@ -63,6 +63,7 @@ public class TurkeyBehaviour : MonoBehaviour
 
         //grabs our material for flash effect
         material = gameObject.GetComponent<SpriteRenderer>().material;
+        gameObject.GetComponent<SpriteRenderer>().material = material;
 
         StartCoroutine(TurkeyStart());
     }
@@ -146,6 +147,7 @@ public class TurkeyBehaviour : MonoBehaviour
         audioSource.Play();
         RoomPop.Instance.EnemyKilled();
         yield return new WaitForSeconds(1.25f);
+        gameObject.GetComponent<SpriteRenderer>().material = material;
         gameObject.SetActive(false);
     }
 

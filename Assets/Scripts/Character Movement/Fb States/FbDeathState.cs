@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FbDeathState : FbBaseState
 {
@@ -9,6 +10,7 @@ public class FbDeathState : FbBaseState
         Debug.Log("DEATH TIME");
         fb.anim.Play("FrostbiteDeath");
         fb.rb.bodyType = RigidbodyType2D.Kinematic;
+        fb.StartCoroutine(Death());
     }
 
     public override void UpdateState(FbStateManager fb){
@@ -21,5 +23,12 @@ public class FbDeathState : FbBaseState
     
     public override void Collision(FbStateManager fb, Collision2D Collision2D){
 
+    }
+
+    IEnumerator Death()
+    {
+        yield return new WaitForSeconds(3.5f);
+        GameObject.FindGameObjectWithTag("DDOL").GetComponent<DontDestroy>().win = false;
+        SceneManager.LoadScene("EndGame");
     }
 }

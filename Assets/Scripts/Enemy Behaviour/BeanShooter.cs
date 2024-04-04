@@ -79,6 +79,7 @@ public class BeanShooter : MonoBehaviour
 
         //grabs our material for flash effect
         material = gameObject.GetComponent<SpriteRenderer>().material;
+        gameObject.GetComponent<SpriteRenderer>().material = material;
     }
 
 
@@ -159,6 +160,7 @@ public class BeanShooter : MonoBehaviour
         audioSource.Play();
         RoomPop.Instance.EnemyKilled();
         yield return new WaitForSeconds(1);
+        gameObject.GetComponent<SpriteRenderer>().material = material;
         gameObject.SetActive(false);
     }
 
