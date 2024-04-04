@@ -22,6 +22,7 @@ public class TurkeyBehaviour : MonoBehaviour
     public float health = 50; //enemy health
     public float speed = 1; //walk speed
     public float damage = 2; //damage it deals to player 
+    
 
     private float[] stats = new float[3];
     private bool instantiated = false;

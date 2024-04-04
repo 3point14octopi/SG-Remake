@@ -21,6 +21,12 @@ public class TreeKnightBehaviour : MonoBehaviour
     public float speed = 1; //walk speed
     public float damage = 10; //damage it deals to player
 
+    public float beanSpeed = 2; //speed of the bullets
+    public float beanDamage = 1;
+    public float beanRate = 1; //firerate
+    public GameObject bulletPrefab; //bullet prefab
+    private GameObject activeBullet; // husk used to init the bullets
+
     private float[] stats = new float[3];
     bool instantiated = false;
 
@@ -57,6 +63,7 @@ public class TreeKnightBehaviour : MonoBehaviour
         //grabs our material for flash effect
         material = gameObject.GetComponent<SpriteRenderer>().material;
         gameObject.GetComponent<SpriteRenderer>().material = material;
+        StartCoroutine(Shoot());
     }
 
      // Update is called once per frame
@@ -98,6 +105,18 @@ public class TreeKnightBehaviour : MonoBehaviour
         {
             other.gameObject.GetComponent<FbStateManager>().TakeDamage(damage);
         }
+    }
+
+    IEnumerator Shoot()
+    {
+        yield return new WaitForSeconds(beanRate);
+        activeBullet = (GameObject)Instantiate(bulletPrefab, gameObject.transform.position, Quaternion.Euler(0, 0, 0));
+        activeBullet.GetComponent<EnemyBulletBehaviour>().bSpeed = beanSpeed;
+        activeBullet.GetComponent<EnemyBulletBehaviour>().bDamage = beanDamage;  
+        activeBullet = (GameObject)Instantiate(bulletPrefab, gameObject.transform.position, Quaternion.Euler(0, 0, -180));
+        activeBullet.GetComponent<EnemyBulletBehaviour>().bSpeed = beanSpeed;
+        activeBullet.GetComponent<EnemyBulletBehaviour>().bDamage = beanDamage; 
+        StartCoroutine(Shoot()); 
     }
 
     IEnumerator Death()

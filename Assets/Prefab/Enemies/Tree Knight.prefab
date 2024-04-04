@@ -105,8 +105,11 @@ MonoBehaviour:
   walk2Sound: {fileID: 8300000, guid: a8389f3b8dc2a524a817e4c889666520, type: 3}
   deathSound: {fileID: 8300000, guid: 031f936d65476904aa2e22521c0d288a, type: 3}
   health: 50
-  speed: 1
+  speed: 2
   damage: 1
+  beanSpeed: 2
+  beanRate: 4
+  bulletPrefab: {fileID: 2738970408359458981, guid: b348baa7b0ca38441ba7aa69bef6b51d, type: 3}
   flash: {fileID: 2100000, guid: 57b09bca6b8c648429a388570af8be0a, type: 2}
   flashDuration: 0.1
 --- !u!58 &3801810974425564147

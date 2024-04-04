@@ -25,10 +25,10 @@ public class BeanShooter : MonoBehaviour
     public AudioClip deathSound;
 
     [Header("Bean Shooter Stats")]
-    public float health = 50; //bean shooter health
-    public float damage = 10; //bullet damage
-    public float speed = 2; //speed of the bullets
-    public float beanRate = 1; //firerate
+    public float health = 30; //bean shooter health
+    public float damage = 1; //bullet damage
+    public float speed = 5; //speed of the bullets
+    public float beanRate = 2; //firerate
     public GameObject bulletPrefab; //bullet prefab
 
     [Header("Flash Hit")]
