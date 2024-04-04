@@ -3030,6 +3030,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4649522289251431606, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4649522289253119128, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
       propertyPath: m_Layer
       value: 7

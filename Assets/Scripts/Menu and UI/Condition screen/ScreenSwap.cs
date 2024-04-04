@@ -9,6 +9,9 @@ public class ScreenSwap : MonoBehaviour
     public Image spriteRenderer;
     public Sprite WinScreen;
     public Sprite LoseScreen;
+
+    public GameObject winText;
+    public GameObject loseText;
     
     // Start is called before the first frame update
     void Start()
@@ -16,9 +19,11 @@ public class ScreenSwap : MonoBehaviour
         DDOL = GameObject.FindGameObjectWithTag("DDOL");
         if(DDOL.GetComponent<DontDestroy>().win == true){
             spriteRenderer.sprite = WinScreen;
+            winText.SetActive(true);
         }
         else if(DDOL.GetComponent<DontDestroy>().win == false){
             spriteRenderer.sprite = LoseScreen;
+            loseText.SetActive(true);
         }
     }
 

@@ -111,11 +111,12 @@ public class TurkeyBehaviour : MonoBehaviour
         yield return null;
     }
 
-    void OnCollisionEnter2D(Collision2D other){
+    void OnTriggerEnter2D(Collider2D other){
         //checks if it is hit by a bullet from a player
         if (other.gameObject.tag == "PlayerBullet"  && !dead)
         {
             health = health - other.gameObject.GetComponent<PlayerBulletBehaviour>().bDamage;
+            Destroy(other.gameObject);
             Flash();
             //if health is 0 destorys the object
             if(health <= 0){

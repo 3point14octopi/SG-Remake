@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Tree
   m_EditorClassIdentifier: 
   m_AnimatedSprites:
-  - {fileID: 21300000, guid: fa589dc25bb0b304b8a6e834b9a07816, type: 3}
-  - {fileID: 21300000, guid: bc8f8a0436ec5be40ae08cd4c3301c8f, type: 3}
-  - {fileID: 21300000, guid: 1537a97f230bc3e40bd7aa723680188a, type: 3}
-  - {fileID: 21300000, guid: a25d75eff90483d4c85f89f04d263076, type: 3}
-  - {fileID: 21300000, guid: a16d631572b6bf9419fee5e3278abc97, type: 3}
-  - {fileID: 21300000, guid: 41e7ff3e4a83daf41bb005b49ee1c4e9, type: 3}
+  - {fileID: 21300000, guid: 477bab98e81f56344b301987e9a11f49, type: 3}
+  - {fileID: 21300000, guid: 12bdaf8f68b064a4abd299f71d2e71a9, type: 3}
+  - {fileID: 21300000, guid: f07299375e2377041bf6eaaa49233e63, type: 3}
+  - {fileID: 21300000, guid: 99e0aa518782dd649b6bbeeb47ee278d, type: 3}
+  - {fileID: 21300000, guid: fa5d75742183e44469906e4f0c48ff55, type: 3}
+  - {fileID: 21300000, guid: 6dff4ab719fa54648b0e2262205c4125, type: 3}
   m_MinSpeed: 4
   m_MaxSpeed: 4
   m_AnimationStartTime: 0
