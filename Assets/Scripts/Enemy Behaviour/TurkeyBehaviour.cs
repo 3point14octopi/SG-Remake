@@ -95,9 +95,13 @@ public class TurkeyBehaviour : MonoBehaviour
         shadow.SetActive(false);
         anim.Play("TurkeyLand");
 
+
         yield return new WaitForSeconds(0.6f);
+        audioSource.clip = landSound;
+        audioSource.Play();
         gameObject.GetComponent<CircleCollider2D>().enabled = true;
         gameObject.GetComponent<CircleCollider2D>().radius = 0.4f;
+        
         yield return new WaitForSeconds(0.4f);
         gameObject.GetComponent<CircleCollider2D>().radius = 0.2f;
    

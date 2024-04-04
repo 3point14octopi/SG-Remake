@@ -125,7 +125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shadow: {fileID: 4246893915321010863}
   jumpSound: {fileID: 8300000, guid: 33008b1db7da0d94daeb543fa16ff8fc, type: 3}
-  landSound: {fileID: 0}
+  landSound: {fileID: 8300000, guid: 8ef0f4c112ca7064ebfb939b125e679a, type: 3}
   deathSound: {fileID: 8300000, guid: 97e56aa83d6607f4898b8840915c3f1c, type: 3}
   health: 50
   speed: 1
