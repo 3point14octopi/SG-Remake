@@ -1,5 +1,4 @@
 using JAFprocedural;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,12 +6,20 @@ using UnityEngine.UI;
 public class MiniMap : MonoBehaviour
 {
     [SerializeField]public Image[] mapIcons = new Image[24];
+    private List<int> knownIndexes = new List<int>();
+    private List<int> startupSquares = new List<int>();
     public int currentLocation = -1;
     bool literallyAnythingElse = false;
+    public Color yellowColour = new Color(230, 207, 161);
+    public Color greenColour = new Color(112, 161, 143);
+    public Color blackColour = new Color(66, 30, 66);
+    public Color redColour = new Color(97, 36, 71);
+    public Color unenteredColour = new Color(97, 36, 71);
+    private Coord bRoom = new Coord(-1, -1);
     // Start is called before the first frame update
     void Start()
     {
-        foreach (Image icon in mapIcons) icon.color = Color.black;
+        foreach (Image icon in mapIcons) icon.color = blackColour;
     }
 
     private void Update()
@@ -20,39 +27,45 @@ public class MiniMap : MonoBehaviour
         if(!literallyAnythingElse && currentLocation != -1)
         {
             literallyAnythingElse = true;
-            mapIcons[currentLocation].color = Color.yellow;
+            mapIcons[currentLocation].color = yellowColour;
+            if(bRoom.x!= -1) mapIcons[bRoom.y * 6 + bRoom.x].color = redColour;
+
+            for (int i = 0; i < startupSquares.Count; mapIcons[startupSquares[i]].color = Color.white, i++) ;
         }
     }
 
     public void OnRoomEnter(Coord newLocation)
     {
-        if(currentLocation != -1)mapIcons[currentLocation].color = Color.green;
+        if(currentLocation != -1)mapIcons[currentLocation].color = greenColour;
 
-        Debug.Log("you are in " + newLocation.x.ToString() + ',' + newLocation.y.ToString());
-        Debug.Log(((newLocation.y * 6) + newLocation.x).ToString());
-        mapIcons[(newLocation.y * 6) + newLocation.x].color = Color.yellow;
+        mapIcons[(newLocation.y * 6) + newLocation.x].color = yellowColour;
         currentLocation = newLocation.y * 6 + newLocation.x;
 
-        //if (!literallyAnythingElse)
-        //{
-        //    if (newLocation.x + newLocation.y != 0) literallyAnythingElse = true;
-        //}
+        knownIndexes.Add((newLocation.y * 6) + newLocation.x);
+    }
 
-        //if(currentLocation.x != -1){
-        //    mapIcons[currentLocation.y * 6 + currentLocation.x].color = Color.green;
-        //    Debug.Log("greemn at " + currentLocation.x.ToString() + ',' + currentLocation.y.ToString());
+    public void SetBossRoom(Coord bossRoomLoc)
+    {
+        bRoom = bossRoomLoc;
+        knownIndexes.Add(bRoom.y * 6 + bRoom.x);
+    }
 
-        //}
+    public void SetUnopenedDoor(Coord room)
+    {
+        if (!literallyAnythingElse)
+        {
+            startupSquares.Add(room.y * 6 + room.x);
+        }
 
-        
-
-        //if (literallyAnythingElse)
-        //{
-        //    currentLocation = newLocation;
-        //}
-
-        
-
-        
+        int value = room.y * 6 + room.x;
+        if(!knownIndexes.Contains(value))
+        {
+            mapIcons[value].color = Color.white;
+            Debug.Log("i didn't know that");
+        }
+        else
+        {
+            Debug.Log("i already KNEW that: " + value.ToString());
+        }
     }
 }

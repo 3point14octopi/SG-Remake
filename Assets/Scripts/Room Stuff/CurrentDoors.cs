@@ -64,6 +64,7 @@ public class BossUnlockCondition : DoorConditions
 
 public class CurrentDoors : MonoBehaviour
 {
+    public MiniMap mm;
 
     public Door[] doors = new Door[4];
     private bool[] openDoors = new bool[] { false, false, false, false };
@@ -87,20 +88,36 @@ public class CurrentDoors : MonoBehaviour
 
 
         //check north door
-        if (pos.y > 0 && floorMap.GetCell(pos.x, pos.y - 1) != 0) InitDoor(0, floorMap.GetCell(pos.x, pos.y - 1) == 7);
+        if (pos.y > 0 && floorMap.GetCell(pos.x, pos.y - 1) != 0)
+        {
+            InitDoor(0, floorMap.GetCell(pos.x, pos.y - 1) == 7);
+            mm.SetUnopenedDoor(new Coord(pos.x, pos.y - 1));
+        }
         //we automatically assume the door is "open" otherwise
         else openDoors[0] = true;
 
         //check south door
-        if (pos.y < floorMap.height - 1 && floorMap.GetCell(pos.x, pos.y + 1) != 0) InitDoor(1, floorMap.GetCell(pos.x, pos.y + 1) == 7);
+        if (pos.y < floorMap.height - 1 && floorMap.GetCell(pos.x, pos.y + 1) != 0)
+        {
+            InitDoor(1, floorMap.GetCell(pos.x, pos.y + 1) == 7);
+            mm.SetUnopenedDoor(new Coord(pos.x, pos.y + 1));
+        }
         else openDoors[1] = true;
 
         //check east door
-        if (pos.x > 0 && floorMap.GetCell(pos.x - 1, pos.y) != 0) InitDoor(2, floorMap.GetCell(pos.x - 1, pos.y) == 7);
+        if (pos.x > 0 && floorMap.GetCell(pos.x - 1, pos.y) != 0)
+        {
+            InitDoor(2, floorMap.GetCell(pos.x - 1, pos.y) == 7);
+            mm.SetUnopenedDoor(new Coord(pos.x - 1, pos.y));
+        }
         else openDoors[2] = true;
 
         //check final door, you can probably guess which one it is
-        if (pos.x < floorMap.width - 1 && floorMap.GetCell(pos.x + 1, pos.y) != 0) InitDoor(3, floorMap.GetCell(pos.x + 1, pos.y) == 7);
+        if (pos.x < floorMap.width - 1 && floorMap.GetCell(pos.x + 1, pos.y) != 0)
+        {
+            InitDoor(3, floorMap.GetCell(pos.x + 1, pos.y) == 7);
+            mm.SetUnopenedDoor(new Coord(pos.x + 1, pos.y));
+        }
         else openDoors[3] = true;
     }
 

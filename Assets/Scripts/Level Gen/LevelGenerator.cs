@@ -92,6 +92,10 @@ public class LevelGenerator : MonoBehaviour
         GameObject.Find("Frostbite").transform.position = new Vector2((startRoom.x * 25) + 12, (startRoom.y * -15) - 8);
         camRef.SetPosition(new Coord(startRoom.x, startRoom.y));
 
+        Coord bossRoom = new Coord();
+        dungeon.minimap.FindFirstInstance(7, out bossRoom);
+        camRef.mm.SetBossRoom(bossRoom);
+
     }
 
     
