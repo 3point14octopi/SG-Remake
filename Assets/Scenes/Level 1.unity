@@ -296,6 +296,54 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 594288932}
     m_Modifications:
+    - target: {fileID: 3581509827425722310, guid: 21d935dbc7b28f8459d0258529c75467, type: 3}
+      propertyPath: redColour.b
+      value: 0.34117648
+      objectReference: {fileID: 0}
+    - target: {fileID: 3581509827425722310, guid: 21d935dbc7b28f8459d0258529c75467, type: 3}
+      propertyPath: redColour.g
+      value: 0.21568628
+      objectReference: {fileID: 0}
+    - target: {fileID: 3581509827425722310, guid: 21d935dbc7b28f8459d0258529c75467, type: 3}
+      propertyPath: redColour.r
+      value: 0.47843137
+      objectReference: {fileID: 0}
+    - target: {fileID: 3581509827425722310, guid: 21d935dbc7b28f8459d0258529c75467, type: 3}
+      propertyPath: blackColour.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3581509827425722310, guid: 21d935dbc7b28f8459d0258529c75467, type: 3}
+      propertyPath: blackColour.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3581509827425722310, guid: 21d935dbc7b28f8459d0258529c75467, type: 3}
+      propertyPath: blackColour.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3581509827425722310, guid: 21d935dbc7b28f8459d0258529c75467, type: 3}
+      propertyPath: greenColour.b
+      value: 0.56078434
+      objectReference: {fileID: 0}
+    - target: {fileID: 3581509827425722310, guid: 21d935dbc7b28f8459d0258529c75467, type: 3}
+      propertyPath: greenColour.g
+      value: 0.6313726
+      objectReference: {fileID: 0}
+    - target: {fileID: 3581509827425722310, guid: 21d935dbc7b28f8459d0258529c75467, type: 3}
+      propertyPath: greenColour.r
+      value: 0.4392157
+      objectReference: {fileID: 0}
+    - target: {fileID: 3581509827425722310, guid: 21d935dbc7b28f8459d0258529c75467, type: 3}
+      propertyPath: yellowColour.b
+      value: 0.6313726
+      objectReference: {fileID: 0}
+    - target: {fileID: 3581509827425722310, guid: 21d935dbc7b28f8459d0258529c75467, type: 3}
+      propertyPath: yellowColour.g
+      value: 0.8117647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3581509827425722310, guid: 21d935dbc7b28f8459d0258529c75467, type: 3}
+      propertyPath: yellowColour.r
+      value: 0.9019608
+      objectReference: {fileID: 0}
     - target: {fileID: 3581509827425722311, guid: 21d935dbc7b28f8459d0258529c75467, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -770,6 +818,7 @@ GameObject:
   - component: {fileID: 594288930}
   - component: {fileID: 594288929}
   - component: {fileID: 594288933}
+  - component: {fileID: 594288934}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -876,6 +925,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 910206362}
+--- !u!114 &594288934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594288928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbc5ff49ef2ea294794fd4bade80ecf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: Main Menu
 --- !u!114 &601507036 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1519237730139842049, guid: 0bb97061f9298964b84e120e027bce53, type: 3}
@@ -2256,6 +2318,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2284467883271468313, guid: f09b389c6c1cd2d4888d8b1630d14cc4, type: 3}
+      propertyPath: mm
+      value: 
+      objectReference: {fileID: 1093232539}
+    - target: {fileID: 2284467883271468313, guid: f09b389c6c1cd2d4888d8b1630d14cc4, type: 3}
       propertyPath: doorLayer
       value: 
       objectReference: {fileID: 236416311}
@@ -2415,9 +2481,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 594288933}
-        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
-        m_MethodName: Resume
+      - m_Target: {fileID: 594288934}
+        m_TargetAssemblyTypeName: MainMenu, Assembly-CSharp
+        m_MethodName: changeScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2809,7 +2875,7 @@ PrefabInstance:
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
       propertyPath: enemyPrefabs.Array.data[4]
       value: 
-      objectReference: {fileID: 4246893914652902662, guid: 6b6cc686ae7fb3844a7c16a0736da0d2, type: 3}
+      objectReference: {fileID: 1253262358908222775, guid: d9c644177e312b04d999a64fa0319f39, type: 3}
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
       propertyPath: enemyPrefabs.Array.data[5]
       value: 

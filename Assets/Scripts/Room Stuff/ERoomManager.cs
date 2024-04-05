@@ -339,7 +339,7 @@ public class ERoomManager : MonoBehaviour
         else if (roomValue < JIMMY)
         {
             
-            enemyLists[location.y, location.x] = (RNG.GenRand(0, 5) == 0)?TurkeyRoomGen(room):BasicEnemyRoom(room);
+            enemyLists[location.y, location.x] = /*(RNG.GenRand(0, 5) == 0)?TurkeyRoomGen(room):*/BasicEnemyRoom(room);
             usedRooms.Add(location);
         }else if(roomValue < BOSS)
         {

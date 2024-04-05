@@ -13,8 +13,6 @@ public class MiniMap : MonoBehaviour
     public Color yellowColour = new Color(230, 207, 161);
     public Color greenColour = new Color(112, 161, 143);
     public Color blackColour = new Color(66, 30, 66);
-    public Color redColour = new Color(97, 36, 71);
-    public Color unenteredColour = new Color(97, 36, 71);
     private Coord bRoom = new Coord(-1, -1);
     // Start is called before the first frame update
     void Start()
@@ -28,9 +26,9 @@ public class MiniMap : MonoBehaviour
         {
             literallyAnythingElse = true;
             mapIcons[currentLocation].color = yellowColour;
-            if(bRoom.x!= -1) mapIcons[bRoom.y * 6 + bRoom.x].color = redColour;
 
             for (int i = 0; i < startupSquares.Count; mapIcons[startupSquares[i]].color = Color.white, i++) ;
+            if(bRoom.x!= -1) mapIcons[bRoom.y * 6 + bRoom.x].color = Color.red;
         }
     }
 

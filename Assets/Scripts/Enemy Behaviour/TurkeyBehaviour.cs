@@ -121,7 +121,10 @@ public class TurkeyBehaviour : MonoBehaviour
             Flash();
             //if health is 0 destorys the object
             if(health <= 0){
+                RoomPop.Instance.EnemyKilled();
                 StartCoroutine(Death());
+                StopCoroutine(TurkeyJump());
+                StopCoroutine(TurkeyLand());
             }
         }
 
@@ -147,7 +150,6 @@ public class TurkeyBehaviour : MonoBehaviour
         anim.Play("TurkeyDeath");
         audioSource.clip = deathSound;
         audioSource.Play();
-        RoomPop.Instance.EnemyKilled();
         yield return new WaitForSeconds(1.25f);
         gameObject.GetComponent<SpriteRenderer>().material = material;
         gameObject.SetActive(false);
