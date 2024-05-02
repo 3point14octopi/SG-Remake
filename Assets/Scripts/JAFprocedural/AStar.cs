@@ -5,9 +5,16 @@ using System.Linq;
 
 namespace JAFprocedural
 {
+    public struct AScoord
+    {
+        public int x;
+        public int y;
+        public int z;
+    }
+
     public class Node : IComparable<Node>
     {
-        public Coord m_position;
+        public AScoord m_position;
         public int m_cost;
         public Node m_parent;
         public int m_G;
@@ -34,18 +41,25 @@ namespace JAFprocedural
             grid = new Space2D(newGrid.width, newGrid.height);
             BasicBuilderFunctions.CopySpaceAToB(newGrid, grid, new List<Cell>(){ new Cell(valid)});
             BasicBuilderFunctions.FloodExcluding(grid, new Cell(1), new Cell(wall));
-            UnityEngine.Debug.Log("unbelievable");
         }
 
-        //is a little dumb but we can improve that later
-        private int Heuristic(Coord current, Coord goal)
+        //Average of hypotenuse (i don't think it's actually possible, we don't have perfect diagonals)
+        //and the (x + y) dist
+        //x+y tends to run slower? i think? slight undersells are more helpful when doing little jimmy than pathfinding
+        private int Heuristic(AScoord current, AScoord goal)
         {
-            return Math.Abs(current.x - goal.x) + Math.Abs(current.y - goal.y);
+            int a = (int)(Math.Pow(current.x - goal.x, 2f));
+            int b = (int)(Math.Pow(current.y - goal.y, 2f));
+            int hyp = (int)Math.Sqrt(a + b);
+
+            int sum = Math.Abs(current.x - goal.x) + Math.Abs(current.y - goal.y);
+
+            return (int)(hyp + sum) / 2;
         }
         //grabs any tile surrounding a given node that isn't a wall
-        private List<Coord> GetNeighbours(Node node)
+        private List<AScoord> GetNeighbours(Node node)
         {
-            List<Coord> neighbours = new List<Coord>();
+            List<AScoord> neighbours = new List<AScoord>();
             int[,] directions = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };// down, up, right, left
 
             for (int i = 0; i < directions.GetLength(0); i++)
@@ -57,7 +71,7 @@ namespace JAFprocedural
                 {
                     if(grid.GetCell(x, y) != wall)
                     {
-                        neighbours.Add(new Coord(x, y));
+                        neighbours.Add(new AScoord { x = x, y = y});//REALLY bad code btw
                     }
                 }
             }
@@ -68,29 +82,32 @@ namespace JAFprocedural
         //the A* algorithm
         public List<Coord> AStar(Coord start, Coord goal)
         {
+            AScoord start_ = new AScoord { x = start.x, y = start.y };
+            AScoord goal_ = new AScoord { x = goal.x, y = goal.y };
+
             if (grid == null)
             {
                 UnityEngine.Debug.Log("no");
                 return null;
             }
             List<Node> openSet = new List<Node>();
-            List<Coord> closedSet = new List<Coord>();
+            HashSet<AScoord> closedSet = new HashSet<AScoord>();
             Node startNode = new Node
-                { m_position = start, m_cost = 0, m_G = 0, m_heuristic = Heuristic(start, goal) };
+                { m_position = start_, m_cost = 0, m_G = 0, m_heuristic = Heuristic(start_, goal_) };
             openSet.Add(startNode);
             int iterations = 0;
-            while(openSet.Count > 0 || iterations < 100)
+            while(openSet.Count > 0 && iterations < 20000)
             {
                 iterations++;
                 Node currentNode = openSet.Min<Node>();
                 openSet.Remove(currentNode);
 
-                if (currentNode.m_position.IsEqual(goal))
+                if (currentNode.m_position.x == goal_.x && currentNode.m_position.y == goal_.y)
                 {
                     List<Coord> path = new List<Coord>();
                     while(currentNode != null)
                     {
-                        path.Add(currentNode.m_position);
+                        path.Add(new Coord(currentNode.m_position.x, currentNode.m_position.y));
                         currentNode = currentNode.m_parent;
                     }
 
@@ -98,18 +115,18 @@ namespace JAFprocedural
                     return path;
                 }
 
-                foreach(Coord neighbourPos in GetNeighbours(currentNode))
+                foreach (AScoord neighbourPos in GetNeighbours(currentNode))
                 {
-                    int neighbourG = grid.GetCell(neighbourPos);
+                    int neighbourG = grid.GetCell(neighbourPos.x, neighbourPos.y);
                     Node neighbour = new Node { m_position = neighbourPos };
                     int tentativeG = currentNode.m_G + neighbourG;
 
-                    if(!LHas(closedSet, neighbour.m_position))
+                    if(!closedSet.Contains(neighbour.m_position))
                     {
                         if (!openSet.Contains(neighbour))
                         {
                             neighbour.m_G = tentativeG;
-                            neighbour.m_heuristic = Heuristic(neighbourPos, goal);
+                            neighbour.m_heuristic = Heuristic(neighbourPos, goal_);
                             neighbour.m_cost = neighbour.m_G + neighbour.m_heuristic;
                             neighbour.m_parent = currentNode;
                             openSet.Add(neighbour);
@@ -121,42 +138,21 @@ namespace JAFprocedural
                         if(tentativeG < neighbour.m_G)
                         {
                             neighbour.m_G = tentativeG;
-                            neighbour.m_heuristic = Heuristic(neighbourPos, goal);
+                            neighbour.m_heuristic = Heuristic(neighbourPos, goal_);
                             neighbour.m_cost = neighbour.m_G + neighbour.m_heuristic;
                             neighbour.m_parent = currentNode;
                             openSet.Add(neighbour);
 
-                            LRemove(closedSet, neighbour.m_position);
+                            closedSet.Remove(neighbour.m_position);
                         }
                     }
                 }
                 closedSet.Add(currentNode.m_position);
             }
-            UnityEngine.Debug.Log("couldn't escape");
+            UnityEngine.Debug.Log("no path found");
             return null;
         }
         
-
-        //helpers because C# is sometimes too smart and wraps back around to being stupid
-        private static bool LHas(List<Coord> list, Coord value)
-        {
-            for(int i = 0; i < list.Count; i++)
-            {
-                if (list[i].IsEqual(value)) return true;
-            }
-            return false;
-        }
-        private static void LRemove(List<Coord> list, Coord toRemove)
-        {
-            for(int i = 0; i < list.Count; i++)
-            {
-                if (list[i].IsEqual(toRemove))
-                {
-                    list.RemoveAt(i);
-                    return;
-                }
-            }
-        }
 
     }
 }

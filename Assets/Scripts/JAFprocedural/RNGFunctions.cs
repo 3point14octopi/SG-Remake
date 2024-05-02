@@ -10,8 +10,17 @@ namespace JAFprocedural
             b = a;
             a = temp;
         }
-    }
 
+        public static void SwapCoord(Coord a, Coord b)
+        {
+            int ax = a.x;
+            int ay = a.y;
+            int az = a.z;
+
+            a = new Coord(b.x, b.y, b.z);
+            b = new Coord(ax, ay, az);
+        }
+    }
 
 
     public static class RNG {
@@ -37,7 +46,7 @@ namespace JAFprocedural
             if(start < coords.Count)
             {
                 int x = GenRand(start, (coords.Count - 1)-start);
-                Basic.Swap(coords[start], coords[x]);
+                Basic.SwapCoord(coords[start], coords[x]);
             }
             else
             {

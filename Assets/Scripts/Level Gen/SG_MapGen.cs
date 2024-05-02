@@ -162,7 +162,7 @@ namespace JAFprocedural
 
         public static Space2D MakeRoom2(Space2D room)
         {
-            room = LittleJimmy(room);
+            room = NewJimmy(room);
 
             return room;
         }
@@ -441,16 +441,32 @@ namespace JAFprocedural
             {
                 Coord start = points[iterations];
                 Coord end = RNG.CircleSelect(points, iterations + 1);
-                Console.WriteLine("creating a path between " + start.x.ToString() + ',' + start.y.ToString() + " and " + end.x.ToString() + ',' + end.y.ToString());
+                UnityEngine.Debug.Log("creating a path between " + start.x.ToString() + ',' + start.y.ToString() + " and " + end.x.ToString() + ',' + end.y.ToString());
                 List<Coord> path = astar.AStar(points[iterations], RNG.CircleSelect(points, iterations + 1));
                 if (path != null)
                 {
                     foreach (Coord node in path) room.SetCell(node, new Cell(2));
                 }
+                else
+                {
+                    UnityEngine.Debug.Log("had to be boring");
+                    BasicBuilderFunctions.ConnectCoords(room, points[iterations], points[iterations + 1], new Cell(2));
+                }
             }
 
-            BasicBuilderFunctions.Flood(room, new Cell(1), new Cell(0), 1, 8, room.width-1, room.height-1);
-            UnityEngine.Debug.Log("please");
+            for (int i = 0; i < room.height; i++)
+            {
+                for (int j = 0; j < room.width; j++)
+                {
+                    if (room.GetCell(j, i) == 1)
+                    {
+                        Coord data = BasicBuilderFunctions.CheckAdjacentCells(room, new Coord(j, i), true, new Cell(2));
+                        if (data.x == -1 || data.y == -1) room.SetCell(new Coord(j, i), new Cell(3));
+                    }
+                }
+            }
+            BasicBuilderFunctions.Flood(room, new Cell(3), new Cell(2));
+            BasicBuilderFunctions.Flood(room, new Cell(1), new Cell(0), 1, 1, room.width-1, room.height-1);
             BasicBuilderFunctions.Flood(room, new Cell(2), new Cell(1));
 
 
