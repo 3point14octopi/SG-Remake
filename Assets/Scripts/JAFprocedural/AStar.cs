@@ -1,116 +1,162 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using UnityEngine;
 
 namespace JAFprocedural
 {
     public class Node : IComparable<Node>
     {
-        public Coord Position { get; set; }
-        public int Cost { get; set; }
-        public Node Parent { get; set; }
-        public int G { get; set; }
-        public int H { get; set; }
+        public Coord m_position;
+        public int m_cost;
+        public Node m_parent;
+        public int m_G;
+        public int m_heuristic;
+
         public int CompareTo(Node other)
         {
-            return Cost.CompareTo(other.Cost);
+            return m_cost.CompareTo(other.m_cost);
         }
     }
 
-    public class AStarAlgorithm
+    public class AStarCalculator
     {
-        public Coord WorldLocToCoord(Vector3 loc, Space2D roomMap)
+        private Space2D grid;
+        public int wall = 1000;
+    
+        public AStarCalculator(Space2D map, int valid, int barrier = 1000)
         {
-            return new Coord(Mathf.FloorToInt(loc.x - roomMap.worldOrigin.x - 0.5f), Mathf.FloorToInt(-loc.y - roomMap.worldOrigin.y - 0.5f));
+            wall = barrier;
+            SetNewGrid(map, valid);
+        }
+        public void SetNewGrid(Space2D newGrid, int valid)
+        {
+            grid = new Space2D(newGrid.width, newGrid.height);
+            BasicBuilderFunctions.CopySpaceAToB(newGrid, grid, new List<Cell>(){ new Cell(valid)});
+            BasicBuilderFunctions.FloodExcluding(grid, new Cell(1), new Cell(wall));
+            UnityEngine.Debug.Log("unbelievable");
         }
 
-
+        //is a little dumb but we can improve that later
         private int Heuristic(Coord current, Coord goal)
         {
-            return Math.Abs(current.x - goal.x) +
-            Math.Abs(current.y - goal.y);
+            return Math.Abs(current.x - goal.x) + Math.Abs(current.y - goal.y);
         }
-
-        //this will PROBABLY be the source of problems
-        private List<Coord> GetNeighbors(Node node, Space2D grid)
+        //grabs any tile surrounding a given node that isn't a wall
+        private List<Coord> GetNeighbours(Node node)
         {
-            List<Coord> neighbors = new List<Coord>();
-            int[,] directions = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
-            // up, down, right, left
+            List<Coord> neighbours = new List<Coord>();
+            int[,] directions = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };// down, up, right, left
+
             for (int i = 0; i < directions.GetLength(0); i++)
             {
-                int dx = directions[i, 1];
-                int dy = directions[i, 0];
-                int x = node.Position.y + dx;
-                int y = node.Position.x + dy;
-                if (x >= 0 && x < grid.height && y >= 0 && y <
-                grid.width)
+                int x = node.m_position.x + directions[i, 0];
+                int y = node.m_position.y + directions[i, 1];
+
+                if((x >= 0 && x < grid.width) && (y >= 0 && y < grid.height))
                 {
-                    neighbors.Add(new Coord(y, x));
+                    if(grid.GetCell(x, y) != wall)
+                    {
+                        neighbours.Add(new Coord(x, y));
+                    }
                 }
             }
-            return neighbors;
-        }
-        public List<Coord> AStar(Space2D grid, Coord start,
-        Coord goal)
-        {
-            BasicBuilderFunctions.Flood(grid, new Cell(2), new Cell(1000));
-            BasicBuilderFunctions.Flood(grid, new Cell(0), new Cell(1000));
 
-            List<Node> openSet = new List<Node>();
-            HashSet<Coord> closedSet = new HashSet<Coord>();
-            Node startNode = new Node { Position = start, Cost = 0 };
-            startNode.G = 0;
-            startNode.H = Heuristic(start, goal);
-            openSet.Add(startNode);
-            while (openSet.Count > 0)
+            return neighbours;
+        }
+
+        //the A* algorithm
+        public List<Coord> AStar(Coord start, Coord goal)
+        {
+            if (grid == null)
             {
+                UnityEngine.Debug.Log("no");
+                return null;
+            }
+            List<Node> openSet = new List<Node>();
+            List<Coord> closedSet = new List<Coord>();
+            Node startNode = new Node
+                { m_position = start, m_cost = 0, m_G = 0, m_heuristic = Heuristic(start, goal) };
+            openSet.Add(startNode);
+            int iterations = 0;
+            while(openSet.Count > 0 || iterations < 100)
+            {
+                iterations++;
                 Node currentNode = openSet.Min<Node>();
                 openSet.Remove(currentNode);
-                if (currentNode.Position == goal)
+
+                if (currentNode.m_position.IsEqual(goal))
                 {
                     List<Coord> path = new List<Coord>();
-                    while (currentNode != null)
+                    while(currentNode != null)
                     {
-                        path.Add(currentNode.Position);
-                        currentNode = currentNode.Parent;
+                        path.Add(currentNode.m_position);
+                        currentNode = currentNode.m_parent;
                     }
+
                     path.Reverse();
                     return path;
                 }
-                foreach (Coord neighborPos in GetNeighbors(currentNode, grid))
+
+                foreach(Coord neighbourPos in GetNeighbours(currentNode))
                 {
-                    int Gneighbor = grid.GetCell(neighborPos.x, neighborPos.y);
-                    Node neighbor = new Node { Position = neighborPos };
-                    int TentativeG = currentNode.G + Gneighbor;
-                    if (!closedSet.Contains(neighbor.Position))
+                    int neighbourG = grid.GetCell(neighbourPos);
+                    Node neighbour = new Node { m_position = neighbourPos };
+                    int tentativeG = currentNode.m_G + neighbourG;
+
+                    if(!LHas(closedSet, neighbour.m_position))
                     {
-                        if (!openSet.Contains(neighbor))
+                        if (!openSet.Contains(neighbour))
                         {
-                            neighbor.G = TentativeG;
-                            neighbor.H = Heuristic(neighborPos, goal);
-                            neighbor.Cost = neighbor.G + neighbor.H;
-                            neighbor.Parent = currentNode;
-                            openSet.Add(neighbor);
+                            neighbour.m_G = tentativeG;
+                            neighbour.m_heuristic = Heuristic(neighbourPos, goal);
+                            neighbour.m_cost = neighbour.m_G + neighbour.m_heuristic;
+                            neighbour.m_parent = currentNode;
+                            openSet.Add(neighbour);
                         }
+
                     }
-                    if (closedSet.Contains(neighbor.Position))
+                    else
                     {
-                        if (TentativeG < neighbor.G)
+                        if(tentativeG < neighbour.m_G)
                         {
-                            neighbor.G = TentativeG;
-                            neighbor.H = Heuristic(neighborPos, goal);
-                            neighbor.Cost = neighbor.G + neighbor.H;
-                            neighbor.Parent = currentNode;
-                            openSet.Add(neighbor);
-                            closedSet.Remove(neighbor.Position);
+                            neighbour.m_G = tentativeG;
+                            neighbour.m_heuristic = Heuristic(neighbourPos, goal);
+                            neighbour.m_cost = neighbour.m_G + neighbour.m_heuristic;
+                            neighbour.m_parent = currentNode;
+                            openSet.Add(neighbour);
+
+                            LRemove(closedSet, neighbour.m_position);
                         }
                     }
                 }
-                closedSet.Add(currentNode.Position);
+                closedSet.Add(currentNode.m_position);
             }
+            UnityEngine.Debug.Log("couldn't escape");
             return null;
         }
+        
+
+        //helpers because C# is sometimes too smart and wraps back around to being stupid
+        private static bool LHas(List<Coord> list, Coord value)
+        {
+            for(int i = 0; i < list.Count; i++)
+            {
+                if (list[i].IsEqual(value)) return true;
+            }
+            return false;
+        }
+        private static void LRemove(List<Coord> list, Coord toRemove)
+        {
+            for(int i = 0; i < list.Count; i++)
+            {
+                if (list[i].IsEqual(toRemove))
+                {
+                    list.RemoveAt(i);
+                    return;
+                }
+            }
+        }
+
     }
 }

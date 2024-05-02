@@ -165,11 +165,30 @@ namespace JAFprocedural
         {
             xEnd = (xEnd == 0) ? space.width : xEnd;
             yEnd = (yEnd == 0) ? space.height : yEnd;
+            int count = 0;
             for (int i = yStart; i < yEnd; i++)
             {
                 for (int j = xStart; j < xEnd; j++)
                 {
-                    if (space.GetCell(new Coord(j, i)) == toReplace.value)
+                    if (space.GetCell(j, i) == toReplace.value)
+                    {
+                        space.SetCell(new Coord(j, i), newValue);
+                        count++;
+                    }
+                }
+            }
+
+            UnityEngine.Debug.Log("replaced " + count.ToString() + " instances of " + toReplace.value.ToString() + " with " + newValue.value.ToString());
+        }
+        public static void FloodExcluding(Space2D space, Cell keep, Cell newValue, int xStart = 0, int yStart = 0, int xEnd = 0, int yEnd = 0)
+        {
+            xEnd = (xEnd == 0) ? space.width : xEnd;
+            yEnd = (yEnd == 0) ? space.height : yEnd;
+            for (int i = yStart; i < yEnd; i++)
+            {
+                for (int j = xStart; j < xEnd; j++)
+                {
+                    if (space.GetCell(j, i) != keep.value)
                     {
                         space.SetCell(new Coord(j, i), newValue);
                     }
@@ -225,7 +244,6 @@ namespace JAFprocedural
                 {
                     if (a.GetCell(x, y) != 0)
                     {
-                        UnityEngine.Debug.Log("copy that!");
                         Cell val = (bwCopy) ? sample : a.GetCellObj(x, y);
                         b.SetCell(new Coord(x - b.worldOrigin.x, y - b.worldOrigin.y), val);
                     }

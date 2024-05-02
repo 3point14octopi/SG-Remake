@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Unity.VisualScripting;
@@ -55,6 +56,7 @@ namespace JAFprocedural
     //static builder functions for SG rooms
     public static class SG_MapGen
     {
+        private static AStarCalculator astar = new AStarCalculator(new Space2D(), 1);
         public static Space2D MakeFloorplan()
         {
             Space2D floorPlan = new Space2D(6, 4);
@@ -334,7 +336,7 @@ namespace JAFprocedural
             return room;
         }
 
-        //a* is for goddamn cowards
+        //turns out i'm a coward who uses A* and this function should be fixed
         public static Space2D EnsureConnected(Space2D room)
         {
             Cell fill = new Cell(1);
@@ -387,7 +389,7 @@ namespace JAFprocedural
             for (int i = 0; i < iterations;)
             {
                 Coord c = RNG.GenRandCoord(room);
-                if(room.GetCell(c) == 0)
+                if(room.GetCell(c) != 0)
                 {
                     room.SetCell(c, new Cell(1));
                     points.Add(c);
@@ -400,6 +402,57 @@ namespace JAFprocedural
                 iterations < points.Count - 1; 
                 BasicBuilderFunctions.Connect3(room, points[iterations], RNG.GenRandCoord(room), RNG.CircleSelect(points, iterations + 1), new Cell(1)), 
                 iterations++) ;
+
+            return room;
+        }
+
+        public static Space2D NewJimmy(Space2D room)
+        {
+            List<Coord> points = new List<Coord>();
+            //can override this if you start being SMARTER about door locations
+            if (room.GetCell(0, 7) != 0) points.Add(new Coord(1, 7));
+            if (room.GetCell(12, 0) != 0) points.Add(new Coord(12, 1));
+            if (room.GetCell(12, 14) != 0) points.Add(new Coord(12, 13));
+            if (room.GetCell(24, 7) != 0) points.Add(new Coord(23, 7));
+
+            //fill room with valid space
+            BasicBuilderFunctions.Flood(room, new Cell(0), new Cell(1), 1, 1, room.width - 1, room.height - 1);
+            //send room to the A* calculator
+            astar.SetNewGrid(room, 1);
+
+            int iterations = RNG.GenRand(4-points.Count, 7-points.Count);
+            UnityEngine.Debug.Log("chose " + iterations.ToString() + " points, " + points.Count.ToString() + " locations total");
+
+            int attempts = 0;
+            for (int i = 0; i < iterations && attempts < 20;)
+            {
+                Coord c = RNG.GenRandCoord(room);
+
+                if (room.GetCell(c) != 2)
+                {
+                    room.SetCell(c, new Cell(2));
+                    points.Add(c);
+                    i++;
+                }
+            }
+            UnityEngine.Debug.Log("placed all points");
+
+            for(iterations = 0, RNG.CircleSelect(points, 0); iterations < points.Count-1; iterations++)
+            {
+                Coord start = points[iterations];
+                Coord end = RNG.CircleSelect(points, iterations + 1);
+                Console.WriteLine("creating a path between " + start.x.ToString() + ',' + start.y.ToString() + " and " + end.x.ToString() + ',' + end.y.ToString());
+                List<Coord> path = astar.AStar(points[iterations], RNG.CircleSelect(points, iterations + 1));
+                if (path != null)
+                {
+                    foreach (Coord node in path) room.SetCell(node, new Cell(2));
+                }
+            }
+
+            BasicBuilderFunctions.Flood(room, new Cell(1), new Cell(0), 1, 8, room.width-1, room.height-1);
+            UnityEngine.Debug.Log("please");
+            BasicBuilderFunctions.Flood(room, new Cell(2), new Cell(1));
+
 
             return room;
         }

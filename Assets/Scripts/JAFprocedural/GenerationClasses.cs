@@ -24,6 +24,11 @@ namespace JAFprocedural
             y = newCoord.y;
             z = newCoord.z;
         }
+
+        public bool IsEqual(Coord other)
+        {
+            return (x == other.x && y == other.y);
+        }
     }
 
     public class Cell
@@ -59,6 +64,16 @@ namespace JAFprocedural
 
                 grid.Add(newRow);
             }
+
+            worldOrigin = new Coord(0, 0);
+        }
+        public Space2D(int[,] template)
+        {
+            width = 1;
+            height = 1;
+            grid.Add(new List<Cell> { new Cell() });
+
+            SetFromArray(template);
 
             worldOrigin = new Coord(0, 0);
         }
@@ -169,6 +184,16 @@ namespace JAFprocedural
 
             if (dim.x > width) AddCol(dim.x - width);
             else if (dim.x < width) DropCol(width - dim.x);
+        }
+        public void SetFromArray(int[,] array)
+        {
+            Coord dimensions = new Coord(array.GetLength(1), array.GetLength(0));
+            SetDimensions(dimensions);
+
+            for(int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; grid[y][x].value = array[y, x], x++) ;
+            }
         }
     }
 }
