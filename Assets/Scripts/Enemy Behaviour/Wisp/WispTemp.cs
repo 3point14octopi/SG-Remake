@@ -27,6 +27,12 @@ public class WispTemp : MonoBehaviour
     private float[] stats = new float[3];
     private bool instantiated = false;
 
+    public float bulletSpeed = 2; //speed of the bullets
+    public float bulletDamage = 1;
+    public int scrapnelCount;
+    public GameObject bulletPrefab; //bullet prefab
+    private GameObject activeBullet; // husk used to init the bullets
+
     public LayerMask cLayermask;
 
     [Header("Flash Hit")]
@@ -102,6 +108,14 @@ public class WispTemp : MonoBehaviour
 
     IEnumerator Death()
     {
+        gameObject.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+
+        for(int i = 0; i <= (scrapnelCount - 1); i++){
+            activeBullet = (GameObject)Instantiate(bulletPrefab, gameObject.transform.position, Quaternion.Euler(0, 0, 45 * i));
+            activeBullet.GetComponent<EnemyBulletBehaviour>().bSpeed = bulletSpeed;
+            activeBullet.GetComponent<EnemyBulletBehaviour>().bDamage = bulletDamage;   
+        }
+
         dead = true;
         anim.Play("WispDeath");
         RoomPop.Instance.EnemyKilled();

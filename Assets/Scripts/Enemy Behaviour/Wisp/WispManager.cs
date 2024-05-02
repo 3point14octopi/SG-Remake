@@ -176,7 +176,6 @@ public class WispManager : MonoBehaviour
         bool leftHit = false;
         bool rightHit = false;
 
-        Debug.Log("scanning");
         Vector3 avoidance = Vector3.zero;
         RaycastHit2D wallDetect = Physics2D.Raycast(((boidIndex > -1)?wisps[boidIndex]:wanderer).transform.position + ((boidIndex > -1) ? wisps[boidIndex] : wanderer).transform.up, ((boidIndex > -1) ? wisps[boidIndex] : wanderer).transform.up, 2f, cLayermask);
         if (wallDetect.collider != null)
