@@ -14,9 +14,9 @@ namespace JAFprocedural
         public Space2D megaMap;
         public Dictionary<Coord, Space2D> rooms = new Dictionary<Coord, Space2D>();
 
-        public SG_Level()
+        public SG_Level(bool lazyLoad = true)
         {
-            minimap = SG_MapGen.MakeFloorplan();
+            minimap = SG_MapGen.MakeFloorplan(lazyLoad);
 
             megaMap = new Space2D(150, 60);
 
@@ -56,9 +56,11 @@ namespace JAFprocedural
     //static builder functions for SG rooms
     public static class SG_MapGen
     {
+        private static bool lazyLevel = true;
         private static AStarCalculator astar = new AStarCalculator(new Space2D(), 1);
-        public static Space2D MakeFloorplan()
+        public static Space2D MakeFloorplan(bool lazy = true)
         {
+            lazyLevel = lazy;
             Space2D floorPlan = new Space2D(6, 4);
             List<Coord> points = new List<Coord>();
 
@@ -162,7 +164,7 @@ namespace JAFprocedural
 
         public static Space2D MakeRoom2(Space2D room)
         {
-            room = NewJimmy(room);
+            room = (lazyLevel)?LittleJimmy(room):NewJimmy(room);
 
             return room;
         }

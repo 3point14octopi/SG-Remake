@@ -16,10 +16,20 @@ public class LevelGenerator : MonoBehaviour
     public int backgroundLayer = 1;
     private Space2D room;
     private SG_Level dungeon;
+    [Header("Generation Parameters")]
+    public bool useLazyLoading = true;
+    public bool lazyLoadInBuild;
     // Start is called before the first frame update
     void Start()
     {
-        dungeon = new SG_Level();
+#if !UNITY_EDITOR
+        if(lazyLoadInBuild != null && lazyLoadInBuild){
+            useLazyLoading = true;
+        }else{
+            useLazyLoading = false;
+        }
+#endif
+        dungeon = new SG_Level(useLazyLoading);
 
         Debug.Log(dungeon.rooms.Count);
         doorManager.floorMap = dungeon.minimap;

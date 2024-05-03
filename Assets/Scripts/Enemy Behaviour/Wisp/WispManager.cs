@@ -230,7 +230,7 @@ public class WispManager : MonoBehaviour
 
         PickTarget();
         wanderer.transform.position = targetLocation;
-        StartCoroutine(PlaceBadColliders());
+        if(cList.Count == 0)StartCoroutine(PlaceBadColliders());
 
         velocities = new Vector3[boidCount];
     }
