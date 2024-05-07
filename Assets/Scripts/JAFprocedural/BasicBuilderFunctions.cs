@@ -356,7 +356,7 @@ namespace JAFprocedural
             if ((start.x + 1) < space.width && (start.y - 1) > -1)
             {
 
-                if ((mustMatchCType && space.GetCell(new Coord(start.x + 1, start.y - 1)) == cType.value || (space.GetCell(new Coord(start.x - 1, start.y)) > 0 && !mustMatchCType)))
+                if ((mustMatchCType && space.GetCell(new Coord(start.x + 1, start.y - 1)) == cType.value || (space.GetCell(new Coord(start.x + 1, start.y - 1)) > 0 && !mustMatchCType)))
                 {
                     rUp = true;
                 }
@@ -365,7 +365,7 @@ namespace JAFprocedural
             if ((start.x + 1) < space.width && (start.y + 1) < space.height)
             {
 
-                if ((mustMatchCType && space.GetCell(new Coord (start.x + 1, start.y + 1)) == cType.value || (space.GetCell(new Coord(start.x + 1, start.y)) > 0 && !mustMatchCType)))
+                if ((mustMatchCType && space.GetCell(new Coord (start.x + 1, start.y + 1)) == cType.value || (space.GetCell(new Coord(start.x + 1, start.y + 1)) > 0 && !mustMatchCType)))
                 {
                     rDown = true;
                 }

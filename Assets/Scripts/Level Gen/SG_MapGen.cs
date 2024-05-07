@@ -523,7 +523,18 @@ namespace JAFprocedural
                     if(room.GetCell(j, i) == 0)
                     {
                         Coord data = BasicBuilderFunctions.CheckAdjacentCells(room, new Coord(j, i), true, new Cell(1));
-                        if (data.x + data.y != 4) room.SetCell(new Coord(j, i), new Cell(2));
+                        if (data.x + data.y != 4)
+                        {
+                            room.SetCell(new Coord(j, i), new Cell(2));
+                        }
+                        else
+                        {
+                            data = BasicBuilderFunctions.CheckDiagonalCells(room, new Coord(j, i), true, new Cell(1));
+                            if(data.x + data.y != 4)
+                            {
+                                room.SetCell(new Coord(j, i), new Cell(2));
+                            }
+                        }
                     }
                 }
             }
