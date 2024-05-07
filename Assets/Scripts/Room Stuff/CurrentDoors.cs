@@ -42,17 +42,11 @@ public class BossUnlockCondition : DoorConditions
 
     public bool AllCleared()
     {
-        Debug.Log(conditionsToOpen.Count.ToString() + " conditions");
         for(int i = 0; i < conditionsToOpen.Count; i++)
         {
-            if (conditionsToOpen[i].HasBeenMet())
+            if (!conditionsToOpen[i].HasBeenMet())
             {
-                Debug.Log("condition met");
-            }
-            else
-            {
-                Debug.Log("failed condition " + i.ToString());
-                return false;
+               return false;
             }
             
         }
@@ -131,7 +125,6 @@ public class CurrentDoors : MonoBehaviour
 
     private void InitDoor(int index, bool bossDoor = false)
     {
-        Debug.Log("Index is " + index.ToString());
         doors[index] = new Door();
         if (bossDoor)
         {

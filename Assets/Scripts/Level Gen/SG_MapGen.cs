@@ -164,7 +164,14 @@ namespace JAFprocedural
 
         public static Space2D MakeRoom2(Space2D room)
         {
-            room = (lazyLevel)?LittleJimmy(room):NewJimmy(room);
+            if (lazyLevel)
+            {
+                room = LittleJimmy(room);
+            }
+            else
+            {
+                room = (RNG.GenRand(0, 2) == 1) ? LittleJimmy(room) : NewJimmy(room);
+            }
 
             return room;
         }
@@ -387,7 +394,7 @@ namespace JAFprocedural
             if (room.GetCell(24, 7) != 0) points.Add(new Coord(23, 7));
 
 
-            int iterations = 10 - points.Count;
+            int iterations = RNG.GenRand(1, 10 - points.Count);
             for (int i = 0; i < iterations;)
             {
                 Coord c = RNG.GenRandCoord(room);
@@ -405,9 +412,40 @@ namespace JAFprocedural
                 BasicBuilderFunctions.Connect3(room, points[iterations], RNG.GenRandCoord(room), RNG.CircleSelect(points, iterations + 1), new Cell(1)), 
                 iterations++) ;
 
+            BasicBuilderFunctions.Flood(room, new Cell(0), new Cell(2), 1, 1, room.width - 1, room.height - 1);
+            room = UnderLine(room, 2, new Cell(1), new Cell(3));
+            BasicBuilderFunctions.Flood(room, new Cell(2), new Cell(0));
+
             return room;
         }
 
+        private static Space2D Clump(Space2D room, Coord start, Cell val)
+        {
+            room.SetCell(start, val);
+            room.SetCell(new Coord(start.x + 1, start.y), val);
+            room.SetCell(new Coord(start.x, start.y + 1), val);
+            room.SetCell(new Coord(start.x + 1, start.y + 1), val);
+
+            return room;
+        }
+        private static Space2D UnderLine(Space2D room, int valid, Cell toFind, Cell underlineVal, bool seamless = true)
+        {
+            for (int i = 0; i < room.height; i++)
+            {
+                for (int j = 0; j < room.width; j++)
+                {
+                    if (room.GetCell(j, i) == valid)
+                    {
+                        Coord data = BasicBuilderFunctions.CheckAdjacentCells(room, new Coord(j, i), true, toFind);
+                        if (data.x == -1 || data.y == -1) room.SetCell(new Coord(j, i), underlineVal);
+                    }
+                }
+            }
+
+            if (seamless)BasicBuilderFunctions.Flood(room, underlineVal, toFind);
+
+            return room;
+        }
         public static Space2D NewJimmy(Space2D room)
         {
             List<Coord> points = new List<Coord>();
@@ -419,18 +457,30 @@ namespace JAFprocedural
 
             //fill room with valid space
             BasicBuilderFunctions.Flood(room, new Cell(0), new Cell(1), 1, 1, room.width - 1, room.height - 1);
+
+            //"mine" room a bit so that there's less to sample and it maybe runs faster
+            int mines = RNG.GenRand(3, 3);
+            for(int i = 0; i < mines;)
+            {
+                Coord loc = new Coord(RNG.GenRand(2, room.width - 4), RNG.GenRand(2, room.height - 4));
+                if(room.GetCell(loc) != 0)
+                {
+                    room = Clump(room, loc, new Cell(0));
+                    i++;
+                }
+            }
+
             //send room to the A* calculator
             astar.SetNewGrid(room, 1);
 
-            int iterations = RNG.GenRand(4-points.Count, 7-points.Count);
+            int iterations = RNG.GenRand(5-points.Count, 7-points.Count);
             UnityEngine.Debug.Log("chose " + iterations.ToString() + " points, " + points.Count.ToString() + " locations total");
 
-            int attempts = 0;
-            for (int i = 0; i < iterations && attempts < 20;)
+            for (int i = 0; i < iterations;)
             {
                 Coord c = RNG.GenRandCoord(room);
 
-                if (room.GetCell(c) != 2)
+                if (room.GetCell(c) == 1)
                 {
                     room.SetCell(c, new Cell(2));
                     points.Add(c);
@@ -456,18 +506,8 @@ namespace JAFprocedural
                 }
             }
 
-            for (int i = 0; i < room.height; i++)
-            {
-                for (int j = 0; j < room.width; j++)
-                {
-                    if (room.GetCell(j, i) == 1)
-                    {
-                        Coord data = BasicBuilderFunctions.CheckAdjacentCells(room, new Coord(j, i), true, new Cell(2));
-                        if (data.x == -1 || data.y == -1) room.SetCell(new Coord(j, i), new Cell(3));
-                    }
-                }
-            }
-            BasicBuilderFunctions.Flood(room, new Cell(3), new Cell(2));
+            BasicBuilderFunctions.Flood(room, new Cell(0), new Cell(1), 1, 1, room.width - 1, room.height - 1);
+            room = UnderLine(room, 1, new Cell(2), new Cell(3));
             BasicBuilderFunctions.Flood(room, new Cell(1), new Cell(0), 1, 1, room.width-1, room.height-1);
             BasicBuilderFunctions.Flood(room, new Cell(2), new Cell(1));
 

@@ -36,6 +36,13 @@ public class Ghosts : MonoBehaviour
     public float flashDuration;
     private Coroutine flashRoutine;
 
+
+    public AStarCalculator aStar;
+    public Space2D roomMap;
+    public bool isPathfinding = false;
+    public Queue<Coord> ghostPath = new Queue<Coord>();
+    bool firstUpdate = true;
+
     //this lets us reset the ghost by re-enabling the game object without having to hardcode our stats
     void OnEnable()
     {
@@ -47,6 +54,7 @@ public class Ghosts : MonoBehaviour
 
             dead = false;
             anim.SetBool("Death", false);
+            firstUpdate = true;
         }
     }
 
@@ -75,10 +83,11 @@ public class Ghosts : MonoBehaviour
         //grabs our material for flash effect
         material = gameObject.GetComponent<SpriteRenderer>().material;
         gameObject.GetComponent<SpriteRenderer>().material = material;
+
+        aStar = new AStarCalculator(new Space2D(), 1);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Scan()
     {
         //finds the player with a raycast and then raycasts up until the player looking for a tree
         RaycastHit2D playerRay = Physics2D.Raycast(transform.position, player.transform.position - transform.position, 20, playerMask);         
@@ -93,23 +102,99 @@ public class Ghosts : MonoBehaviour
                 LOS = false;
             }
         }
-        
-        //if we have line of sight we walk towards the player
-        if(LOS && !dead){       
-            transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
-            
-            //Rest of the stuff in this loop is used for the animation paramaters. Determines what walking direction animation to use
-            anim.SetFloat("playerX",player.transform.position.x - transform.position.x);
-            anim.SetFloat("playerY",player.transform.position.y - transform.position.y);
+    }
 
-            if(Mathf.Abs(anim.GetFloat("playerX")) > Mathf.Abs(anim.GetFloat("playerY"))){ anim.SetBool("Vertical", false);}
-            else{anim.SetBool("Vertical", true);}
-        }
-        if(audioSource.isPlaying == false){
+    private Coord WorldLocToCoord(Vector3 loc)
+    {
+        return new Coord(Mathf.FloorToInt(loc.x - roomMap.worldOrigin.x - 0.5f), Mathf.FloorToInt(-loc.y - roomMap.worldOrigin.y - 0.5f)+1);
+    }
+
+    private void UpdateMovementAnim()
+    {
+        //Determines what walking direction animation to use
+        anim.SetFloat("playerX", player.transform.position.x - transform.position.x);
+        anim.SetFloat("playerY", player.transform.position.y - transform.position.y);
+
+        if (Mathf.Abs(anim.GetFloat("playerX")) > Mathf.Abs(anim.GetFloat("playerY"))) { anim.SetBool("Vertical", false); }
+        else { anim.SetBool("Vertical", true); }
+    }
+
+    private void CopyToQueue(List<Coord> path)
+    {
+        int i;
+        for (i = 0, isPathfinding = true, ghostPath.Clear(); i < path.Count; ghostPath.Enqueue(path[i]), i++) ;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (!dead)
+        {
+            if (firstUpdate)
+            {
+                aStar = new AStarCalculator(roomMap, 1);
+                firstUpdate = false;
+            }
+            if (!isPathfinding)
+            {
+                Scan();
+                if (LOS)
+                {
+                    //is this LOS?
+                    transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+                    //update the animations
+                    UpdateMovementAnim();
+                }
+                else
+                {
+                    //we can't see the player, so grab a pathfinding list
+                    //GmapDisplay.Instance.UpdateMap(roomMap);
+                    List<Coord> toPlayer = aStar.AStar(WorldLocToCoord(transform.position), WorldLocToCoord(player.transform.position), 2000);
+                    if (toPlayer != null) CopyToQueue(toPlayer);
+                }
+            }
+
+            
+            //follow our path
+            if (isPathfinding)
+            {
+                //travel towards top value in the queue
+                transform.position = Vector2.MoveTowards(
+                    transform.position,
+                    new Vector2(ghostPath.Peek().x + roomMap.worldOrigin.x + 0.5f, -ghostPath.Peek().y - roomMap.worldOrigin.y + 0.5f),
+                    speed * Time.deltaTime);
+
+                if (new Vector2(transform.position.x, transform.position.y) == new Vector2(ghostPath.Peek().x + roomMap.worldOrigin.x + 0.5f, -ghostPath.Peek().y - roomMap.worldOrigin.y + 0.5f))
+                {
+                    //remove position from queue
+                    ghostPath.Dequeue();
+                    //check if within sight
+                    Scan();
+                    //stop current pathfinding if we see player or have arrived somewhere and still cant see player
+                    if (LOS || ghostPath.Count == 0) isPathfinding = false;
+                    else
+                    {
+                        List<Coord> toPlayer = aStar.AStar(WorldLocToCoord(transform.position), WorldLocToCoord(player.transform.position), 2000);
+                        if (toPlayer != null && toPlayer.Count < ghostPath.Count) CopyToQueue(toPlayer);
+                    }
+
+                }
+                //update the animations
+                UpdateMovementAnim();
+            }
+
+
+            //ghost saying oooo
+            if(audioSource.isPlaying == false){
             if(RNG.GenRand(1, 2) == 1){audioSource.clip = ooh1Sound;}
             else{audioSource.clip = ooh2Sound;}
             audioSource.Play();  
         }
+
+        }
+
+
+        
 
     }
 

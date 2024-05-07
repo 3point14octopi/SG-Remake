@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Unity.VisualScripting;
 
 namespace JAFprocedural
 {
@@ -38,9 +39,12 @@ namespace JAFprocedural
         }
         public void SetNewGrid(Space2D newGrid, int valid)
         {
+            Coord worldOriginPreserve = new Coord(newGrid.worldOrigin.x, newGrid.worldOrigin.y);
+            newGrid.worldOrigin = new Coord();
             grid = new Space2D(newGrid.width, newGrid.height);
             BasicBuilderFunctions.CopySpaceAToB(newGrid, grid, new List<Cell>(){ new Cell(valid)});
             BasicBuilderFunctions.FloodExcluding(grid, new Cell(1), new Cell(wall));
+            newGrid.worldOrigin = worldOriginPreserve;
         }
 
         //Average of hypotenuse (i don't think it's actually possible, we don't have perfect diagonals)
@@ -80,7 +84,7 @@ namespace JAFprocedural
         }
 
         //the A* algorithm
-        public List<Coord> AStar(Coord start, Coord goal)
+        public List<Coord> AStar(Coord start, Coord goal, int maxiterations = 20000)
         {
             AScoord start_ = new AScoord { x = start.x, y = start.y };
             AScoord goal_ = new AScoord { x = goal.x, y = goal.y };
@@ -96,7 +100,7 @@ namespace JAFprocedural
                 { m_position = start_, m_cost = 0, m_G = 0, m_heuristic = Heuristic(start_, goal_) };
             openSet.Add(startNode);
             int iterations = 0;
-            while(openSet.Count > 0 && iterations < 20000)
+            while(openSet.Count > 0 && iterations < maxiterations)
             {
                 iterations++;
                 Node currentNode = openSet.Min<Node>();
@@ -149,7 +153,10 @@ namespace JAFprocedural
                 }
                 closedSet.Add(currentNode.m_position);
             }
-            UnityEngine.Debug.Log("no path found");
+            UnityEngine.Debug.Log("no path found between " + start.x.ToString() + ',' + start.y.ToString() + " and " + goal.x.ToString() + ',' + goal.y.ToString() + " in " + iterations.ToString() + " iterations");
+
+            GmapDisplay.Instance.UpdateMap(grid);
+            
             return null;
         }
         
