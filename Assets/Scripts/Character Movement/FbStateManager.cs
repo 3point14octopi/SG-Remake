@@ -62,6 +62,7 @@ public class FbStateManager : MonoBehaviour
     private Material material;
     public float flashDuration;
     private Coroutine flashRoutine;
+    public bool iFrame = false;
 
 
     // Start is called before the first frame update
@@ -145,17 +146,19 @@ public class FbStateManager : MonoBehaviour
     public IEnumerator FlashRoutine(){
 
         gameObject.GetComponent<SpriteRenderer>().material = flash;
+        iFrame = true;
         
         yield return new WaitForSeconds(flashDuration);
 
         gameObject.GetComponent<SpriteRenderer>().material = material;
+        iFrame = false;
 
         flashRoutine = null;
 
     }
 
     public void TakeDamage(float damage){
-        if(currentState != IceblockState && currentState != DeathState){
+        if(!iFrame){
             health = health - damage;
             healthbar.GetComponent<FbHealthBar>().HealthBar(health);
 

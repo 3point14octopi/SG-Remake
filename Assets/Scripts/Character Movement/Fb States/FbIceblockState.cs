@@ -7,6 +7,7 @@ public class FbIceblockState : FbBaseState
     public override void EnterState(FbStateManager fb){
         //debug
         Debug.Log("Ice Block Time");
+        fb.iFrame = true;
         fb.anim.SetBool("Iceblock", true);
         fb.anim.SetInteger("IceblockHits", fb.iceBlockHP);
     }
@@ -17,12 +18,14 @@ public class FbIceblockState : FbBaseState
         if(Input.GetKeyUp(fb.iceBlockKey)){
             fb.anim.SetBool("Iceblock", false);
             fb.SwitchState(fb.IdleState);
+            fb.iFrame = false;
         }
 
         //Check for if iceblock cracks
         if(fb.iceBlockHP <= 0){
             fb.anim.SetBool("Iceblock", false);
             fb.SwitchState(fb.IdleState);
+            fb.iFrame = false;
         }
     }
 
