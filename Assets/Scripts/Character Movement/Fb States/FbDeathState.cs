@@ -10,6 +10,7 @@ public class FbDeathState : FbBaseState
         Debug.Log("DEATH TIME");
         fb.anim.Play("FrostbiteDeath");
         fb.rb.bodyType = RigidbodyType2D.Kinematic;
+        fb.iFrame = true;
         fb.StartCoroutine(Death());
     }
 

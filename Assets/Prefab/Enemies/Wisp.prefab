@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -276254471561930237}
   m_Layer: 0
   m_Name: Wisp
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -143,6 +143,10 @@ MonoBehaviour:
   health: 10
   speed: 0.75
   damage: 1
+  bulletSpeed: 2
+  bulletDamage: 1
+  scrapnelCount: 8
+  bulletPrefab: {fileID: 7514329530815829435, guid: 1cc0247fcf0cb0246b9702ec00f014fd, type: 3}
   cLayermask:
     serializedVersion: 2
     m_Bits: 256
