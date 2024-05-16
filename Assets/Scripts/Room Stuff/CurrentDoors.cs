@@ -66,7 +66,7 @@ public class CurrentDoors : MonoBehaviour
 
     public Space2D floorMap;
     public Coord pos;
-    public JAFGridLayer doorLayer;
+    public SimpleGridLayer doorLayer;
     
     public void OnRoomEnter(Coord location)
     {

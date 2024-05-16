@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -12,8 +13,8 @@ public class LevelGenerator : MonoBehaviour
 {
     public CurrentDoors doorManager;
     public CamShift camRef;
-    public JAFGridLayer[] layers = new JAFGridLayer[3];
-    public int backgroundLayer = 1;
+    [SerializeField]public JGridLayer[] layers = new JGridLayer[3];
+    public int backgroundLayerIndex = 1;
     private Space2D room;
     private SG_Level dungeon;
     [Header("Generation Parameters")]
@@ -39,6 +40,8 @@ public class LevelGenerator : MonoBehaviour
         }
 
         PrintFullMap();
+        AstarDebugLayer.Instance.SetRoomMap(dungeon.megaMap);
+        
     }
 
     // Update is called once per frame
@@ -73,10 +76,10 @@ public class LevelGenerator : MonoBehaviour
         {
             for (int x = room.worldOrigin.x + room.width - 1; x >= room.worldOrigin.x; x--)
             {
-                layers[backgroundLayer].Draw(new Vector3Int(x, -y, 0));
+                layers[backgroundLayerIndex].Draw(new Vector3Int(x, -y, 0));
 
-                int index = room.GetCell(x-room.worldOrigin.x, y-room.worldOrigin.y);
-                if((index >= 0 && index < layers.Length) && index != backgroundLayer)
+                int index = (room.GetCell(x-room.worldOrigin.x, y-room.worldOrigin.y)%2 == 0)?2:1;
+                if((index >= 0 && index < layers.Length) && index != backgroundLayerIndex)
                 {
                     layers[index].Draw(new Vector3Int(x, -y, 0));
                 }

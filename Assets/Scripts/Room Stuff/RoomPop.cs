@@ -40,11 +40,6 @@ public class RoomPop : MonoBehaviour
                 EObjPool.Instance.enemyPool[list.enemies[i].enemyID].SetActive(true);
                 EObjPool.Instance.enemyPool[list.enemies[i].enemyID].transform.position = new Vector3(list.enemies[i].startingLocation.x +0.5f, -list.enemies[i].startingLocation.y+0.5f, 0);
 
-                if (list.enemies[i].enemyID > 10 && list.enemies[i].enemyID < 15)
-                {
-                    EObjPool.Instance.enemyPool[list.enemies[i].enemyID].GetComponent<Ghosts>().aStar = new AStarCalculator(ERoomManager.Instance.RequestRoom(currentPos), 1);
-                    EObjPool.Instance.enemyPool[list.enemies[i].enemyID].GetComponent<Ghosts>().roomMap = ERoomManager.Instance.RequestRoom(currentPos);
-                }
             
             }
         }

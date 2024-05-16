@@ -109,6 +109,7 @@ MonoBehaviour:
   damage: 1
   flash: {fileID: 2100000, guid: 57b09bca6b8c648429a388570af8be0a, type: 2}
   flashDuration: 0.1
+  isPathfinding: 0
 --- !u!58 &1253262358908222734
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -122,9 +123,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.09}
+  m_Offset: {x: 0.009999994, y: -0.057153054}
   serializedVersion: 2
-  m_Radius: 0.35
+  m_Radius: 0.26305205
 --- !u!50 &1253262358908222773
 Rigidbody2D:
   serializedVersion: 4
@@ -145,7 +146,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 7
+  m_Constraints: 4
 --- !u!95 &1253262358908222769
 Animator:
   serializedVersion: 5
