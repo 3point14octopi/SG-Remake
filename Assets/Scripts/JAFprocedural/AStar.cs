@@ -154,8 +154,6 @@ namespace JAFprocedural
                 closedSet.Add(currentNode.m_position);
             }
             UnityEngine.Debug.Log("no path found between " + start.x.ToString() + ',' + start.y.ToString() + " and " + goal.x.ToString() + ',' + goal.y.ToString() + " in " + iterations.ToString() + " iterations");
-
-            GmapDisplay.Instance.UpdateMap(grid);
             
             return null;
         }
