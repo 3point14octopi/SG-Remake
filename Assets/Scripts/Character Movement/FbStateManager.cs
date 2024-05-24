@@ -13,6 +13,7 @@ public class FbStateManager : MonoBehaviour
     public FbMoveState MoveState = new FbMoveState();
     public FbShootingState ShootState = new FbShootingState();
 
+    public FbStunState StunState = new FbStunState();
     public FbIceblockState IceblockState = new FbIceblockState();
     public FbDeathState DeathState = new FbDeathState();
     
@@ -103,15 +104,15 @@ public class FbStateManager : MonoBehaviour
         }else{iceBlockTimer -= Time.deltaTime;}
     }
 
+    //this is used mostly for the moving function inside of our moving states
     void FixedUpdate(){
         currentState.FixedUpdateState(this);
         gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 
+    //Only state that currently uses this is the Iceblock state which lowers the ice durability on hit
     void OnCollisionEnter2D(Collision2D other){
-        if(currentState == IceblockState){
-            currentState.Collision(this, other);
-        }
+        currentState.Collision(this, other);
     }
 
     //is called when a transition condition in our current states update is met
@@ -143,6 +144,8 @@ public class FbStateManager : MonoBehaviour
         }
     }
 
+    //changes the material to the flash material and turns on invincibilty for a small duration before switching them back
+    //is called in the damage function
     public IEnumerator FlashRoutine(){
 
         gameObject.GetComponent<SpriteRenderer>().material = flash;
@@ -157,8 +160,9 @@ public class FbStateManager : MonoBehaviour
 
     }
 
+    //called from the enemies that hit the player
     public void TakeDamage(float damage){
-        if(!iFrame){
+        if(!iFrame && damage > 0){
             health = health - damage;
             healthbar.GetComponent<FbHealthBar>().HealthBar(health);
 
