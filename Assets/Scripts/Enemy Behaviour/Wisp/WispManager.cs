@@ -10,6 +10,7 @@ public class WispManager : MonoBehaviour
     public float avoidance = 0.75f;
     public float obstacleAvoid = 1.5f;
     public float targetRange = 1f;
+    public bool beFunny = false;
 
     public Vector3 targetLocation = new Vector3();
     public Vector3 startingCentre;
@@ -59,29 +60,22 @@ public class WispManager : MonoBehaviour
         maxSpeed = new Vector2(speed, speed);
         if(roomOn && boidCount > 0)
         {
-            InitCentreOnUpdate();
-            CheckForCollisions(-1);
             CheckWander();
-            //CheckWander();
-            wVel += (wanderer.transform.up);
-            wVel.Normalize();
-            wanderer.transform.position +=  wVel* Time.deltaTime * (speed + 0.25f);
-            InitVelocityOnUpdate();
-
-            for (int boid = 0; boid < boidCount; boid++)
+            
+            //other wisps follow the leader
+            for(int boid = boidCount-1; boid > 0; boid--)
             {
-                //wisps[boid].transform.up = Vector3.Normalize(wanderer.transform.position-wisps[boid].transform.position);
-                wisps[boid].transform.rotation = Quaternion.Euler(0, 0, angle(wisps[boid].transform.position, wanderer.transform.position));
-                Vector3 avoidObstacles = CheckForCollisions(boid);
-                velocities[boid] += (BoidCentre(boid) + AvoidOthers(boid) + MatchVelocity(boid) + avoidObstacles + wisps[boid].transform.up);
-                
-                
-                velocities[boid].Normalize();
-                wisps[boid].GetComponent<Rigidbody2D>().AddForce(new Vector2(velocities[boid].x, velocities[boid].y) * Time.deltaTime * speed, ForceMode2D.Impulse);
-                if(wisps[boid].GetComponent<Rigidbody2D>().velocity.magnitude > speed)
-                {
-                    wisps[boid].GetComponent<Rigidbody2D>().velocity = Vector2.ClampMagnitude(wisps[boid].GetComponent<Rigidbody2D>().velocity, speed);
-                }
+                //rotate towards wisp ahead 
+                wisps[boid].transform.rotation = Quaternion.Euler(0, 0, angle(wisps[boid].transform.position, wisps[boid-1].transform.position));
+                CheckForCollisions(boid);
+                wisps[boid].transform.position = (beFunny)?wisps[boid-1].transform.position:Vector2.MoveTowards(wisps[boid].transform.position, wisps[boid - 1].transform.position, speed * Time.deltaTime);
+            }
+
+            //front wisp wanders
+            wisps[0].GetComponent<Rigidbody2D>().AddForce(wisps[0].transform.up.normalized + CheckForCollisions(0) * Time.deltaTime *speed, ForceMode2D.Impulse);
+            if (wisps[0].GetComponent<Rigidbody2D>().velocity.magnitude > speed)
+            {
+                wisps[0].GetComponent<Rigidbody2D>().velocity = Vector2.ClampMagnitude(wisps[0].GetComponent<Rigidbody2D>().velocity, speed);
             }
         }
         
@@ -92,25 +86,18 @@ public class WispManager : MonoBehaviour
     {
         if(RNG.GenRand(1, 10) > 9)
         {
-            //this still isn't even right but SHHH
             wRot = (RNG.GenRand(-1, 3) + RNG.GenRand(-1, 3))%2;
-            wanderer.transform.Rotate(0, 0, wRot * 5);
+            wisps[0].transform.Rotate(0, 0, wRot * 5);
         }
         
     }
+
 
     private float angle(Vector3 boid, Vector3 target)
     {
         return (Mathf.Atan2(target.y - boid.y, target.x - boid.x) * Mathf.Rad2Deg - 90f);
     }
 
-    private void PickTarget()
-    {
-        Coord location = new Coord(0, 0);
-        for (; roomMap.GetCell(location) != 1; location = RNG.GenRandCoord(roomMap)) ;
-
-        targetLocation = new Vector3(location.x + roomMap.worldOrigin.x + 0.5f, -location.y - roomMap.worldOrigin.y + 0.5f, 0);
-    }
     private void InitCentreOnUpdate()
     {
         startingCentre = Vector3.zero;
@@ -123,10 +110,6 @@ public class WispManager : MonoBehaviour
         foreach (Vector3 boid in velocities) startingVelocity += boid;
     }
 
-    private Coord WorldLocToCoord(Vector3 loc)
-    {
-        return new Coord(Mathf.FloorToInt(loc.x - roomMap.worldOrigin.x - 0.5f), Mathf.FloorToInt(-loc.y - roomMap.worldOrigin.y - 0.5f));
-    }
     
     //RULE 1: MOVE TOWARDS CENTRE OF MASS
     private Vector3 BoidCentre(int boidIndex)
@@ -170,14 +153,14 @@ public class WispManager : MonoBehaviour
 
         return result;
     }
-    private Vector3 CheckForCollisions(int boidIndex)
+    private Vector3 CheckForCollisions(int boid)
     {
         bool centreHit = false;
         bool leftHit = false;
         bool rightHit = false;
 
         Vector3 avoidance = Vector3.zero;
-        RaycastHit2D wallDetect = Physics2D.Raycast(((boidIndex > -1)?wisps[boidIndex]:wanderer).transform.position + ((boidIndex > -1) ? wisps[boidIndex] : wanderer).transform.up, ((boidIndex > -1) ? wisps[boidIndex] : wanderer).transform.up, 2f, cLayermask);
+        RaycastHit2D wallDetect = Physics2D.Raycast(wisps[boid].transform.position + wisps[boid].transform.up, wisps[boid].transform.up, 2f, cLayermask);
         if (wallDetect.collider != null)
         {
             Debug.Log("hit");
@@ -185,7 +168,7 @@ public class WispManager : MonoBehaviour
             if (wallDetect.collider.gameObject.tag == "TempCollision")
             {
                 Debug.Log("wow, a thing");
-                avoidance -= Avoid(((boidIndex > -1) ? wisps[boidIndex] : wanderer).transform.position, wallDetect.collider.transform.position, true);
+                avoidance -= Avoid(wisps[boid].transform.position, wallDetect.collider.transform.position, true);
             }
         }
 
@@ -193,7 +176,7 @@ public class WispManager : MonoBehaviour
         if (avoidance != Vector3.zero)
         {
             centreHit = true;
-            ((boidIndex > -1) ? wisps[boidIndex] : wanderer).transform.Rotate(0, 0, 45);
+            wisps[boid].transform.Rotate(0, 0, 45);
         }
         return avoidance;
     }
@@ -227,8 +210,8 @@ public class WispManager : MonoBehaviour
         roomOn = true;
 
 
-        PickTarget();
-        wanderer.transform.position = targetLocation;
+        //PickTarget();
+        //wanderer.transform.position = targetLocation;
         if(cList.Count == 0)StartCoroutine(PlaceBadColliders());
 
         velocities = new Vector3[boidCount];
@@ -258,7 +241,7 @@ public class WispManager : MonoBehaviour
 
     public void RemoveWisp(int index)
     {
-        if(index > 0 && index < boidCount)
+        if(index > -1 && index < boidCount)
         {
             wisps.RemoveAt(index);
             boidCount--;
