@@ -7,6 +7,7 @@ public class EnemyBulletBehaviour : MonoBehaviour
     //all 3 of these things are updated by the person that calls them
     public float bSpeed; //bullet speed
     public float bDamage; //bullet damage
+    public int bRebound; 
 
      // Update is called once per frame
     void Update()
@@ -24,7 +25,10 @@ public class EnemyBulletBehaviour : MonoBehaviour
             other.gameObject.GetComponent<FbStateManager>().TakeDamage(bDamage);
             Destroy(gameObject);
         }     
-        else{Destroy(gameObject);}   
+        else{
+            if(bRebound > 0){bRebound--; transform.Rotate(0.0f, 0.0f, 180.0f, Space.Self);}
+            else if(bRebound == 0){Destroy(gameObject);}
+        }   
     }
 
 }

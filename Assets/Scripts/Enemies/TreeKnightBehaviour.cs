@@ -109,6 +109,7 @@ public class TreeKnightBehaviour : MonoBehaviour
 
     IEnumerator Shoot()
     {
+        //spawns 2 bullets one up and down using beanspeed for bullet speed and beandamage for bullet damahe activating at a yield rate of beanRate
         yield return new WaitForSeconds(beanRate);
         activeBullet = (GameObject)Instantiate(bulletPrefab, gameObject.transform.position, Quaternion.Euler(0, 0, 0));
         activeBullet.GetComponent<EnemyBulletBehaviour>().bSpeed = beanSpeed;
