@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class EnemyBulletBehaviour : MonoBehaviour
 {
     //all 3 of these things are updated by the person that calls them
@@ -29,6 +30,14 @@ public class EnemyBulletBehaviour : MonoBehaviour
             if(bRebound > 0){bRebound--; transform.Rotate(0.0f, 0.0f, 180.0f, Space.Self);}
             else if(bRebound == 0){Destroy(gameObject);}
         }   
+    }
+    
+    public void SetBullet(Ammo a)
+    {
+
+        bSpeed = a.speed;
+        bDamage = a.damage;
+        bRebound = a.rebound;
     }
 
 }

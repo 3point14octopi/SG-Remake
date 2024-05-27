@@ -14654,7 +14654,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1442165991}
   - component: {fileID: 1442165990}
-  - component: {fileID: 1442165989}
+  - component: {fileID: 1442165992}
   m_Layer: 0
   m_Name: Gun tester
   m_TagString: Untagged
@@ -14662,40 +14662,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1442165989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1442165988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 333cccd1c348e23449a7e4471c871e5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentAmmo:
-    ammoName: Regular
-    speed: 4
-    firerate: 1
-    damage: 1
-    rebound: 0
-  ammoList:
-  - ammoName: Fast and Bouncy
-    speed: 5
-    firerate: 1
-    damage: 0
-    rebound: 1
-  targeted: 1
-  spreadNum: 1
-  burstNum: 1
-  spreadAngle: 0
-  spreadsAngle: []
-  spreadDis: 0.2
-  spreadsDis: []
-  bulletPrefab: {fileID: 7514329530815829435, guid: 1cc0247fcf0cb0246b9702ec00f014fd, type: 3}
-  needLOS: 1
-  automatic: 1
 --- !u!212 &1442165990
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -14763,6 +14729,33 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1442165992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442165988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5f896aefc387fc4fabf55afde5e50b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentAmmo:
+    ammoName: 
+    speed: 2
+    firerate: 2
+    damage: 2
+    rebound: 2
+    spreadNum: 2
+    burstNum: 4
+    spreadDis: 1.5
+    spreadAngle: 0
+    prefab: {fileID: 7514329530815829435, guid: 1cc0247fcf0cb0246b9702ec00f014fd, type: 3}
+  ammoList: []
+  automatic: 1
+  targeted: 1
+  needLOS: 1
 --- !u!1 &1457909580
 GameObject:
   m_ObjectHideFlags: 0
