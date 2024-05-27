@@ -1977,7 +1977,7 @@ GameObject:
   - component: {fileID: 1127780222}
   - component: {fileID: 1127780223}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: TestDummy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2069,7 +2069,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1127780217}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2096,7 +2096,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 7
 --- !u!114 &1127780223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2109,12 +2109,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 617a8db9c057fee459c667688e2ff7fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Stats: 1e000000
+  isAlive: 1
+  showStats: 1
+  Stats: 05000000
   damageTags:
   - PlayerBullet
-  flashObj:
-    flashMaterial: {fileID: 2100000, guid: 57b09bca6b8c648429a388570af8be0a, type: 2}
-    flashDuration: 0.1
+  damageReactions:
+  - {fileID: 11400000, guid: 9de4910270d3fc34facbc86ae20f35bc, type: 2}
+  deathReactions: []
 --- !u!1 &1165854443
 GameObject:
   m_ObjectHideFlags: 0

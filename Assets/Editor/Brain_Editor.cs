@@ -9,21 +9,28 @@ public class Brain_Editor : Editor
     {
         Brain h = target as Brain;
         serializedObject.Update();
-
-        DrawPropertiesExcluding(serializedObject, "Stats");
+       
+        DrawPropertiesExcluding(serializedObject, "Stats", "showStats");
         DrawStatBlock(h);
 
+        //this is so that when we edit one of our stats using the stat blocks, it applies the changes at runtime
         EditorUtility.SetDirty(h);
         serializedObject.ApplyModifiedProperties();
     }
 
-    private void DrawStatBlock(Brain h)
+    private void DrawStatBlock(Brain b)
     {
-        for(int i = 0; i < h.Stats.Length; i++)
+        //this lets us put the stat stuff into a dropdown, like arrays or lists
+        b.showStats = EditorGUILayout.Foldout(b.showStats, b.gameObject.name.ToString() + " Stats", true);//we toggle the bool by clicking the foldout
+        if(b.showStats)/*if true we draw the stat values*/
         {
-            EditorGUILayout.LabelField(((EntityStat)i).ToString());
-            h.Stats[i] = EditorGUILayout.IntField(h.Stats[i]);
+            for(int i = 0; i < b.Stats.Length; i++)
+            {
+                EditorGUILayout.LabelField(((EntityStat)i).ToString());
+                b.Stats[i] = EditorGUILayout.IntField(b.Stats[i]);
+            }
         }
         
     }
+
 }
