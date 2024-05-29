@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JAFprocedural;
+using Unity.VisualScripting;
 
 
 public class EnemyBulletBehaviour : MonoBehaviour
@@ -8,7 +10,8 @@ public class EnemyBulletBehaviour : MonoBehaviour
     //all 3 of these things are updated by the person that calls them
     public float bSpeed; //bullet speed
     public float bDamage; //bullet damage
-    public int bRebound; 
+    public int bRebound = 1;
+    private Vector3 wallCenter;
 
      // Update is called once per frame
     void Update()
@@ -27,8 +30,28 @@ public class EnemyBulletBehaviour : MonoBehaviour
             Destroy(gameObject);
         }     
         else{
-            if(bRebound > 0){bRebound--; transform.Rotate(0.0f, 0.0f, 180.0f, Space.Self);}
-            else if(bRebound == 0){Destroy(gameObject);}
+            if (bRebound > 0){
+                Debug.Log("I hit a wall");
+                Vector3Int tile = AstarDebugLayer.Instance.renderGrid.WorldToCell(other.rigidbody.ClosestPoint(transform.position));
+                wallCenter = AstarDebugLayer.Instance.renderGrid.GetCellCenterWorld(tile);
+                bRebound--;
+
+                transform.position = Vector3.Reflect(transform.position, Vector3.up);     
+
+                /*if (Mathf.Abs(wallCenter.x - transform.position.x) > Mathf.Abs(wallCenter.y - transform.position.y)){
+                }
+
+                else if (Mathf.Abs(wallCenter.x - transform.position.x) < Mathf.Abs(wallCenter.y - transform.position.y))
+                {
+
+                }
+                else if (Mathf.Abs(wallCenter.x - transform.position.x) == Mathf.Abs(wallCenter.y - transform.position.y))
+                {
+                    transform.Rotate(0.0f, 0.0f, 180.0f, Space.Self);
+                }*/
+            }
+
+            //else if(bRebound == 0){Destroy(gameObject);}
         }   
     }
     
@@ -39,5 +62,4 @@ public class EnemyBulletBehaviour : MonoBehaviour
         bDamage = a.damage;
         bRebound = a.rebound;
     }
-
 }

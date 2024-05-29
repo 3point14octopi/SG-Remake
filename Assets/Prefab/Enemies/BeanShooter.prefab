@@ -105,9 +105,10 @@ MonoBehaviour:
   shoot2Sound: {fileID: 8300000, guid: c43215bf92833514b814be7017c5e0a4, type: 3}
   deathSound: {fileID: 8300000, guid: 3e8f85b83bde12a4abd9b65b84d06864, type: 3}
   health: 30
-  damage: 1
+  damage: 0
   speed: 5
   beanRate: 2
+  rebound: 1
   bulletPrefab: {fileID: 7514329530815829435, guid: 1cc0247fcf0cb0246b9702ec00f014fd, type: 3}
   flash: {fileID: 2100000, guid: 57b09bca6b8c648429a388570af8be0a, type: 2}
   flashDuration: 0.1

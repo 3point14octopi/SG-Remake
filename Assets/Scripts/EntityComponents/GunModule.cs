@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+
 
 
 public class GunModule : MonoBehaviour
@@ -87,7 +87,7 @@ public class GunModule : MonoBehaviour
            StartCoroutine(TargetShoot(currentAmmo));
            yield return new WaitForSeconds(currentAmmo.firerate);
        }
-   }
+    }
 
    IEnumerator LOSTargetShooting(){  
        while(alive){
@@ -134,7 +134,7 @@ public class GunModule : MonoBehaviour
             }
            yield return new WaitForSeconds(0.1f);
        }
-   }
+    }
 
    IEnumerator PresetShoot(Ammo a){
        for(int j = 0; j < currentAmmo.burstNum; j++){

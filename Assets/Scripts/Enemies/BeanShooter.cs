@@ -29,6 +29,7 @@ public class BeanShooter : MonoBehaviour
     public float damage = 1; //bullet damage
     public float speed = 5; //speed of the bullets
     public float beanRate = 2; //firerate
+    public int rebound = 1;
     public GameObject bulletPrefab; //bullet prefab
 
     [Header("Flash Hit")]
@@ -138,7 +139,8 @@ public class BeanShooter : MonoBehaviour
     public void Shooting(){    
         activeBullet = (GameObject)Instantiate(bulletPrefab, gameObject.transform.position, launch);
         activeBullet.GetComponent<EnemyBulletBehaviour>().bSpeed = speed;
-        activeBullet.GetComponent<EnemyBulletBehaviour>().bDamage = damage;   
+        activeBullet.GetComponent<EnemyBulletBehaviour>().bDamage = damage;
+        activeBullet.GetComponent<EnemyBulletBehaviour>().bRebound = rebound;
         anim.SetBool("LOS", true);
         
         if(RNG.GenRand(1, 2) == 1){audioSource.clip = shoot1Sound;}
