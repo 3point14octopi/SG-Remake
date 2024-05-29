@@ -16,7 +16,7 @@ public class AstarDebugLayer : SimpleGridLayer
     private AStarCalculator aStar;
     private Coord worldOrigin = new Coord(0, 0);
 
-    public static AstarDebugLayer Instance = new AstarDebugLayer();
+    public static AstarDebugLayer Instance;
 
     private void Awake()
     {
