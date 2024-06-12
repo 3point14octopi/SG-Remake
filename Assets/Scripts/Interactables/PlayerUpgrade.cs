@@ -12,9 +12,8 @@ public class PlayerUpgrade : Upgrade
     public PlayerUpgrades playerUpgrade;
     public int modifier;
 
-    public override void ApplyUpgrade(FbBrain fb)
+    public override void ApplyUpgrade(FbUpgradeManager upgradeManager)
     {
-        Debug.Log("Inside PlayerUpgrade");
-         fb.PlayerUpgrade(this);
+        upgradeManager.brain.PlayerUpgrade(this);
     }
 }

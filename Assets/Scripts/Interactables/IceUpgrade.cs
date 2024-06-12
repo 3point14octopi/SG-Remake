@@ -11,8 +11,8 @@ public class IceUpgrade : Upgrade
 
     public IceUpgrades iceUpgrade;
 
-    public override void ApplyUpgrade(FbBrain fb)
+    public override void ApplyUpgrade(FbUpgradeManager upgradeManager)
     {
-        fb.IceUpgrade(this);
+        upgradeManager.brain.IceUpgrade(this);
     }
 }

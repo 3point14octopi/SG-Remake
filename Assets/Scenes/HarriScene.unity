@@ -26372,6 +26372,8 @@ MonoBehaviour:
   - Player
   effects:
   - {fileID: 11400000, guid: e6f7633cf55522344951c61e5c6cfb5b, type: 2}
+  - {fileID: 11400000, guid: 6351fde877f1945498bfa418b305102e, type: 2}
+  - {fileID: 11400000, guid: 959f8a10b82e86d45af82597f1c94f8d, type: 2}
 --- !u!1 &150961143
 GameObject:
   m_ObjectHideFlags: 0
@@ -28632,13 +28634,13 @@ MonoBehaviour:
   currentAmmo:
     ammoName: Shotgun
     speed: 5
-    firerate: 1
+    firerate: 2
     damage: 0
-    rebound: 1
-    spreadNum: 3
-    burstNum: 3
+    rebound: 0
+    spreadNum: 5
+    burstNum: 1
     spreadDis: 0.3
-    spreadAngle: 0
+    spreadAngle: 5
     prefab: {fileID: 7514329530815829435, guid: 1cc0247fcf0cb0246b9702ec00f014fd, type: 3}
   ammoList: []
   spreadsAngle: []
@@ -29368,10 +29370,10 @@ GameObject:
   - component: {fileID: 2042452974}
   - component: {fileID: 2042452967}
   - component: {fileID: 2042452973}
+  - component: {fileID: 2042452975}
   - component: {fileID: 2042452970}
   - component: {fileID: 2042452971}
   - component: {fileID: 2042452972}
-  - component: {fileID: 2042452975}
   m_Layer: 6
   m_Name: Frostbite
   m_TagString: Player
@@ -29575,7 +29577,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAlive: 1
   showStats: 1
-  Stats: 0000000000000000
+  Stats: 0a0000000a000000
+  currentStats: 
   damageTags:
   - Enemy
   - EnemyBullet
@@ -29584,10 +29587,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 00336237f3cf4e34fa3ab7ab816958ef, type: 2}
   deathReactions:
   - {fileID: 11400000, guid: 9de4910270d3fc34facbc86ae20f35bc, type: 2}
-  s: {fileID: 0}
-  health: 10
-  maxHealth: 10
-  movementSpeed: 10
+  s: {fileID: 2042452967}
   movement: {x: 0, y: 0}
   rb: {fileID: 2042452970}
   iFrame: 0
@@ -29603,15 +29603,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2042452966}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 617a8db9c057fee459c667688e2ff7fe, type: 3}
+  m_Script: {fileID: 11500000, guid: 039f7f8ae3b425d4d8e3d5ede176c710, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAlive: 1
-  showStats: 1
-  Stats: 0000000000000000
-  damageTags: []
-  damageReactions: []
-  deathReactions: []
+  brain: {fileID: 2042452974}
+  states: {fileID: 2042452967}
+  gun: {fileID: 2042452973}
 --- !u!1 &2077890013
 GameObject:
   m_ObjectHideFlags: 0

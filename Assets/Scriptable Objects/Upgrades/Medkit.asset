@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 347712dae4297914588ea95547c34c95, type: 3}
   m_Name: Medkit
   m_EditorClassIdentifier: 
-  playerUpgrade: 1
+  playerUpgrade: 0
   modifier: 2

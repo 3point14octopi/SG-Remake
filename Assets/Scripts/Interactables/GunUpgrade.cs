@@ -12,8 +12,8 @@ public class GunUpgrade : Upgrade
     public GunUpgrades gunUpgrade;
     public int modifier;
 
-    public override void ApplyUpgrade(FbBrain fb)
+    public override void ApplyUpgrade(FbUpgradeManager upgradeManager)
     {
-        fb.GunUpgrade(this);
+        upgradeManager.gun.GunUpgrade(this);
     }
 }

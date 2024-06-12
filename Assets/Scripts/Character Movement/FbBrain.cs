@@ -66,16 +66,6 @@ public class FbBrain : Brain
                 ReactToHit();
             }
         }
-        //remove and put in upgrade manager
-        if (collision.gameObject.tag == "Pickup")
-        {
-            for (int i = 0; i < collision.gameObject.GetComponent<Pickup>().effects.Count; i++)
-            {
-                Debug.Log(collision.gameObject.GetComponent<Pickup>().effects.Count);
-                collision.gameObject.GetComponent<Pickup>().effects[i].ApplyUpgrade(this);
-            }
-            Destroy(collision.gameObject);
-        }
     }
 
     private void OnHit(HitEffect effect)
@@ -107,16 +97,22 @@ public class FbBrain : Brain
         switch (upgrade.playerUpgrade)
         {
             case PlayerUpgrades.Health:
-                {
+            {
+                if (currentStats[(int)upgrade.playerUpgrade] + upgrade.modifier <= Stats[(int)upgrade.playerUpgrade]){ 
                     currentStats[(int)upgrade.playerUpgrade] += upgrade.modifier;
                     healthbar.GetComponent<FbHealthBar>().HealthBar(currentStats[(int)upgrade.playerUpgrade]);
-                    break;
                 }
+                break;
+            }
+
             case PlayerUpgrades.Speed:
+            {
+                if (currentStats[(int)upgrade.playerUpgrade] + upgrade.modifier <= Stats[(int)upgrade.playerUpgrade])
                 {
                     currentStats[(int)upgrade.playerUpgrade] += upgrade.modifier;
-                    break;
                 }
+                break;
+            }
 
         }
     }
@@ -126,9 +122,6 @@ public class FbBrain : Brain
         //something something ice
     }
 
-    public void GunUpgrade(GunUpgrade upgrade)
-    {
-        //something something gun
-    }
+
 
 }

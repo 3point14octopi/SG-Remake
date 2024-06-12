@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using UnityEngine;
+using UpgradeStats;
 
 public class FbGun : GunModule
 {
@@ -55,4 +56,55 @@ public class FbGun : GunModule
         active =true;
         
     }
+    public void GunUpgrade(GunUpgrade upgrade)
+    {
+        switch (upgrade.gunUpgrade)
+        {
+            case GunUpgrades.Damage:
+            {
+                currentAmmo.damage += upgrade.modifier;
+                break;
+            }
+
+            case GunUpgrades.Speed:
+            {
+                    currentAmmo.damage += upgrade.modifier;
+                    break;
+            }
+
+            case GunUpgrades.Size:
+                {
+                    Debug.Log("No size upgrade available");
+                    //currentAmmo.size += upgrade.modifier;
+                    break;
+                }
+
+            case GunUpgrades.Firerate:
+                {
+                    currentAmmo.firerate += upgrade.modifier;
+                    break;
+                }
+
+            case GunUpgrades.Rebound:
+                {
+                    currentAmmo.rebound += upgrade.modifier;
+                    break;
+                }
+
+            case GunUpgrades.Spread:
+                {
+                    currentAmmo.spreadNum += upgrade.modifier;
+                    break;
+                }
+
+            case GunUpgrades.Burst:
+                {
+                    currentAmmo.burstNum += upgrade.modifier;
+                    break;
+                }
+
+
+        }
+    }
+
 }

@@ -33,7 +33,8 @@ namespace UpgradeStats
     {
         
 
-        public virtual void ApplyUpgrade(FbBrain fb){
+        public virtual void ApplyUpgrade(FbUpgradeManager upgradeManager)
+        {
 
         }
     }
