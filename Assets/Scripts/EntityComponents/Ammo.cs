@@ -12,8 +12,8 @@ public class Ammo
     public float damage;
     public int rebound;
 
-    public float spreadNum;
-    public float burstNum;
+    [Range(1, 100)] public int spreadNum;
+    [Range(1, 10)] public int burstNum ;
 
     public float spreadDis;
     public float spreadAngle;

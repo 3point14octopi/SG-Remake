@@ -17,14 +17,6 @@ public class SpikyVinesBehaviour : MonoBehaviour
         alive = true;
     }
 
-    void OnCollisionEnter2D(Collision2D other){
-        
-        //damages the player if they walk into us
-        if (other.gameObject.tag == "Player" && alive == true)
-        {
-            other.gameObject.GetComponent<FbStateManager>().TakeDamage(damage);
-        }
-    }
 
     public IEnumerator WitherRoutine(){
 

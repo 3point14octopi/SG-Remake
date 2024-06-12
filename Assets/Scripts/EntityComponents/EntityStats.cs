@@ -5,7 +5,8 @@ namespace EntityStats
 {
     public enum EntityStat
     {
-        Health
+        Health,
+        Speed
     }
 
     [Serializable]public struct HitEffect

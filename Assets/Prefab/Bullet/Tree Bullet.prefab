@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bSpeed: 0
   bDamage: 0
+  bRebound: 0
 --- !u!70 &2738970408359459003
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -111,7 +112,7 @@ CapsuleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.03, y: -0.03}
