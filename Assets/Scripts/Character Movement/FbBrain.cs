@@ -39,6 +39,7 @@ public class FbBrain : Brain
 
     }
 
+    //called by the states that need it
     public void Moving()
     {
         //WASD movement || finds our vector then gives momentum in that direction
@@ -68,6 +69,7 @@ public class FbBrain : Brain
         }
     }
 
+    //applies the effects of and object we ran into. Currently needs to be a switch(or lookup I guess) cause of things like the healthbar being updated
     private void OnHit(HitEffect effect)
     {
         switch (effect.targetedStat)
@@ -91,7 +93,7 @@ public class FbBrain : Brain
         }
     }
 
-
+    //given  by upgrade manager lets us vary any of our entity states based on a upgrade pickup. Currently needs to be a switch(or lookup I guess) cause of things like the healthbar being updated
     public void PlayerUpgrade(PlayerUpgrade upgrade)
     {
         switch (upgrade.playerUpgrade)
@@ -116,12 +118,5 @@ public class FbBrain : Brain
 
         }
     }
-
-    public void IceUpgrade(IceUpgrade upgrade)
-    {
-        //something something ice
-    }
-
-
 
 }

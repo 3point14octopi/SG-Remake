@@ -15,5 +15,6 @@ public class PlayerUpgrade : Upgrade
     public override void ApplyUpgrade(FbUpgradeManager upgradeManager)
     {
         upgradeManager.brain.PlayerUpgrade(this);
+        upgradeManager.PlayerUpgradeTracker(this);
     }
 }

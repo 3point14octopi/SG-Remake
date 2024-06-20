@@ -142,6 +142,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effects:
   - targetedStat: 0
-    modifier: -1
-  - targetedStat: 1
-    modifier: -1
+    modifier: 0

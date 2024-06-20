@@ -15,5 +15,6 @@ public class GunUpgrade : Upgrade
     public override void ApplyUpgrade(FbUpgradeManager upgradeManager)
     {
         upgradeManager.gun.GunUpgrade(this);
+        upgradeManager.GunUpgradeTracker(this);
     }
 }

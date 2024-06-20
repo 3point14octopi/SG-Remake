@@ -13,6 +13,7 @@ public class IceUpgrade : Upgrade
 
     public override void ApplyUpgrade(FbUpgradeManager upgradeManager)
     {
-        upgradeManager.brain.IceUpgrade(this);
+        upgradeManager.states.IceUpgrade(this);
+        upgradeManager.IceUpgradeTracker(this);
     }
 }

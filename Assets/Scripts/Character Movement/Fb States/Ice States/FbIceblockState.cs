@@ -5,11 +5,9 @@ using UnityEngine;
 public class FbIceblockState : FbBaseState
 {
     public override void EnterState(FbStateManager fb){
-        //debug
-        Debug.Log("Ice Block Time");
         fb.b.iFrame = true;
         fb.b.anim.SetBool("Iceblock", true);
-        fb.b.anim.SetInteger("IceblockHits", fb.iceBlockHP);
+        fb.b.anim.SetInteger("IceblockHits", fb.currentIceUses);
     }
 
     public override void UpdateState(FbStateManager fb){
@@ -22,7 +20,7 @@ public class FbIceblockState : FbBaseState
         }
 
         //Check for if iceblock cracks
-        if(fb.iceBlockHP <= 0){
+        if(fb.currentIceUses <= 0){
             fb.b.anim.SetBool("Iceblock", false);
             fb.SwitchState(fb.IdleState);
             fb.b.iFrame = false;
@@ -33,10 +31,11 @@ public class FbIceblockState : FbBaseState
 
     }
     
+    //If youa re hit by anything your iceblock with crack a little bit
     public override void Collision(FbStateManager fb, Collision2D Collision2D){
 
-        fb.iceBlockHP--;
-        fb.b.iceBar.GetComponent<FBIceBar>().IceBar(fb.iceBlockHP);
-        fb.b.anim.SetInteger("IceblockHits", fb.iceBlockHP);
+        fb.currentIceUses--;
+        fb.b.iceBar.GetComponent<FBIceBar>().IceBar(fb.currentIceUses);
+        fb.b.anim.SetInteger("IceblockHits", fb.currentIceUses);
     }
 }

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UpgradeStats;
 
@@ -8,6 +7,7 @@ public class FbStateManager : MonoBehaviour
 {
 
     public FbBrain b;
+    public FbGun g;
     //Catalog of all states
     public FbIdleState IdleState = new FbIdleState();
     public FbMoveState MoveState = new FbMoveState();
@@ -16,10 +16,9 @@ public class FbStateManager : MonoBehaviour
     public FbStunState StunState = new FbStunState();
     public FbDeathState DeathState = new FbDeathState();
 
+    [Header("\nIce states and variables")]
     public FbIceblockState IceBlockState = new FbIceblockState();
-    //public FbIceblockState IceDecoyState = new FbIceblockState();
-    //public FbIceblockState IceWallState = new FbIceblockState();
-
+    public FbIceItemState IceItemState = new FbIceItemState();
 
 
     //Keeps track of our current state.
@@ -33,7 +32,14 @@ public class FbStateManager : MonoBehaviour
     public KeyCode iceBlockKey = KeyCode.LeftShift;//for ice block power
 
 
-    public int iceBlockHP = 5;//hits on the ice block
+
+    public GameObject iceWall;
+    private GameObject ice;
+    private GameObject temp;
+    public GameObject indicator; //used to show where an object will be placed
+    public int currentIceUses = 5;
+    public int maxIceUses = 5;
+
     public float iceBlockHealRate = 2f;//time it tkes for the iceblock to go back a level
     public float iceBlockTimer = 0;
 
@@ -61,19 +67,21 @@ public class FbStateManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         currentState.UpdateState(this);
 
 
 
         //Manages the iceblock timer
-        if(iceBlockTimer <= 0){
-            if(iceBlockHP < 5 && currentState != IceBlockState){
-                iceBlockHP++;
-                b.iceBar.GetComponent<FBIceBar>().IceBar(iceBlockHP);
-                iceBlockTimer = iceBlockHealRate;
-            }
-        }else{iceBlockTimer -= Time.deltaTime;}
+        if(currentIceState == IceBlockState)
+        {
+            if(iceBlockTimer <= 0){
+                if(currentIceUses < maxIceUses && currentState != IceBlockState){
+                    currentIceUses++;
+                    b.iceBar.GetComponent<FBIceBar>().IceBar(currentIceUses);
+                    iceBlockTimer = iceBlockHealRate;
+                }
+            }else{iceBlockTimer -= Time.deltaTime;}
+        }
     }
 
     //this is used mostly for the moving function inside of our moving states
@@ -96,10 +104,93 @@ public class FbStateManager : MonoBehaviour
         state.EnterState(this);
     }
 
+    //will change what the current ice state is based on our recieved upgrade
+    public void IceUpgrade(IceUpgrade upgrade)
+    {
+        switch (upgrade.iceUpgrade)
+        {
+            case IceUpgrades.Block:
+            {
+                maxIceUses = 5;
+                currentIceUses = 5;
+                currentIceState = IceBlockState;
+                break;
+            }
+            case IceUpgrades.Wall:
+            {
+                maxIceUses = 2;
+                currentIceUses = 2;
+                ice = iceWall;
+                currentIceState = IceItemState;
+                break;
+            }
+            //case IceUpgrades.Decoy:
+            //{
+            //    currentIceState = IceItemState;
+            //    break;
+            //}
+        }
+    }
 
+    //moves our indicator around to check if we are capable of placing an object
+    public void Preplace(int direction)
+    {
+        float margin = 0.6f;
+        switch(direction)
+        {
+            case 0:
+                {
+                    indicator.transform.position = new Vector3(Mathf.FloorToInt((float)gameObject.transform.position.x) + 0.5f, Mathf.FloorToInt((float)gameObject.transform.position.y) + 0.5f, 0) + new Vector3(0, 1,0);
+                    if(Mathf.Abs(indicator.transform.position.y - gameObject.transform.position.y) < margin + 0.15f)
+                    {
+                        indicator.transform.position += new Vector3(0, 1, 0);
+                    }
+                    break;
+                }
+            case 1:
+                {
+                    indicator.transform.position = new Vector3(Mathf.FloorToInt((float)gameObject.transform.position.x) + 0.5f, Mathf.FloorToInt((float)gameObject.transform.position.y) + 0.5f, 0) + new Vector3(-1, 0, 0);
+                    if (Mathf.Abs(indicator.transform.position.x - gameObject.transform.position.x) < margin)
+                    {
+                        indicator.transform.position += new Vector3(-1, 0, 0);
+                    }
+                    break;
+                }
+            case 2:
+                {
+                    indicator.transform.position = new Vector3(Mathf.FloorToInt((float)gameObject.transform.position.x) + 0.5f, Mathf.FloorToInt((float)gameObject.transform.position.y) + 0.5f, 0) + new Vector3(0, -1, 0);
+                    if (Mathf.Abs(indicator.transform.position.y - gameObject.transform.position.y) < margin + 0.15f)
+                    {
+                        indicator.transform.position += new Vector3(0, -1, 0);
+                    }
+                    break;
+                }
+            case 3:
+                {
+                    indicator.transform.position = new Vector3(Mathf.FloorToInt((float)gameObject.transform.position.x) + 0.5f, Mathf.FloorToInt((float)gameObject.transform.position.y) + 0.5f, 0) + new Vector3(1, 0, 0);
+                    if (Mathf.Abs(indicator.transform.position.x - gameObject.transform.position.x) < margin)
+                    {
+                        indicator.transform.position += new Vector3(1, 0, 0);
+                    }
+                    break;
+                }
+        }
+    }
 
-
-
-
-
+    //Used by our icewall state to place a wall down if the tile in the direction we are facing is empty
+    public void PlaceItem()
+    {
+        if (currentIceUses > 0)
+        {
+            if (indicator.GetComponent<Indicator>().canPlace)
+            {
+                temp = (GameObject)Instantiate(ice, indicator.transform.position, Quaternion.Euler(0, 0, 0));
+                if(temp.transform.GetChild(0).GetComponent<IceWallBehaviour>() != null)
+                {
+                    temp.transform.GetChild(0).GetComponent<IceWallBehaviour>().InstantiateWall(5, gameObject);
+                }
+                currentIceUses--;
+            }
+        }
+    }
 }

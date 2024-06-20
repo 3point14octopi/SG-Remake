@@ -6,15 +6,16 @@ using UpgradeStats;
 
 public class FbGun : GunModule
 {
-
     [HideInInspector]
     public KeyCode[] shootKeys = new KeyCode[4];//used for tracking the offsets, matches up with an array
-    private Stack<int> keyHistory = new Stack<int>();
+    public Stack<int> keyHistory = new Stack<int>();
 
     [HideInInspector]
     public Transform[] launchOffset = new Transform[4]; //the offsets for each direction of shooting
-    // Update is called once per frame
-    void Update()
+
+
+    //Is called from states that can shoot, checks for key presses and shoots using the most recent key pressed
+    public void CanShoot()
     {
         for (int i = 0; i < shootKeys.Length; i++)
         {
@@ -24,19 +25,20 @@ public class FbGun : GunModule
             }
         }
 
-        if(keyHistory.Count > 0 && active)
+        if (keyHistory.Count > 0 && active)
         {
             StartCoroutine(Shooting());
         }
     }
 
+    //will end up called our Frostbite shooting function inside of gun module
     IEnumerator Shooting()
     {
         active = false;
-        //0:Up 1:Down 2:Left 3:Right
+        //0:Up 1:Left 2:Down 3:Right
         for (int i = 1; i <= keyHistory.Count; ++i)
         {
-            //Inits the bullet then sets a bunch of its variables 
+
             if (Input.GetKey(shootKeys[keyHistory.Peek()]))
             {
                 StartCoroutine(FbShoot(currentAmmo, launchOffset[keyHistory.Peek()].position, launchOffset[keyHistory.Peek()].rotation.eulerAngles));
@@ -56,6 +58,7 @@ public class FbGun : GunModule
         active =true;
         
     }
+    //called by our upgrade manager, can upgrade most of the stats on our ammo type
     public void GunUpgrade(GunUpgrade upgrade)
     {
         switch (upgrade.gunUpgrade)
