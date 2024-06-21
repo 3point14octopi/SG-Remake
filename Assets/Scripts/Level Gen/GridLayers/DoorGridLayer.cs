@@ -54,7 +54,23 @@ public class DoorGridLayer : JGridLayer
 
     public void OpenShutDoors(bool open)
     {
-        foreach (DoorTileBehaviour door in instantiatedDoors) door.tileState += (open) ? -1 : 1;
+        foreach (DoorTileBehaviour door in instantiatedDoors)
+        {
+            if (open)
+            {
+                if (door.tileState == DoorStates.ENEMY_LOCKED || door.tileState == DoorStates.ENEMY_CLOSED)
+                {
+                    door.tileState--;
+                }
+            }
+            else
+            {
+                if (door.tileState == DoorStates.OPEN || door.tileState == DoorStates.LOCKED)
+                {
+                    door.tileState++;
+                }
+            }
+        }  
     }
 
     private void Update()

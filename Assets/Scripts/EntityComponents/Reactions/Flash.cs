@@ -21,6 +21,7 @@ using UnityEngine;
 
     public override IEnumerator ReactCoroutine()
     {
+        Debug.Log("FLASHING");
         srRef.material = flashMaterial;
         yield return new WaitForSeconds(flashDuration);
         srRef.material = baseMaterial;

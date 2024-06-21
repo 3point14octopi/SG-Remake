@@ -32,6 +32,8 @@ public class RoomTemplate:MonoBehaviour
         foreach(RoomEnemy enemy in ERoomManager.Instance.Populate(roomLayout, rType))
         {
             Debug.Log(enemy.enemyID.ToString() + " at " + enemy.startingLocation.x.ToString() + ',' + enemy.startingLocation.y.ToString());
+            AddEnemy(EObjPool.Instance.enemyPool[enemy.enemyID].GetComponent<Brain>());
+            enemySpawnPositions.Add(enemy.startingLocation);
         }
     }
     public virtual void RemoveEnemy(int index) 
@@ -40,7 +42,7 @@ public class RoomTemplate:MonoBehaviour
         {
             roomEnemies.RemoveAt(index);
             population--;
-            //for (int i = 0; i < population; roomEnemies[i].roomID = (i + 0), i++) ;
+            for (int i = 0; i < population; roomEnemies[i].roomIndex = (i + 0), i++) ;
         }
 
         if (population == 0)
@@ -81,7 +83,7 @@ public class RoomTemplate:MonoBehaviour
             roomEnemies[i].gameObject.SetActive(true);
             roomEnemies[i].roomIndex = i + 0;
             roomEnemies[i].mom = this;
-            roomEnemies[i].transform.position = new Vector3(enemySpawnPositions[i].x + roomLayout.worldOrigin.x + 0.5f, -enemySpawnPositions[i].y - roomLayout.worldOrigin.y + 0.5f, 0);
+            roomEnemies[i].transform.position = new Vector3(enemySpawnPositions[i].x/* + roomLayout.worldOrigin.x*/ + 0.5f, -enemySpawnPositions[i].y/* - roomLayout.worldOrigin.y*/ + 0.5f, 0);
         }
     }
 

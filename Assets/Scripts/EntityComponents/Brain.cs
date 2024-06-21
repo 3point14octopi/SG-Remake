@@ -8,9 +8,9 @@ public class Brain : MonoBehaviour
     public bool isAlive = true;
     //public stats
     public bool showStats = true;
-    public int[] Stats = new int[2];
+    public int[] Stats = new int[3];
     //internal stats
-    [SerializeField]protected int[] currentStats;
+    [SerializeField] public int[] currentStats { get; protected set; }
     //stuff that damages the entity (probably player bullets)
     public List<string> damageTags = new List<string>();
     //reactions to taking damage and dying (two different things!)
@@ -33,7 +33,12 @@ public class Brain : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        foreach (Reaction r in damageReactions) r.OnStart(gameObject);
+        for (int i = 0; i < damageReactions.Count; i++)
+        {
+            damageReactions[i] = Instantiate(damageReactions[i]);
+            damageReactions[i].OnStart(gameObject);
+        }
+
         foreach (Reaction r in deathReactions) r.OnStart(gameObject);
     }
 

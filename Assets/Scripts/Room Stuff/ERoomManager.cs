@@ -172,7 +172,7 @@ public class ERoomManager : MonoBehaviour
         int quantity = 5 - overShoot;
         List<int> rowsSelected = new List<int>();
 
-        for(int i = 0; i < RNG.GenRand(0, quantity);)
+        for(int i = 0; i < RNG.GenRand(1, quantity);)
         {
             Coord location = new Coord(RNG.GenRand(2, room.width - 4), RNG.GenRand(2, room.height - 4));
 
@@ -252,20 +252,20 @@ public class ERoomManager : MonoBehaviour
     {
         RoomWithEnemies eList = new RoomWithEnemies();
 
-        switch (RNG.GenRand(1, 2))
-        {
-            case (1):
-                eList = AddBeans(room, eList, 2);
-                eList = (RNG.GenRand(0, 2) == 0) ? AddKnights(room, eList, (eList.Population() == 6) ? 1 : 0) : AddSpectres(room, eList);
-                break;
-            case (2):
+        //switch (RNG.GenRand(1, 2))
+        //{
+            //case (1):
+            //    eList = AddBeans(room, eList, 2);
+            //    eList = (RNG.GenRand(0, 2) == 0) ? AddKnights(room, eList, (eList.Population() == 6) ? 1 : 0) : AddSpectres(room, eList);
+            //    break;
+            //case (2):
                 eList = AddKnights(room, eList);
-                eList = AddSpectres(room, eList);
-                if (eList.Population() < 2) eList = AddBeans(room, eList, 2);
-                break;
-            default:
-                break;
-        }
+                //eList = AddSpectres(room, eList);
+                //if (eList.Population() < 2) eList = AddBeans(room, eList, 2);
+        //        break;
+        //    default:
+        //        break;
+        //}
 
         return eList;
     }
@@ -378,7 +378,7 @@ public class ERoomManager : MonoBehaviour
         //}
         //else if (roomType < JIMMY)
         //{
-        r = BasicEnemyRoom(roomMap);
+        if(roomType != 1)r = BasicEnemyRoom(roomMap);
         //}
         //else if (roomType == BOSS)
         //{
