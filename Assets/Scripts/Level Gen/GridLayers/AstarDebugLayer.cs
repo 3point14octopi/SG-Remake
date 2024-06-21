@@ -12,7 +12,6 @@ public enum AstarTileTypes
 public class AstarDebugLayer : SimpleGridLayer
 {
     public bool enableDebuggingVisualizers = true;
-    [SerializeField] private bool whoGiveAShit;
     private AStarCalculator aStar;
     private Coord worldOrigin = new Coord(0, 0);
 

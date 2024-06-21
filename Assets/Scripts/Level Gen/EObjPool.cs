@@ -16,7 +16,7 @@ public class EObjPool : MonoBehaviour
     [Header("Pool")]
     public List<GameObject> enemyPool = new List<GameObject>();
 
-    public static EObjPool Instance = new EObjPool();
+    public static EObjPool Instance;
 
     private void Awake()
     {

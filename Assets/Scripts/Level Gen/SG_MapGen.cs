@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEngine.UI;
 
 namespace JAFprocedural
 {
@@ -18,7 +14,7 @@ namespace JAFprocedural
         {
             minimap = SG_MapGen.MakeFloorplan(lazyLoad);
 
-            megaMap = new Space2D(150, 60);
+            megaMap = new Space2D(90, 36);
 
             for(int i = 0; i < minimap.height; i++)
             {
@@ -27,7 +23,7 @@ namespace JAFprocedural
                     if(minimap.GetCell(j, i) > 0)
                     {
                         Coord location = new Coord(j, i);
-                        Space2D room = new Space2D(25, 15);
+                        Space2D room = new Space2D(15, 9);
                         room = SG_MapGen.SetDoors(room, location, minimap);
 
                         if(minimap.GetCell(j, i) == 1)
@@ -36,11 +32,10 @@ namespace JAFprocedural
                         }
                         else
                         {
-                            room = (minimap.GetCell(j, i) < 5) ? SG_MapGen.MakeRoom1(room) : 
-                                (minimap.GetCell(j, i) == 7) ? SG_MapGen.MakeBossRoom(room) : SG_MapGen.MakeRoom2(room);
+                            room = (minimap.GetCell(j, i) < 8) ? SG_MapGen.MakeRoom1(room) : 
+                                (minimap.GetCell(j, i) == 9) ? SG_MapGen.MakeBossRoom(room) : SG_MapGen.MakeRoom2(room);
                         }
-                        room.worldOrigin = new Coord(j * 25, i * 15);
-                        room = SG_MapGen.DetectPerimeter(room);
+                        room.worldOrigin = new Coord(j * 15, i * 9);
 
                         rooms.Add(location, room);
                         BasicBuilderFunctions.CopySpaceAToB(room, megaMap, new List<Cell>());
@@ -64,7 +59,7 @@ namespace JAFprocedural
             Space2D floorPlan = new Space2D(6, 4);
             List<Coord> points = new List<Coord>();
 
-            for (int i = 0; i < 4;)
+            for (int i = 0; i < 6;)
             {
                 Coord c = new Coord();
                 if(i == 0)
@@ -86,9 +81,10 @@ namespace JAFprocedural
             }
 
             Space2D cover = new Space2D(6, 4);
-            BasicBuilderFunctions.ConnectCoords(cover, points[0], points[1], new Cell(5));
-            BasicBuilderFunctions.ConnectCoords(cover, points[0], points[2], new Cell(5));
-            BasicBuilderFunctions.ConnectCoords(cover, points[0], points[3], new Cell(5));
+            for(int i = 0; i < points.Count-1; i++)
+            {
+                BasicBuilderFunctions.ConnectCoords(cover, points[0], points[i+1], new Cell(8));
+            }
 
             int extraCount = 0;
 
@@ -97,9 +93,9 @@ namespace JAFprocedural
             {
                 for (int j = 0; j < cover.width; j++)
                 {
-                    if (cover.GetCell(j, i) == 5 && floorPlan.GetCell(j, i) == 0)
+                    if (cover.GetCell(j, i) == 8 && floorPlan.GetCell(j, i) == 0)
                     {
-                        floorPlan.SetCell(new Coord(j, i), new Cell(5));
+                        floorPlan.SetCell(new Coord(j, i), new Cell(8));
                         extraCount++;
                     }
                 }
@@ -137,7 +133,7 @@ namespace JAFprocedural
 
                     if(surrounding.x + surrounding.y != 4)
                     {
-                        floorPlan.SetCell(bossRoom, new Cell(7));
+                        floorPlan.SetCell(bossRoom, new Cell(9));
                         bossPlaced = true;
                     }
                 }
@@ -150,8 +146,8 @@ namespace JAFprocedural
 
         public static Space2D MakeRoom1(Space2D room)
         {
-            room = DownwardSpill(room, new Coord(12, 1));
-            room = DownwardSpill(room, new Coord(12, 13), false);
+            room = DownwardSpill(room, new Coord(7, 1));
+            room = DownwardSpill(room, new Coord(7, 7), false);
 
             if(BasicBuilderFunctions.PercentageOf(room, new Cell(1)) > 0.55f)
             {
@@ -164,42 +160,29 @@ namespace JAFprocedural
 
         public static Space2D MakeRoom2(Space2D room)
         {
-            if (lazyLevel)
-            {
-                room = LittleJimmy(room);
-            }
-            else
-            {
-                room = (RNG.GenRand(0, 2) == 1) ? LittleJimmy(room) : NewJimmy(room);
-            }
+            room = NewJimmy(room);
 
             return room;
         }
 
         public static Space2D MakeStartingRoom(Space2D room)
         {
+            int[,] preset = new int[,]
+            {
+                {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0 },
+                {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0},
+                {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+                {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+                {0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0}
+            };                    
             BasicBuilderFunctions.Flood(room, new Cell(0), new Cell(1), 1, 1, room.width - 1, room.height - 1);
-            BasicBuilderFunctions.Flood(room, new Cell(1), new Cell(0), 13, 0, 24, 7);
 
-            room.SetCell(new Coord(13, 13), new Cell(0));
-            BasicBuilderFunctions.HorizontalPath(room, new Cell(0), new Coord(13, 13), BasicBuilderFunctions.CalculateStride(new Coord(24, 13), new Coord(13, 13), true));
-            room.SetCell(new Coord(23, 8), new Cell(0));
-            BasicBuilderFunctions.VerticalPath(room, new Cell(0), new Coord(23, 8), BasicBuilderFunctions.CalculateStride(new Coord(23, 13), new Coord(23, 8), false));
-
-            room.SetCell(new Coord(11, 13), new Cell(0));
-            BasicBuilderFunctions.HorizontalPath(room, new Cell(0), new Coord(11, 13), BasicBuilderFunctions.CalculateStride(new Coord(0, 13), new Coord(11, 13), true));
-            room.SetCell(new Coord(1, 8), new Cell(0));
-            BasicBuilderFunctions.VerticalPath(room, new Cell(0), new Coord(1, 8), BasicBuilderFunctions.CalculateStride(new Coord(1, 13), new Coord(1, 8), false));
-
-            BasicBuilderFunctions.Flood(room, new Cell(1), new Cell(0), 1, 1, 12, 3);
-            BasicBuilderFunctions.HorizontalPath(room, new Cell(0), new Coord(8, 3), BasicBuilderFunctions.CalculateStride(new Coord(0, 3), new Coord(8, 3), true));
-            BasicBuilderFunctions.HorizontalPath(room, new Cell(0), new Coord(6, 4), BasicBuilderFunctions.CalculateStride(new Coord(0, 4), new Coord(6, 4), true));
-            BasicBuilderFunctions.HorizontalPath(room, new Cell(0), new Coord(4, 5), BasicBuilderFunctions.CalculateStride(new Coord(0, 5), new Coord(4, 5), true));
-            room.SetCell(new Coord(1, 6), new Cell(0));
-
-            if (room.GetCell(12, 14) == 0) room.SetCell(new Coord(12, 13), new Cell(0));
-
-            room = DetectPerimeter(room);
+            Space2D copy = new Space2D(preset);
+            BasicBuilderFunctions.CopySpaceAToB(copy, room, new List<Cell> { new Cell(0) });
 
             return room;
         }
@@ -210,20 +193,6 @@ namespace JAFprocedural
             return room;
         }
 
-        public static Space2D SetDefaultDoors(Space2D room)
-        {
-            Cell opening = new Cell(1);
-            room.SetCell(new Coord(0, 7), opening);
-            room.SetCell(new Coord(1, 7), opening);
-            room.SetCell(new Coord(12, 0), opening);
-            room.SetCell(new Coord(12, 1), opening);
-            room.SetCell(new Coord(24, 7), opening);
-            room.SetCell(new Coord(23, 7), opening);
-            room.SetCell(new Coord(12, 13), opening);
-            room.SetCell(new Coord(12, 14), opening);
-
-            return room;
-        }
 
         public static Space2D SetDoors(Space2D room, Coord roomLoc, Space2D layoutRef)
         {
@@ -232,29 +201,29 @@ namespace JAFprocedural
             //up
             if (roomLoc.y > 0 && layoutRef.GetCell(new Coord(roomLoc.x, roomLoc.y - 1)) != 0)
             {
-                room.SetCell(new Coord(12, 0), opening);
-                room.SetCell(new Coord(12, 1), opening);
+                room.SetCell(new Coord(7, 0), opening);
+                room.SetCell(new Coord(7, 1), opening);
             }
 
             //down
             if (roomLoc.y < layoutRef.height-1 && layoutRef.GetCell(new Coord(roomLoc.x, roomLoc.y+1)) != 0)
             {
-                room.SetCell(new Coord(12, 13), opening);
-                room.SetCell(new Coord(12, 14), opening);
+                room.SetCell(new Coord(7, 7), opening);
+                room.SetCell(new Coord(7, 8), opening);
             }
 
             //left
             if (roomLoc.x > 0 && layoutRef.GetCell(new Coord(roomLoc.x-1, roomLoc.y)) != 0)
             {
-                room.SetCell(new Coord(0, 7), opening);
-                room.SetCell(new Coord(1, 7), opening);
+                room.SetCell(new Coord(0, 4), opening);
+                room.SetCell(new Coord(1, 4), opening);
             }
 
             //right
             if (roomLoc.x < layoutRef.width-1 && layoutRef.GetCell(new Coord(roomLoc.x + 1, roomLoc.y)) != 0)
             {
-                room.SetCell(new Coord(24, 7), opening);
-                room.SetCell(new Coord(23, 7), opening);
+                room.SetCell(new Coord(14, 4), opening);
+                room.SetCell(new Coord(13, 4), opening);
             }
 
             return room;
@@ -262,14 +231,14 @@ namespace JAFprocedural
 
         public static int DetermineChokeValue(int iterationNum)
         {
-            if (iterationNum == 1) return 0;
-            return (RNG.GenRand(1, 2) - 1);
+            return (iterationNum == 1)? 0 : RNG.GenRand(1, 2)-1;
         }
         //what if i hated myself
         public static Space2D DownwardSpill(Space2D room, Coord start, bool downward = true, int iteration = 0, Cell fill = null)
         {
             fill = (fill == null) ? new Cell(1) : fill;
             room.SetCell(start, fill);
+            
             
             List<Coord> leftPoints = new List<Coord>();
             List<Coord> rightPoints = new List<Coord>();
@@ -279,7 +248,7 @@ namespace JAFprocedural
             int rightStride = BasicBuilderFunctions.CalculateStride(new Coord(room.width-1, start.y), start, true) - 2;
 
             //left
-            int lLimit = (leftStride < 7) ? leftStride : 7;
+            int lLimit = (leftStride < 3) ? leftStride : 3;
             Coord leftTarget = new Coord();
             if (lLimit > 0)
             {
@@ -300,8 +269,8 @@ namespace JAFprocedural
             }
             int newLeftStart = (leftPoints.Count <= DetermineChokeValue(iteration)) ? -1:RNG.GenRand(0, leftPoints.Count);
 
-
-            int rLimit = (rightStride < 7) ? rightStride : 7;
+            //right
+            int rLimit = (rightStride < 3) ? rightStride : 3;
             Coord rightTarget = new Coord();
             if (rLimit > 0)
             {
@@ -323,18 +292,18 @@ namespace JAFprocedural
             int newRightStart = (rightPoints.Count <= DetermineChokeValue(iteration))?-1:RNG.GenRand(0, rightPoints.Count);
             
 
-            if(iteration <= 2 || RNG.GenRand(1, 4) > 1)
+            if(iteration <= 1 || RNG.GenRand(1, 4) > 1)
             {
-                if (newLeftStart > -1 && iteration < 8)
+                if (newLeftStart > -1 && iteration < (int)(room.width/2))
                 {
                     Coord lC = new Coord(leftPoints[newLeftStart].x, leftPoints[newLeftStart].y + ((downward) ? 1 : -1));
                     room = DownwardSpill(room, lC, downward, iteration, fill);
                 }
             }
             
-            if(iteration <= 2 || RNG.GenRand(1, 4) > 1)
+            if(iteration <= 1 || RNG.GenRand(1, 4) > 1)
             {
-                if (newRightStart > -1 && iteration < 8)
+                if (newRightStart > -1 && iteration < (int)(room.width/2))
                 {
                     Coord rC = new Coord(rightPoints[newRightStart].x, rightPoints[newRightStart].y + ((downward)?1:-1));
                     room = DownwardSpill(room, rC, downward, iteration, fill);
@@ -350,12 +319,12 @@ namespace JAFprocedural
         {
             Cell fill = new Cell(1);
             Coord reunion;
-            do { reunion = new Coord(RNG.GenRand(2, 20), RNG.GenRand(2, 10)); } while (room.GetCell(reunion) != 1);
+            do { reunion = new Coord(RNG.GenRand(2, room.width-5), RNG.GenRand(2, room.height-5)); } while (room.GetCell(reunion) != 1);
 
-            BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(12, 1), fill);
-            BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(12, 13), fill);
-            BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(1, 7), fill);
-            BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(23, 7), fill);
+            BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(7,  1), fill);
+            BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(7, 7), fill);
+            BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(1,  4), fill);
+            BasicBuilderFunctions.ConnectCoords(room, reunion, new Coord(13, 4), fill);
 
             return room;
         }
@@ -367,7 +336,7 @@ namespace JAFprocedural
 
             for(int i = 0; i < 20 && timmyPlaced < 10; i++)
             {
-                Coord c = new Coord(RNG.GenRand(2, 20), RNG.GenRand(2, 10));
+                Coord c = new Coord(RNG.GenRand(2, room.width-5), RNG.GenRand(2, room.height-5));
                 if(room.GetCell(c) == 1)
                 {
                     Coord tV = BasicBuilderFunctions.CheckAdjacentCells(room, c, true, new Cell(0));
@@ -388,13 +357,13 @@ namespace JAFprocedural
         {
             List<Coord> points = new List<Coord>();
             //can override this if you start being SMARTER about door locations
-            if (room.GetCell(0, 7) != 0)  points.Add(new Coord(1, 7));
-            if (room.GetCell(12, 0) != 0) points.Add(new Coord(12, 1));
-            if (room.GetCell(12, 14) != 0)points.Add(new Coord(12, 13));
-            if (room.GetCell(24, 7) != 0) points.Add(new Coord(23, 7));
+            if (room.GetCell(0, 4) != 0)  points.Add(new Coord(1, 4));
+            if (room.GetCell(7, 0) != 0) points.Add(new Coord(7, 1));
+            if (room.GetCell(7, 8) != 0)points.Add(new Coord(7, 7));
+            if (room.GetCell(14, 4) != 0) points.Add(new Coord(13, 4));
 
 
-            int iterations = RNG.GenRand(1, 10 - points.Count);
+            int iterations = RNG.GenRand(1, 8 - points.Count);
             for (int i = 0; i < iterations;)
             {
                 Coord c = RNG.GenRandCoord(room);
@@ -428,7 +397,7 @@ namespace JAFprocedural
 
             return room;
         }
-        private static Space2D UnderLine(Space2D room, int valid, Cell toFind, Cell underlineVal, bool seamless = true)
+        public static Space2D UnderLine(Space2D room, int valid, Cell toFind, Cell underlineVal, bool seamless = true)
         {
             for (int i = 0; i < room.height; i++)
             {
@@ -446,36 +415,76 @@ namespace JAFprocedural
 
             return room;
         }
+
+
+
+        //recursively finds an easy distance to travel to
+        private static Coord Target(Coord start, Coord dest)
+        {
+            int x = dest.x - start.x;
+            int y = dest.y - start.y;
+
+            if (MathF.Sqrt(MathF.Pow(x, 2) + MathF.Pow(y, 2)) < 10)
+            {
+                return dest;
+            }
+            else
+            {
+                Coord between = new Coord();
+                between.x = (int)((dest.x - start.x) / 2) + start.x;
+                between.y = (int)((dest.y - start.y) / 2) + start.y;
+
+                return Target(start, between);
+            }
+        }
+
+        /// <summary>
+        /// Does A* in short bursts on the map
+        /// needs pre-loading
+        /// (is mostly just an "as the crow flies" across empty space, use different method if obstacles are in the way)
+        /// </summary>
+        /// <param name="goal"></param>
+        /// <param name="start"></param>
+        /// <param name="map"></param>
+        /// <param name="val"></param>
+        private static Space2D StaggeredAStar(Coord finalDestination, Coord start, Space2D map, Cell pathValue)
+        {
+            Coord curDest;
+            Coord prev = start;
+
+            do
+            {
+                curDest = Target(prev, finalDestination);
+                List<Coord> path = astar.AStar(prev, curDest);
+
+                if (path != null)
+                {
+                    foreach (Coord node in path) map.SetCell(node, pathValue);
+                }
+
+                prev = new Coord(curDest.x + 0, curDest.y + 0);
+            } while (MathF.Abs(curDest.x - finalDestination.x) > 3 || MathF.Abs(curDest.y - finalDestination.y) > 3);
+
+            return map;
+        }
+
         public static Space2D NewJimmy(Space2D room)
         {
             List<Coord> points = new List<Coord>();
             //can override this if you start being SMARTER about door locations
-            if (room.GetCell(0, 7) != 0) points.Add(new Coord(1, 7));
-            if (room.GetCell(12, 0) != 0) points.Add(new Coord(12, 1));
-            if (room.GetCell(12, 14) != 0) points.Add(new Coord(12, 13));
-            if (room.GetCell(24, 7) != 0) points.Add(new Coord(23, 7));
+            if (room.GetCell(0, 4) != 0) points.Add(new Coord(1, 4));
+            if (room.GetCell(7, 0) != 0) points.Add(new Coord(7, 1));
+            if (room.GetCell(7, 8) != 0) points.Add(new Coord(7, 7));
+            if (room.GetCell(14, 4) != 0) points.Add(new Coord(13, 4));
 
             //fill room with valid space
             BasicBuilderFunctions.Flood(room, new Cell(0), new Cell(1), 1, 1, room.width - 1, room.height - 1);
 
-            //"mine" room a bit so that there's less to sample and it maybe runs faster
-            int mines = RNG.GenRand(3, 3);
-            for(int i = 0; i < mines;)
-            {
-                Coord loc = new Coord(RNG.GenRand(2, room.width - 4), RNG.GenRand(2, room.height - 4));
-                if(room.GetCell(loc) != 0)
-                {
-                    room = Clump(room, loc, new Cell(0));
-                    i++;
-                }
-            }
-
             //send room to the A* calculator
             astar.SetNewGrid(room, 1);
 
-            int iterations = RNG.GenRand(5-points.Count, 7-points.Count);
-            UnityEngine.Debug.Log("chose " + iterations.ToString() + " points, " + points.Count.ToString() + " locations total");
-
+            //can throw in a couple of extra points if you really care
+            int iterations = RNG.GenRand(0, 5-points.Count);
             for (int i = 0; i < iterations;)
             {
                 Coord c = RNG.GenRandCoord(room);
@@ -487,25 +496,13 @@ namespace JAFprocedural
                     i++;
                 }
             }
-            UnityEngine.Debug.Log("placed all points");
 
-            for(iterations = 0, RNG.CircleSelect(points, 0); iterations < points.Count-1; iterations++)
-            {
-                Coord start = points[iterations];
-                Coord end = RNG.CircleSelect(points, iterations + 1);
-                UnityEngine.Debug.Log("creating a path between " + start.x.ToString() + ',' + start.y.ToString() + " and " + end.x.ToString() + ',' + end.y.ToString());
-                List<Coord> path = astar.AStar(points[iterations], RNG.CircleSelect(points, iterations + 1));
-                if (path != null)
-                {
-                    foreach (Coord node in path) room.SetCell(node, new Cell(2));
-                }
-                else
-                {
-                    UnityEngine.Debug.Log("had to be boring");
-                    BasicBuilderFunctions.ConnectCoords(room, points[iterations], points[iterations + 1], new Cell(2));
-                }
-            }
+            //connect them with staggered a* (works because the room is otherwise empty)
+            for (iterations = 0, RNG.CircleSelect(points, 0);
+                iterations < points.Count - 1;
+                room = StaggeredAStar(RNG.CircleSelect(points, iterations + 1), points[iterations], room, new Cell(2)), iterations++) ;
 
+            //widen paths and flood
             BasicBuilderFunctions.Flood(room, new Cell(0), new Cell(1), 1, 1, room.width - 1, room.height - 1);
             room = UnderLine(room, 1, new Cell(2), new Cell(3));
             BasicBuilderFunctions.Flood(room, new Cell(1), new Cell(0), 1, 1, room.width-1, room.height-1);
@@ -544,5 +541,217 @@ namespace JAFprocedural
 
     
 
+    //public class SG_LevelVariant
+    //{
+    //    public Space2D megaMap;
+    //    public List<Coord> roomCentres;
+    //    Space2D copy;
+    //    AStarCalculator aStar;
+    //    Space2D urMom;
+    //    public SG_LevelVariant()
+    //    {
+    //        megaMap = new Space2D(125, 80);
+    //        roomCentres = new List<Coord>();
+    //        copy = new Space2D(125, 80);
+    //        BasicBuilderFunctions.Flood(copy, new Cell(0), new Cell(1), 1, 1, copy.width - 1, copy.height - 1);
+    //        aStar = new AStarCalculator(copy, 1);
+
+
+
+    //        for (int i = 0; i < 10; i++)
+    //        {
+    //            Coord start = new Coord();
+
+    //            for(bool succeeded = false; succeeded != true;)
+    //            {
+    //                start = new Coord(RNG.GenRand(1, 100), RNG.GenRand(1, 65));
+    //                bool tooClose = false;
+    //                for(int j = 0; j < roomCentres.Count && !tooClose; j++)
+    //                {
+    //                    int xDist = Math.Abs((start.x + 12) - (roomCentres[j].x));
+    //                    int yDist = Math.Abs((start.y + 7) - (roomCentres[j].y));
+    //                    if(xDist <= 20 && yDist <= 12){
+    //                        tooClose = true;
+    //                    }
+    //                }
+
+    //                succeeded = !tooClose;
+
+    //            }
+
+
+    //            roomCentres.Add(new Coord(start.x + 9, start.y + 6));
+
+    //            Space2D room = new Space2D(17, 12);
+    //            //
+    //            //if(i == 9)
+    //            //{
+    //            //    //SG_MapGen.MakeStartingRoom(room);
+    //            //}
+    //            //else
+    //            //{
+    //                SG_MapGen.DownwardSpill(room, new Coord(9, 1));
+    //                SG_MapGen.DownwardSpill(room, new Coord(9, 10), false);
+    //            //}
+                
+                
+    //            room.worldOrigin = start;
+    //            BasicBuilderFunctions.CopySpaceAToB(room, megaMap, new List<Cell> { new Cell(1) });
+    //        }
+
+    //        AltConnection();
+    //        //Slowwww();
+    //    }
+
+
+
+
+
+    //    private Coord Target(Coord start, Coord dest)
+    //    {
+    //        int x = dest.x - start.x;
+    //        int y = dest.y - start.y;
+
+    //        if(MathF.Sqrt(MathF.Pow(x, 2) + MathF.Pow(y, 2)) < 10)
+    //        {
+    //            return dest;
+    //        }
+    //        else
+    //        {
+    //            Coord between = new Coord();
+    //            between.x = (int)((dest.x - start.x) / 2) + start.x;
+    //            between.y = (int)((dest.y - start.y) / 2) + start.y;
+
+    //            return Target(start, between);
+    //        }
+    //    }
+
+    //    private void Slowwww()
+    //    {
+    //        for (int i = 0; i < roomCentres.Count - 1; i++)
+    //        {
+    //            megaMap = StaggeredAStar(roomCentres[i + 1], roomCentres[i], megaMap, new Cell(2));
+    //        }
+
+    //        megaMap = SG_MapGen.UnderLine(megaMap, 0, new Cell(2), new Cell(3));
+    //        BasicBuilderFunctions.Flood(megaMap, new Cell(2), new Cell(1));
+    //    }
+
+    //    private int SmallestIndex(List<float> numbers)
+    //    {
+    //        float min = float.MaxValue;
+    //        int index = -1;
+
+    //        for(int i = 0; i < numbers.Count; i++)
+    //        {
+    //            if (numbers[i] < min)
+    //            {
+    //                min = numbers[i];
+    //                index = (i + 0);
+    //            }
+    //        }
+    //        return index;
+    //    }
+
+    //    private float CoordDist(Coord a, Coord b)
+    //    {
+    //        int x = b.x - a.x;
+    //        int y = b.y - a.y;
+
+    //        return MathF.Sqrt(MathF.Pow(x, 2) + MathF.Pow(y, 2));
+    //    }
+
+    //    /// <summary>
+    //    /// Does A* in short bursts on the map
+    //    /// needs pre-loading
+    //    /// (is mostly just an "as the crow flies" across empty space, use different method if obstacles are in the way)
+    //    /// </summary>
+    //    /// <param name="goal"></param>
+    //    /// <param name="start"></param>
+    //    /// <param name="map"></param>
+    //    /// <param name="val"></param>
+    //    private Space2D StaggeredAStar(Coord finalDestination, Coord start, Space2D map, Cell pathValue)
+    //    {
+    //        Coord curDest;
+    //        Coord prev = start;
+    //        bool notDone;
+
+    //        do
+    //        {
+    //            curDest = Target(prev, finalDestination);
+    //            List<Coord> path = aStar.AStar(prev, curDest);
+
+    //            if (path != null)
+    //            {
+    //                foreach (Coord node in path) map.SetCell(node, pathValue);
+    //            }
+
+    //            prev = new Coord(curDest.x + 0, curDest.y + 0);
+    //            notDone = MathF.Abs(curDest.x - finalDestination.x) > 3 || MathF.Abs(curDest.y - finalDestination.y) > 3;
+    //            if(notDone && RNG.GenRand(1,5) > 4)
+    //            {
+    //                urMom.worldOrigin = new Coord(curDest.x - 1, curDest.y - 1);
+    //                BasicBuilderFunctions.CopySpaceAToB(urMom, map, new List<Cell> { new Cell(1) });
+    //            }
+    //        } while (notDone);
+
+    //        return map;
+    //    }
+
+
+    //    private void AltConnection()
+    //    {
+    //        Space2D copy = new Space2D(125, 80);
+    //        BasicBuilderFunctions.Flood(copy, new Cell(0), new Cell(1), 1, 1, copy.width - 1, copy.height - 1);
+    //        urMom = new Space2D(3, 3);
+    //        BasicBuilderFunctions.Flood(urMom, new Cell(0), new Cell(1));
+
+
+    //        List<List<int>> connections = new List<List<int>>();
+    //        for (int i = 0; i < roomCentres.Count; connections.Add(new List<int>()), i++) ;
+            
+    //        List<float> distances;
+
+    //        for(int i = 0; i < roomCentres.Count; i++)
+    //        {
+    //            distances = new List<float>();
+    //            for(int j = 0; j < roomCentres.Count; j++)
+    //            {
+    //                distances.Add((i == j)?float.MaxValue:CoordDist(roomCentres[i], roomCentres[j]));
+    //            }
+
+    //            int iterations;
+    //            int cIteration;
+    //            for (iterations = 0, cIteration = 0; cIteration < 2; iterations++)
+    //            {
+    //                int current = SmallestIndex(distances);
+    //                distances[current] = float.MaxValue;
+
+    //                if (!connections[i].Contains(current))
+    //                {
+    //                    connections[i].Add(current);
+    //                    int x = i + 0;
+    //                    connections[current].Add(x);
+    //                    BasicBuilderFunctions.ConnectCoords(megaMap, roomCentres[current], roomCentres[i], new Cell(2));
+    //                    cIteration++;
+    //                }
+    //                else if (cIteration > 0)
+    //                {
+    //                    cIteration++;
+    //                }
+    //                else if (iterations > roomCentres.Count - 2)
+    //                {
+    //                    cIteration = 2;
+    //                }
+    //            }
+
+
+    //        }
+
+    //        //megaMap = SG_MapGen.UnderLine(megaMap, 0, new Cell(2), new Cell(3));
+    //        BasicBuilderFunctions.Flood(megaMap, new Cell(2), new Cell(1));
+    //        BasicBuilderFunctions.Flood(megaMap, new Cell(3), new Cell(2));
+    //    }
+    //}
    
 }

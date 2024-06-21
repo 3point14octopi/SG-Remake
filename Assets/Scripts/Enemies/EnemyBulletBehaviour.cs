@@ -10,7 +10,7 @@ public class EnemyBulletBehaviour : MonoBehaviour
     //all 3 of these things are updated by the person that calls them
     public float bSpeed; //bullet speed
     public float bDamage; //bullet damage
-    public int bRebound = 1;
+    public int bRebound = 0;
     private Vector3 wallCenter;
 
      // Update is called once per frame
@@ -51,7 +51,7 @@ public class EnemyBulletBehaviour : MonoBehaviour
                 }*/
             }
 
-            //else if(bRebound == 0){Destroy(gameObject);}
+            else if (bRebound == 0) { Destroy(gameObject); }
         }   
     }
     

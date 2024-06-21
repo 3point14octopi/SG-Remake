@@ -9,12 +9,12 @@ public class RoomPop : MonoBehaviour
     public CurrentDoors doorManager;
     public BossRoomManager bossStuff;
 
-    public RoomWithEnemies currentRoom = new RoomWithEnemies();
+    public RoomWithEnemies currentRoom;
 
     public Space2D floorPlan;
     public Coord position;
 
-    public static RoomPop Instance = new RoomPop();
+    public static RoomPop Instance;
 
     private void Awake()
     {

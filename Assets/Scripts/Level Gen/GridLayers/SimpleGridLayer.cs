@@ -42,6 +42,12 @@ public class SimpleGridLayer : JGridLayer
         renderGrid.SetTile(position, null);
     }
 
+    public override void Refresh()
+    {
+        renderGrid.RefreshAllTiles();
+    }
+
+
 
     private void Start()
     {
@@ -61,13 +67,13 @@ public class SimpleGridLayer : JGridLayer
             }
 
             int remainder = (int)tileRange - total;
-            if (remainder > 0) for (int i = remainder; i > 0; indexes[total] = 0, total++, i--) ;
+            if (remainder > 0) for (int i = remainder; i < indexes.Length; indexes[total] = 0, total++, i--) ;
         }
         
     }
     private int RNGindex()
     {
-        return indexes[RNG.GenRand(0, indexes.Length)];
+        return indexes[RNG.GenRand(0, indexes.Length-1)];
     }
 
 }

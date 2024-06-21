@@ -8,7 +8,7 @@ public class Brain : MonoBehaviour
     public bool isAlive = true;
     //public stats
     public bool showStats = true;
-    public int[] Stats = new int[1];
+    public int[] Stats = new int[2];
     //internal stats
     private int[] currentStats;
     //stuff that damages the entity (probably player bullets)
@@ -17,9 +17,14 @@ public class Brain : MonoBehaviour
     [SerializeField]public List<Reaction> damageReactions = new List<Reaction>();
     [SerializeField] public List<Reaction> deathReactions = new List<Reaction>();
 
+    //room stuff
+    public RoomTemplate mom;
+    public int roomIndex = -1;
+
     private void OnEnable()
     {
         isAlive = true;
+        roomIndex = -1;
         //this is so that we don't have any holdover from previously being alive
         currentStats = new int[Stats.Length];
         for (int i = 0; i < Stats.Length; currentStats[i] = Stats[i], i++) ;
@@ -29,6 +34,7 @@ public class Brain : MonoBehaviour
     void Start()
     {
         foreach (Reaction r in damageReactions) r.OnStart(gameObject);
+        foreach (Reaction r in deathReactions) r.OnStart(gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -79,6 +85,10 @@ public class Brain : MonoBehaviour
     {
         isAlive = false;
         Debug.Log("the entity has died. we'd do something here");
+        if(roomIndex != -1)
+        {
+            mom.RemoveEnemy(roomIndex);
+        }
         foreach (Reaction r in deathReactions)
         {
             if (r.isCoroutine) StartReactCoroutine(r);

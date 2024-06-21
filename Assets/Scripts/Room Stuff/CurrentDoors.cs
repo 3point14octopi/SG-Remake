@@ -13,16 +13,16 @@ public enum ConditionTypes
 public interface DoorConditions
 {
     ConditionTypes Condition { get; }
-    bool HasBeenMet();
+    bool HasBeenMet(RoomTemplate room);
 }
 
 public class RoomClearCondition : DoorConditions
 {
     public ConditionTypes Condition { get; set; } = ConditionTypes.ROOM_CLEAR;
 
-    public bool HasBeenMet()
+    public bool HasBeenMet(RoomTemplate room)
     {
-        return (RoomPop.Instance.CurrentPopulation() == 0);
+        return room.Cleared;
     }
 }
 
@@ -30,7 +30,7 @@ public class BossUnlockCondition : DoorConditions
 {
     public ConditionTypes Condition { get; set; } = ConditionTypes.MINIONS_DEFEATED;
 
-    public bool HasBeenMet()
+    public bool HasBeenMet(RoomTemplate room)
     {
         return (ERoomManager.Instance.IsBossUnlocked());
     }
@@ -44,7 +44,7 @@ public class BossUnlockCondition : DoorConditions
     {
         for(int i = 0; i < conditionsToOpen.Count; i++)
         {
-            if (!conditionsToOpen[i].HasBeenMet())
+            if (!conditionsToOpen[i].HasBeenMet(new RoomTemplate()))
             {
                return false;
             }
@@ -67,7 +67,7 @@ public class CurrentDoors : MonoBehaviour
     public Space2D floorMap;
     public Coord pos;
     public SimpleGridLayer doorLayer;
-    
+
     public void OnRoomEnter(Coord location)
     {
         doorLayer.Clear();
@@ -80,47 +80,7 @@ public class CurrentDoors : MonoBehaviour
         doorLocations[2] = new Coord((pos.x * 25), (pos.y * -15) - 7);
         doorLocations[3] = new Coord((pos.x * 25) + 24, (pos.y * -15) - 7);
 
-
-        //check north door
-        if (pos.y > 0 && floorMap.GetCell(pos.x, pos.y - 1) != 0)
-        {
-            InitDoor(0, floorMap.GetCell(pos.x, pos.y - 1) == 7);
-            mm.SetUnopenedDoor(new Coord(pos.x, pos.y - 1));
-        }
-        //we automatically assume the door is "open" otherwise
-        else openDoors[0] = true;
-
-        //check south door
-        if (pos.y < floorMap.height - 1 && floorMap.GetCell(pos.x, pos.y + 1) != 0)
-        {
-            InitDoor(1, floorMap.GetCell(pos.x, pos.y + 1) == 7);
-            mm.SetUnopenedDoor(new Coord(pos.x, pos.y + 1));
-        }
-        else openDoors[1] = true;
-
-        //check east door
-        if (pos.x > 0 && floorMap.GetCell(pos.x - 1, pos.y) != 0)
-        {
-            InitDoor(2, floorMap.GetCell(pos.x - 1, pos.y) == 7);
-            mm.SetUnopenedDoor(new Coord(pos.x - 1, pos.y));
-        }
-        else openDoors[2] = true;
-
-        //check final door, you can probably guess which one it is
-        if (pos.x < floorMap.width - 1 && floorMap.GetCell(pos.x + 1, pos.y) != 0)
-        {
-            InitDoor(3, floorMap.GetCell(pos.x + 1, pos.y) == 7);
-            mm.SetUnopenedDoor(new Coord(pos.x + 1, pos.y));
-        }
-        else openDoors[3] = true;
     }
-
-    public void UpdateDoorsInRoom()
-    {
-        for (int i = 0; i < 4; CheckDoor(i), i++) ;
-    }
-
-
 
 
     private void InitDoor(int index, bool bossDoor = false)
@@ -142,6 +102,11 @@ public class CurrentDoors : MonoBehaviour
             doorLayer.RemoveTile(new Vector3Int(doorLocations[index].x, doorLocations[index].y, 0));
             openDoors[index] = true;
         }
+    }
+
+    public void UpdateDoorsInRoom()
+    {
+
     }
 
 }

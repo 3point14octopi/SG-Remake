@@ -11,14 +11,14 @@ namespace JAFprocedural
             a = temp;
         }
 
-        public static void SwapCoord(Coord a, Coord b)
+        public static void SwapCoord(List<Coord> l, int a, int b)
         {
-            int ax = a.x;
-            int ay = a.y;
-            int az = a.z;
+            int ax = l[a].x;
+            int ay = l[a].y;
+            int az = l[a].z;
 
-            a = new Coord(b.x, b.y, b.z);
-            b = new Coord(ax, ay, az);
+            l[a] = new Coord(l[b].x, l[b].y, l[b].z);
+            l[b] = new Coord(ax, ay, az);
         }
     }
 
@@ -45,8 +45,8 @@ namespace JAFprocedural
         {
             if(start < coords.Count)
             {
-                int x = GenRand(start, (coords.Count - 1)-start);
-                Basic.SwapCoord(coords[start], coords[x]);
+                int x = GenRand(start, coords.Count-start);
+                Basic.SwapCoord(coords, start, x);
             }
             else
             {

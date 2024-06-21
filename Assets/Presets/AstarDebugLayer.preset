@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AstarDebugLayer
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: b3fd811fe97635745b05d492b0a3b85e, type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: renderGrid
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: selectionStyle
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: tileList.Array.size
+    value: 3
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: tileList.Array.data[0]
+    value: 
+    objectReference: {fileID: 11400000, guid: e751e6edf32b8de4f8ba25b04af7b4ba, type: 2}
+  - target: {fileID: 0}
+    propertyPath: tileList.Array.data[1]
+    value: 
+    objectReference: {fileID: 11400000, guid: 9eb6af2948bbd3d439f784897bbc6201, type: 2}
+  - target: {fileID: 0}
+    propertyPath: tileList.Array.data[2]
+    value: 
+    objectReference: {fileID: 11400000, guid: 17e551848540ab648ae9985e9af2e6ae, type: 2}
+  - target: {fileID: 0}
+    propertyPath: tileRange
+    value: 10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: odds.Array.size
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: odds.Array.data[0]
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: enableDebuggingVisualizers
+    value: 1
+    objectReference: {fileID: 0}
+  m_ExcludedProperties: []

@@ -63,7 +63,7 @@ public class RoomWithEnemies
 
 public class ERoomManager : MonoBehaviour
 {
-    public static ERoomManager Instance = new ERoomManager();
+    public static ERoomManager Instance;
 
     //private Dictionary<Coord, RoomWithEnemies> enemyLists = new Dictionary<Coord, RoomWithEnemies>();
     private RoomWithEnemies[,] enemyLists = new RoomWithEnemies[4, 6];
@@ -107,10 +107,10 @@ public class ERoomManager : MonoBehaviour
 
 
     private const int EMPTY = 2;
-    private const int TIMMY = 3;
-    private const int WISP = 4;
+    private const int TIMMY = 4;
+    private const int WISP = 5;
     private const int JIMMY = 7;
-    private const int BOSS = 8;
+    private const int BOSS = 9;
 
 
     private void Awake()
@@ -147,7 +147,7 @@ public class ERoomManager : MonoBehaviour
 
         for(int i = 0; i < amount;)
         {
-            Coord startPos = new Coord(RNG.GenRand(4, room.width - 8), RNG.GenRand(4, room.height - 8));
+            Coord startPos = new Coord(RNG.GenRand(2, room.width - 4), RNG.GenRand(2, room.height - 4));
             if (room.GetCell(startPos) == 1)
             {
                 Coord around = BasicBuilderFunctions.CheckAdjacentCells(room, startPos);
@@ -174,7 +174,7 @@ public class ERoomManager : MonoBehaviour
 
         for(int i = 0; i < RNG.GenRand(0, quantity);)
         {
-            Coord location = new Coord(RNG.GenRand(5, room.width - 10), RNG.GenRand(4, room.height - 8));
+            Coord location = new Coord(RNG.GenRand(2, room.width - 4), RNG.GenRand(2, room.height - 4));
 
             if(!rowsSelected.Contains(location.y) && room.GetCell(location) == 1)
             {
@@ -200,7 +200,7 @@ public class ERoomManager : MonoBehaviour
 
         for(int i = 0; i < RNG.GenRand(0, 5);)
         {
-            Coord startPos = new Coord(RNG.GenRand(3, room.width - 6), RNG.GenRand(3, room.height - 6));
+            Coord startPos = new Coord(RNG.GenRand(2, room.width - 4), RNG.GenRand(2, room.height - 4));
 
             if(room.GetCell(startPos) == 1)
             {
@@ -339,8 +339,9 @@ public class ERoomManager : MonoBehaviour
         else if (roomValue < JIMMY)
         {
             
-            enemyLists[location.y, location.x] = /*(RNG.GenRand(0, 5) == 0)?TurkeyRoomGen(room):*/BasicEnemyRoom(room);
+            enemyLists[location.y, location.x] = new RoomWithEnemies();
             usedRooms.Add(location);
+            Debug.Log("empty room at " + location.x.ToString() + ',' + location.y.ToString() + " (room value: " + roomValue.ToString() + ')');
         }else if(roomValue < BOSS)
         {
             enemyLists[location.y, location.x] = BossRoom(room);
@@ -353,5 +354,38 @@ public class ERoomManager : MonoBehaviour
     public void OnRoomEnter(Coord roomLoc)
     {
         RoomPop.Instance.LoadRoom(enemyLists[roomLoc.y, roomLoc.x], roomLoc);
+    }
+
+
+    /// <summary>
+    /// NEEDS EDITING
+    /// </summary>
+    /// <param name="roomMap"></param>
+    /// <param name="roomType"></param>
+    /// <returns></returns>
+    public List<RoomEnemy> Populate(Space2D roomMap, int roomType)
+    {
+        RoomWithEnemies r = new RoomWithEnemies();
+        //touch
+
+        //if (roomType == EMPTY)
+        //{
+        //    //do nothing
+        //}
+        //else if (roomType == WISP)
+        //{
+        //    r = WispRoomGen(roomMap);
+        //}
+        //else if (roomType < JIMMY)
+        //{
+        r = BasicEnemyRoom(roomMap);
+        //}
+        //else if (roomType == BOSS)
+        //{
+        //    r = BossRoom(roomMap);
+
+        //}
+
+        return r.enemies;
     }
 }
