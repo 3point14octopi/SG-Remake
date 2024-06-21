@@ -127,12 +127,6 @@ public class TurkeyBehaviour : MonoBehaviour
                 StopCoroutine(TurkeyLand());
             }
         }
-
-        //damages the player if we wall into the player
-        else if (other.gameObject.tag == "Player" && !dead)
-        {
-            other.gameObject.GetComponent<FbStateManager>().TakeDamage(damage);
-        }
     }
 
     

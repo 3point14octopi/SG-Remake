@@ -1,107 +1,87 @@
-    using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UpgradeStats;
 
 public class FbStateManager : MonoBehaviour
 {
 
-
+    public FbBrain b;
+    public FbGun g;
     //Catalog of all states
     public FbIdleState IdleState = new FbIdleState();
-    public FbMoveShootState MoveShootState = new FbMoveShootState();
-
     public FbMoveState MoveState = new FbMoveState();
-    public FbShootingState ShootState = new FbShootingState();
+
 
     public FbStunState StunState = new FbStunState();
-    public FbIceblockState IceblockState = new FbIceblockState();
     public FbDeathState DeathState = new FbDeathState();
-    
+
+    [Header("\nIce states and variables")]
+    public FbIceblockState IceBlockState = new FbIceblockState();
+    public FbIceItemState IceItemState = new FbIceItemState();
+
+
     //Keeps track of our current state.
     public FbBaseState currentState;
+    public FbBaseState currentIceState;
 
-    public Animator anim;
-    public GameObject healthbar;
-    public GameObject iceBar;
 
-    [Header("Keybinds")]
-    public KeyCode[] shootKeys = new KeyCode[4];//used for tracking the offsets, matches up with an array
-    public Stack<int> keyHistory = new Stack<int>();
-    public KeyCode shootUpKey = KeyCode.UpArrow; //for shooting weapon
-    public KeyCode shootLeftKey = KeyCode.LeftArrow; 
-    public KeyCode shootDownKey = KeyCode.DownArrow; 
-    public KeyCode shootRightKey = KeyCode.RightArrow; 
+
+
+
     public KeyCode iceBlockKey = KeyCode.LeftShift;//for ice block power
 
 
-    [Header("\nPlayer Stats")]
-    public float health = 10;//current
-    public int maxHealth = 10;//max health
-    public float movementSpeed = 10;//run speed
 
-    public int iceBlockHP = 5;//hits on the ice block
+    public GameObject iceWall;
+    private GameObject ice;
+    private GameObject temp;
+    public GameObject indicator; //used to show where an object will be placed
+    public int currentIceUses = 5;
+    public int maxIceUses = 5;
+
     public float iceBlockHealRate = 2f;//time it tkes for the iceblock to go back a level
     public float iceBlockTimer = 0;
 
-    [Header("\nRunning")]
-    public Vector2 movement;
-    public Rigidbody2D rb; //player rigidbody
 
-    [Header("\nShooting")]
-    public float firerate;//firerate
-    public float gunTimer;//keeps track of firerate
-    public GameObject bulletPrefab; //bullet prefad
-    
-    [Header("\nBullet")]
-    public int direction = 0; //if the bullet is up, down, left or right
-    public Transform[] launchOffset = new Transform[4]; //the offsets for each direction of shooting
-    public int damage = 5; // bullet damage
-    public float speed = 8; //bullet speed
 
-    [Header("Flash Hit")]
-    public Material flash;
-    private Material material;
-    public float flashDuration;
-    private Coroutine flashRoutine;
-    public bool iFrame = false;
+
+
 
 
     // Start is called before the first frame update
     void Start()
     {
-        //sets our rigidbody
-        rb = GetComponent<Rigidbody2D>();
-        rb.freezeRotation = true;
+
 
         //Sets our current state to the most boring state we own
         currentState = IdleState;
+        currentIceState = IceBlockState;
 
         //Calls the enter state function of the current state.
         currentState.EnterState(this);
 
-        material = gameObject.GetComponent<SpriteRenderer>().material;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        //tracks WASD
-        movement.x = Input.GetAxisRaw("Horizontal");
-        movement.y = Input.GetAxisRaw("Vertical");
-
         currentState.UpdateState(this);
 
-        //Manages the gun timer
-        gunTimer -= Time.deltaTime;
+
 
         //Manages the iceblock timer
-        if(iceBlockTimer <= 0){
-            if(iceBlockHP < 5 && currentState != IceblockState){
-                iceBlockHP++;
-                iceBar.GetComponent<FBIceBar>().IceBar(iceBlockHP);
-                iceBlockTimer = iceBlockHealRate;
-            }
-        }else{iceBlockTimer -= Time.deltaTime;}
+        if(currentIceState == IceBlockState)
+        {
+            if(iceBlockTimer <= 0){
+                if(currentIceUses < maxIceUses && currentState != IceBlockState){
+                    currentIceUses++;
+                    b.iceBar.GetComponent<FBIceBar>().IceBar(currentIceUses);
+                    iceBlockTimer = iceBlockHealRate;
+                }
+            }else{iceBlockTimer -= Time.deltaTime;}
+        }
     }
 
     //this is used mostly for the moving function inside of our moving states
@@ -115,6 +95,8 @@ public class FbStateManager : MonoBehaviour
         currentState.Collision(this, other);
     }
 
+
+
     //is called when a transition condition in our current states update is met
     public void SwitchState(FbBaseState state){
         //switches to the correct state and calls its enter function
@@ -122,59 +104,93 @@ public class FbStateManager : MonoBehaviour
         state.EnterState(this);
     }
 
-    //called by the two shooting states
-    public void Shooting(){
-
-        for (int i = 1; i <= keyHistory.Count; ++i) {
-            //Inits the bullet then sets a bunch of its variables 
-            if (Input.GetKey(shootKeys[keyHistory.Peek()])){
-                var bullet = (GameObject)Instantiate(bulletPrefab, launchOffset[keyHistory.Peek()].position, launchOffset[keyHistory.Peek()].rotation);
-                bullet.GetComponent<PlayerBulletBehaviour>().bSpeed = speed;
-                bullet.GetComponent<PlayerBulletBehaviour>().bDamage = damage;
-
-                if(keyHistory.Peek() == 0){anim.Play("FrostbiteThrowUp");} 
-                else if(keyHistory.Peek() == 1){anim.Play("FrostbiteThrowDown");}     
-                else if(keyHistory.Peek() == 2){anim.Play("FrostbiteThrowLeft");}     
-                else if(keyHistory.Peek() == 3){anim.Play("FrostbiteThrowRight");}    
-                break; 
+    //will change what the current ice state is based on our recieved upgrade
+    public void IceUpgrade(IceUpgrade upgrade)
+    {
+        switch (upgrade.iceUpgrade)
+        {
+            case IceUpgrades.Block:
+            {
+                maxIceUses = 5;
+                currentIceUses = 5;
+                currentIceState = IceBlockState;
+                break;
             }
-            else{
-                keyHistory.Pop();
+            case IceUpgrades.Wall:
+            {
+                maxIceUses = 2;
+                currentIceUses = 2;
+                ice = iceWall;
+                currentIceState = IceItemState;
+                break;
             }
+            //case IceUpgrades.Decoy:
+            //{
+            //    currentIceState = IceItemState;
+            //    break;
+            //}
         }
     }
 
-    //changes the material to the flash material and turns on invincibilty for a small duration before switching them back
-    //is called in the damage function
-    public IEnumerator FlashRoutine(){
-
-        gameObject.GetComponent<SpriteRenderer>().material = flash;
-        iFrame = true;
-        
-        yield return new WaitForSeconds(flashDuration);
-
-        gameObject.GetComponent<SpriteRenderer>().material = material;
-        iFrame = false;
-
-        flashRoutine = null;
-
+    //moves our indicator around to check if we are capable of placing an object
+    public void Preplace(int direction)
+    {
+        float margin = 0.6f;
+        switch(direction)
+        {
+            case 0:
+                {
+                    indicator.transform.position = new Vector3(Mathf.FloorToInt((float)gameObject.transform.position.x) + 0.5f, Mathf.FloorToInt((float)gameObject.transform.position.y) + 0.5f, 0) + new Vector3(0, 1,0);
+                    if(Mathf.Abs(indicator.transform.position.y - gameObject.transform.position.y) < margin + 0.15f)
+                    {
+                        indicator.transform.position += new Vector3(0, 1, 0);
+                    }
+                    break;
+                }
+            case 1:
+                {
+                    indicator.transform.position = new Vector3(Mathf.FloorToInt((float)gameObject.transform.position.x) + 0.5f, Mathf.FloorToInt((float)gameObject.transform.position.y) + 0.5f, 0) + new Vector3(-1, 0, 0);
+                    if (Mathf.Abs(indicator.transform.position.x - gameObject.transform.position.x) < margin)
+                    {
+                        indicator.transform.position += new Vector3(-1, 0, 0);
+                    }
+                    break;
+                }
+            case 2:
+                {
+                    indicator.transform.position = new Vector3(Mathf.FloorToInt((float)gameObject.transform.position.x) + 0.5f, Mathf.FloorToInt((float)gameObject.transform.position.y) + 0.5f, 0) + new Vector3(0, -1, 0);
+                    if (Mathf.Abs(indicator.transform.position.y - gameObject.transform.position.y) < margin + 0.15f)
+                    {
+                        indicator.transform.position += new Vector3(0, -1, 0);
+                    }
+                    break;
+                }
+            case 3:
+                {
+                    indicator.transform.position = new Vector3(Mathf.FloorToInt((float)gameObject.transform.position.x) + 0.5f, Mathf.FloorToInt((float)gameObject.transform.position.y) + 0.5f, 0) + new Vector3(1, 0, 0);
+                    if (Mathf.Abs(indicator.transform.position.x - gameObject.transform.position.x) < margin)
+                    {
+                        indicator.transform.position += new Vector3(1, 0, 0);
+                    }
+                    break;
+                }
+        }
     }
 
-    //called from the enemies that hit the player
-    public void TakeDamage(float damage){
-        if(!iFrame && damage > 0){
-            health = health - damage;
-            healthbar.GetComponent<FbHealthBar>().HealthBar(health);
-
-            if(health <= 0){
-                SwitchState(DeathState);
+    //Used by our icewall state to place a wall down if the tile in the direction we are facing is empty
+    public void PlaceItem()
+    {
+        if (currentIceUses > 0)
+        {
+            if (indicator.GetComponent<Indicator>().canPlace)
+            {
+                temp = (GameObject)Instantiate(ice, indicator.transform.position, Quaternion.Euler(0, 0, 0));
+                if(temp.transform.GetChild(0).GetComponent<IceWallBehaviour>() != null)
+                {
+                    temp.transform.GetChild(0).GetComponent<IceWallBehaviour>().InstantiateWall(5, gameObject);
+                }
+                currentIceUses--;
             }
-
-            if(flashRoutine != null){
-                StopCoroutine(flashRoutine);
-            }
-
-            flashRoutine = StartCoroutine(FlashRoutine());
         }
     }
 }

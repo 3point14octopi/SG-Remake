@@ -10,7 +10,7 @@ public class Brain : MonoBehaviour
     public bool showStats = true;
     public int[] Stats = new int[2];
     //internal stats
-    private int[] currentStats;
+    [SerializeField]protected int[] currentStats;
     //stuff that damages the entity (probably player bullets)
     public List<string> damageTags = new List<string>();
     //reactions to taking damage and dying (two different things!)
@@ -27,7 +27,7 @@ public class Brain : MonoBehaviour
         roomIndex = -1;
         //this is so that we don't have any holdover from previously being alive
         currentStats = new int[Stats.Length];
-        for (int i = 0; i < Stats.Length; currentStats[i] = Stats[i], i++) ;
+        for (int i = 0; i < Stats.Length; currentStats[i] = Stats[i] + 0, i++) ;
     }
 
     // Start is called before the first frame update
@@ -37,7 +37,7 @@ public class Brain : MonoBehaviour
         foreach (Reaction r in deathReactions) r.OnStart(gameObject);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (isAlive && damageTags.Contains(collision.gameObject.tag))
         {
@@ -62,7 +62,7 @@ public class Brain : MonoBehaviour
         }
     }
 
-    void StartReactCoroutine(Reaction r)
+    protected void StartReactCoroutine(Reaction r)
     {
         if (r.routine != null)
         {
@@ -72,7 +72,7 @@ public class Brain : MonoBehaviour
         r.routine = StartCoroutine(r.ReactCoroutine());
     }
 
-    private void ReactToHit()
+    protected void ReactToHit()
     {
         foreach(Reaction r in damageReactions)
         {

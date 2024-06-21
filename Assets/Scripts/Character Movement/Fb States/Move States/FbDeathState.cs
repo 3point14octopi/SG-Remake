@@ -8,9 +8,9 @@ public class FbDeathState : FbBaseState
     public override void EnterState(FbStateManager fb){
         
         Debug.Log("DEATH TIME");
-        fb.anim.Play("FrostbiteDeath");
-        fb.rb.bodyType = RigidbodyType2D.Kinematic;
-        fb.iFrame = true;
+        fb.b.anim.Play("FrostbiteDeath");
+        fb.b.rb.bodyType = RigidbodyType2D.Kinematic;
+        fb.b.iFrame = true;
         fb.StartCoroutine(Death());
     }
 

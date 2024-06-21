@@ -21,11 +21,7 @@ public class TreeKnightBehaviour : MonoBehaviour
     public float speed = 1; //walk speed
     public float damage = 10; //damage it deals to player
 
-    public float beanSpeed = 2; //speed of the bullets
-    public float beanDamage = 1;
-    public float beanRate = 1; //firerate
-    public GameObject bulletPrefab; //bullet prefab
-    private GameObject activeBullet; // husk used to init the bullets
+
 
     private float[] stats = new float[3];
     bool instantiated = false;
@@ -63,7 +59,7 @@ public class TreeKnightBehaviour : MonoBehaviour
         //grabs our material for flash effect
         material = gameObject.GetComponent<SpriteRenderer>().material;
         gameObject.GetComponent<SpriteRenderer>().material = material;
-        StartCoroutine(Shoot());
+
     }
 
      // Update is called once per frame
@@ -99,29 +95,12 @@ public class TreeKnightBehaviour : MonoBehaviour
                 StartCoroutine(Death());
             }
         }
-        
-        //damages the player if we wall into the player
-        else if (other.gameObject.tag == "Player")
-        {
-            other.gameObject.GetComponent<FbStateManager>().TakeDamage(damage);
-        }
     }
 
-    IEnumerator Shoot()
-    {
-        //spawns 2 bullets one up and down using beanspeed for bullet speed and beandamage for bullet damahe activating at a yield rate of beanRate
-        yield return new WaitForSeconds(beanRate);
-        activeBullet = (GameObject)Instantiate(bulletPrefab, gameObject.transform.position, Quaternion.Euler(0, 0, 0));
-        activeBullet.GetComponent<EnemyBulletBehaviour>().bSpeed = beanSpeed;
-        activeBullet.GetComponent<EnemyBulletBehaviour>().bDamage = beanDamage;  
-        activeBullet = (GameObject)Instantiate(bulletPrefab, gameObject.transform.position, Quaternion.Euler(0, 0, -180));
-        activeBullet.GetComponent<EnemyBulletBehaviour>().bSpeed = beanSpeed;
-        activeBullet.GetComponent<EnemyBulletBehaviour>().bDamage = beanDamage; 
-        StartCoroutine(Shoot()); 
-    }
 
     IEnumerator Death()
     {
+        gameObject.GetComponent<GunModule>().ToggleAutomatic(false);
         dead = true;
         anim.SetBool("Death", true);
         audioSource.clip = deathSound;

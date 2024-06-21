@@ -15,11 +15,4 @@ public class FireballObj : MonoBehaviour
         Debug.Log("toggled falling to " + value.ToString());
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (!falling && collision.gameObject.tag == "Player")
-        {
-            collision.gameObject.GetComponent<FbStateManager>().TakeDamage(damage);
-        }
-    }
 }

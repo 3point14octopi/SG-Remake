@@ -31,11 +31,4 @@ public class TempLaternB : MonoBehaviour
         transform.position += new Vector3(xMovement, yMovement, 0) * Time.deltaTime * roamSpeed;
         
     }
-
-    void OnCollisionEnter2D(Collision2D other){
-        // checks if it is a player bullet hitting themself
-        if(other.gameObject.tag == "Player"){
-            other.gameObject.GetComponent<FbStateManager>().TakeDamage(roamDamage);
-        }    
-    }
 }

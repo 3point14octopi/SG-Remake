@@ -10,6 +10,7 @@ TagManager:
   - EnemyBullet
   - TempCollision
   - DDOL
+  - Pickup
   layers:
   - Default
   - TransparentFX

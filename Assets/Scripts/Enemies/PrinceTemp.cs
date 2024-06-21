@@ -269,12 +269,6 @@ public class PrinceTemp : MonoBehaviour
             TakeDamage(other.gameObject.GetComponent<PlayerBulletBehaviour>().bDamage);
 
         }
-
-        //damages the player if we wall into the player
-        else if (other.gameObject.tag == "Player" && !dead)
-        {
-            other.gameObject.GetComponent<FbStateManager>().TakeDamage(contactDamage);
-        }
     }
 
     public void TakeDamage(float damage){

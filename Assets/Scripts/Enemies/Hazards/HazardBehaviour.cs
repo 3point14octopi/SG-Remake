@@ -57,17 +57,17 @@ public class HazardBehaviour : MonoBehaviour
         //damages the player if it is walked into by the player
         if (other.gameObject.tag == "Player" && hitPlayer)
         {
-            if(hazardType == HazardType.Spikes){
-                StartCoroutine(BounceOff(other));
-            }
+            //if(hazardType == HazardType.Spikes){
+            //    StartCoroutine(BounceOff(other));
+            //}
 
-            else if(hazardType == HazardType.Pit){
-                StartCoroutine(FallIn(other));
-            }
+            //else if(hazardType == HazardType.Pit){
+            //    StartCoroutine(FallIn(other));
+            //}
 
-            else if(hazardType == HazardType.Moving){
-                StartCoroutine(RolledOver(other));
-            }
+            //else if(hazardType == HazardType.Moving){
+            //    StartCoroutine(RolledOver(other));
+            //}
         }
 
 
@@ -89,42 +89,40 @@ public class HazardBehaviour : MonoBehaviour
 
 
     //in order it turns off our game, calls the damage function, knocks the player back on a normalized vector, pauses time form
-    IEnumerator BounceOff(Collider2D other){
-        other.gameObject.GetComponent<FbStateManager>().SwitchState(other.gameObject.GetComponent<FbStateManager>().StunState);
-        other.gameObject.GetComponent<FbStateManager>().TakeDamage(damage);    
-        other.transform.position += new Vector3((other.transform.position.x - transform.position.x)*knockBack, (other.transform.position.y - transform.position.y)*knockBack, 0);
+    //IEnumerator BounceOff(Collider2D other){
+    //    //other.gameObject.GetComponent<FbStateManager>().SwitchState(other.gameObject.GetComponent<FbStateManager>().StunState);  
+    //    //other.transform.position += new Vector3((other.transform.position.x - transform.position.x)*knockBack, (other.transform.position.y - transform.position.y)*knockBack, 0);
 
-        if(other.gameObject.GetComponent<FbStateManager>().health > 0){
-            yield return new WaitForSeconds(other.gameObject.GetComponent<FbStateManager>().flashDuration);
-            other.gameObject.GetComponent<FbStateManager>().SwitchState(other.gameObject.GetComponent<FbStateManager>().IdleState);
-        }
-    }
+    //    //if(other.gameObject.GetComponent<FbStateManager>().health > 0){
+    //    //    yield return new WaitForSeconds(other.gameObject.GetComponent<FbStateManager>().flashDuration);
+    //    //    other.gameObject.GetComponent<FbStateManager>().SwitchState(other.gameObject.GetComponent<FbStateManager>().IdleState);
+    //    //}
+    //}
 
-    IEnumerator FallIn(Collider2D other){
-        other.gameObject.GetComponent<FbStateManager>().SwitchState(other.gameObject.GetComponent<FbStateManager>().StunState);
-        knockBackLocation = new Vector3((other.transform.position.x - transform.position.x)*knockBack, (other.transform.position.y - transform.position.y)*knockBack, 0);
-        other.transform.position = transform.position;
-        // other.gameObject.GetComponent<FbStateManager>().anim.Play("FrostbiteFall")
-        yield return new WaitForSeconds(pitTime);
-        other.gameObject.GetComponent<FbStateManager>().TakeDamage(damage);
-        if(other.gameObject.GetComponent<FbStateManager>().health > 0){
-            other.transform.position += knockBackLocation;
+    //IEnumerator FallIn(Collider2D other){
+    //    //other.gameObject.GetComponent<FbStateManager>().SwitchState(other.gameObject.GetComponent<FbStateManager>().StunState);
+    //    //knockBackLocation = new Vector3((other.transform.position.x - transform.position.x)*knockBack, (other.transform.position.y - transform.position.y)*knockBack, 0);
+    //    //other.transform.position = transform.position;
+    //    //// other.gameObject.GetComponent<FbStateManager>().anim.Play("FrostbiteFall")
+    //    //yield return new WaitForSeconds(pitTime);
+    //    //if(other.gameObject.GetComponent<FbStateManager>().health > 0){
+    //    //    other.transform.position += knockBackLocation;
 
-            yield return new WaitForSeconds(other.gameObject.GetComponent<FbStateManager>().flashDuration);
-            other.gameObject.GetComponent<FbStateManager>().SwitchState(other.gameObject.GetComponent<FbStateManager>().IdleState);
-        }
-    }
+    //    //    yield return new WaitForSeconds(other.gameObject.GetComponent<FbStateManager>().flashDuration);
+    //    //    other.gameObject.GetComponent<FbStateManager>().SwitchState(other.gameObject.GetComponent<FbStateManager>().IdleState);
+    //    //}
+    //}
 
-    IEnumerator RolledOver(Collider2D other){
-        other.gameObject.GetComponent<FbStateManager>().SwitchState(other.gameObject.GetComponent<FbStateManager>().StunState);
-        other.gameObject.GetComponent<FbStateManager>().TakeDamage(damage);
-        other.transform.position += new Vector3((other.transform.position.x - transform.position.x)*knockBack, (other.transform.position.y - transform.position.y)*knockBack, 0);
+    //IEnumerator RolledOver(Collider2D other){
+    //    //other.gameObject.GetComponent<FbStateManager>().SwitchState(other.gameObject.GetComponent<FbStateManager>().StunState);
+    //    //other.gameObject.GetComponent<FbStateManager>().TakeDamage(damage);
+    //    //other.transform.position += new Vector3((other.transform.position.x - transform.position.x)*knockBack, (other.transform.position.y - transform.position.y)*knockBack, 0);
 
-        if(other.gameObject.GetComponent<FbStateManager>().health > 0){
-            yield return new WaitForSeconds(other.gameObject.GetComponent<FbStateManager>().flashDuration);
-            other.gameObject.GetComponent<FbStateManager>().SwitchState(other.gameObject.GetComponent<FbStateManager>().IdleState);
-        }
-    }
+    //    //if(other.gameObject.GetComponent<FbStateManager>().health > 0){
+    //    //    yield return new WaitForSeconds(other.gameObject.GetComponent<FbStateManager>().flashDuration);
+    //    //    other.gameObject.GetComponent<FbStateManager>().SwitchState(other.gameObject.GetComponent<FbStateManager>().IdleState);
+    //    //}
+    //}
 
     IEnumerator Flash(){
 

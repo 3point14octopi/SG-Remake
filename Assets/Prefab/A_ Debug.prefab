@@ -159,8 +159,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   renderGrid: {fileID: 0}
   selectionStyle: 1
-  tileList: []
+  tileList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   tileRange: 10
   odds: 01000000
-  startLoc: {fileID: 0}
-  endLoc: {fileID: 0}
+  enableDebuggingVisualizers: 1
+  whoGiveAShit: 0

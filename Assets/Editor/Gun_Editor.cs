@@ -11,7 +11,27 @@ public class Gun_Editor : Editor
         base.OnInspectorGUI(); 
         serializedObject.ApplyModifiedProperties();
 
+        EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("New Bullet", GUILayout.Width(150f))) { gm.ammoList.Add(new Ammo() + gm.currentAmmo);  }
+        GUILayout.Space(10);
+
+        if (GUILayout.Button("Recalculate", GUILayout.Width(150f))){
+            gm.spreadsAngle.Clear();
+            gm.spreadsDis.Clear();
+            gm.spreadsAngle.Add(gm.currentAmmo.spreadAngle * ((gm.currentAmmo.spreadNum - 1) / -2));
+            for (int i = 1; i < gm.currentAmmo.spreadNum; i++)
+            {
+                gm.spreadsAngle.Add(gm.currentAmmo.spreadAngle * i + gm.spreadsAngle[0]);
+            }
+
+            gm.spreadsDis.Add(gm.currentAmmo.spreadDis * ((gm.currentAmmo.spreadNum - 1) / -2));
+            for (int i = 1; i < gm.currentAmmo.spreadNum; i++)
+            {
+                gm.spreadsDis.Add(gm.currentAmmo.spreadDis * i + gm.spreadsDis[0]);
+            }
+        }
+        EditorGUILayout.EndHorizontal();
+
 
         //Targetting style toggle
         GUILayout.Space(10);
