@@ -3257,31 +3257,31 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
       propertyPath: maximums.Array.size
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
-      propertyPath: maximums.Array.data[0]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
-      propertyPath: maximums.Array.data[1]
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
-      propertyPath: maximums.Array.data[2]
+      propertyPath: maximums.Array.data[0]
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
+      propertyPath: maximums.Array.data[1]
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
-      propertyPath: maximums.Array.data[3]
+      propertyPath: maximums.Array.data[2]
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
-      propertyPath: maximums.Array.data[4]
+      propertyPath: maximums.Array.data[3]
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
-      propertyPath: maximums.Array.data[5]
+      propertyPath: maximums.Array.data[4]
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
+      propertyPath: maximums.Array.data[5]
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
       propertyPath: maximums.Array.data[6]
@@ -3289,32 +3289,32 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
       propertyPath: enemyPrefabs.Array.size
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
       propertyPath: enemyPrefabs.Array.data[0]
       value: 
-      objectReference: {fileID: 5353378109183891165, guid: f2a5d28a7ab41c1408dbd97440bb93a2, type: 3}
+      objectReference: {fileID: 6314510192383934014, guid: a8a03d70b0250a94d85d126b591764d6, type: 3}
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
       propertyPath: enemyPrefabs.Array.data[1]
       value: 
-      objectReference: {fileID: 6314510192383934014, guid: a8a03d70b0250a94d85d126b591764d6, type: 3}
+      objectReference: {fileID: 3801810974425564153, guid: b2d8b807e2e7f3c4fa6b9e97ddd8dc38, type: 3}
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
       propertyPath: enemyPrefabs.Array.data[2]
       value: 
-      objectReference: {fileID: 3801810974425564153, guid: b2d8b807e2e7f3c4fa6b9e97ddd8dc38, type: 3}
+      objectReference: {fileID: 1253262358908222775, guid: d9c644177e312b04d999a64fa0319f39, type: 3}
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
       propertyPath: enemyPrefabs.Array.data[3]
       value: 
-      objectReference: {fileID: 1253262358908222775, guid: d9c644177e312b04d999a64fa0319f39, type: 3}
+      objectReference: {fileID: 2631020425867881459, guid: 6710ca6bb2501fa4681cccc0242a713c, type: 3}
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
       propertyPath: enemyPrefabs.Array.data[4]
       value: 
-      objectReference: {fileID: 2631020425867881459, guid: 6710ca6bb2501fa4681cccc0242a713c, type: 3}
+      objectReference: {fileID: 1253262358908222775, guid: d9c644177e312b04d999a64fa0319f39, type: 3}
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
       propertyPath: enemyPrefabs.Array.data[5]
       value: 
-      objectReference: {fileID: 1253262358908222775, guid: d9c644177e312b04d999a64fa0319f39, type: 3}
+      objectReference: {fileID: 5353378109183891165, guid: f2a5d28a7ab41c1408dbd97440bb93a2, type: 3}
     - target: {fileID: 3153403619609351040, guid: e778b48ce4ef5ae42ade8aef0ef898e1, type: 3}
       propertyPath: enemyPrefabs.Array.data[6]
       value: 
@@ -4917,37 +4917,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 336aac3dcf01b5440b86d196cce6c57c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 2042452972}
-  healthbar: {fileID: 580312830}
-  iceBar: {fileID: 291081202}
-  shootKeys: 11010000120100001401000013010000
-  shootUpKey: 273
-  shootLeftKey: 276
-  shootDownKey: 274
-  shootRightKey: 275
+  b: {fileID: 0}
+  g: {fileID: 0}
   iceBlockKey: 304
-  health: 10
-  maxHealth: 10
-  movementSpeed: 5
-  iceBlockHP: 5
+  iceWall: {fileID: 0}
+  indicator: {fileID: 0}
+  currentIceUses: 5
+  maxIceUses: 5
   iceBlockHealRate: 2
   iceBlockTimer: 0
-  movement: {x: 0, y: 0}
-  rb: {fileID: 2042452970}
-  firerate: 0.3
-  gunTimer: 0
-  bulletPrefab: {fileID: 7514329530815829435, guid: fc5abc491a550354a81b6fd74da96239, type: 3}
-  direction: 0
-  launchOffset:
-  - {fileID: 63776667}
-  - {fileID: 670484028}
-  - {fileID: 2077890014}
-  - {fileID: 1944763855}
-  damage: 5
-  speed: 8
-  flash: {fileID: 2100000, guid: 57b09bca6b8c648429a388570af8be0a, type: 2}
-  flashDuration: 0.1
-  iFrame: 0
 --- !u!212 &2042452968
 SpriteRenderer:
   m_ObjectHideFlags: 0
