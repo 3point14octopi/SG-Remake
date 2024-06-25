@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2738970408359459000}
   - component: {fileID: 2738970408359459003}
   - component: {fileID: 2738970408359459002}
+  - component: {fileID: -6521741006920913537}
   m_Layer: 0
   m_Name: Tree Bullet
   m_TagString: Untagged
@@ -102,6 +103,8 @@ MonoBehaviour:
   bSpeed: 0
   bDamage: 0
   bRebound: 0
+  ignoreTags:
+  - Enemy
 --- !u!70 &2738970408359459003
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -139,3 +142,16 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-6521741006920913537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2738970408359458981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cb7a5673c5b7af43a62227b85d6e500, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effects: []

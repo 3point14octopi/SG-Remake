@@ -14,6 +14,12 @@ namespace EntityStats
     {
         public EntityStat targetedStat;
         public int modifier;
+
+        public HitEffect(EntityStat entityStat, int mod)
+        {
+            targetedStat = entityStat;
+            modifier = mod;
+        }
     }
 
 }

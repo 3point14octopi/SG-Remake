@@ -106,8 +106,8 @@ public class WispTemp : MonoBehaviour
 
         for(int i = 0; i <= (scrapnelCount - 1); i++){
             activeBullet = (GameObject)Instantiate(bulletPrefab, gameObject.transform.position, Quaternion.Euler(0, 0, 45 * i));
-            activeBullet.GetComponent<EnemyBulletBehaviour>().bSpeed = bulletSpeed;
-            activeBullet.GetComponent<EnemyBulletBehaviour>().bDamage = bulletDamage;   
+            activeBullet.GetComponent<BulletBehaviour>().bSpeed = bulletSpeed;
+            activeBullet.GetComponent<BulletBehaviour>().bDamage = bulletDamage;   
         }
 
         dead = true;

@@ -138,9 +138,9 @@ public class BeanShooter : MonoBehaviour
     //when shooting happens it inits the bullet and updates its variables
     public void Shooting(){    
         activeBullet = (GameObject)Instantiate(bulletPrefab, gameObject.transform.position, launch);
-        activeBullet.GetComponent<EnemyBulletBehaviour>().bSpeed = speed;
-        activeBullet.GetComponent<EnemyBulletBehaviour>().bDamage = damage;
-        activeBullet.GetComponent<EnemyBulletBehaviour>().bRebound = rebound;
+        activeBullet.GetComponent<BulletBehaviour>().bSpeed = speed;
+        activeBullet.GetComponent<BulletBehaviour>().bDamage = damage;
+        activeBullet.GetComponent<BulletBehaviour>().bRebound = rebound;
         anim.SetBool("LOS", true);
         
         if(RNG.GenRand(1, 2) == 1){audioSource.clip = shoot1Sound;}

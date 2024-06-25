@@ -161,7 +161,7 @@ public class GunModule : MonoBehaviour
            for(int i = 0; i < currentAmmo.spreadNum; i++){
                launchAng.z = playerAng.z + spreadsAngle[i];
                activeBullet = (GameObject)Instantiate(a.prefab, gameObject.transform.position + launchDis * spreadsDis[i], Quaternion.Euler(launchAng));
-               activeBullet.GetComponent<EnemyBulletBehaviour>().SetBullet(a);
+               activeBullet.GetComponent<BulletBehaviour>().SetBullet(a);
             }
            yield return new WaitForSeconds(0.1f);
        }
@@ -173,7 +173,7 @@ public class GunModule : MonoBehaviour
            for(int i = 0; i < a.spreadNum; i++){
                launchAng.z = playerAng.z + i* a.spreadAngle;
                activeBullet = (GameObject)Instantiate(a.prefab, gameObject.transform.position, Quaternion.Euler(launchAng));
-               activeBullet.GetComponent<EnemyBulletBehaviour>().SetBullet(a);
+               activeBullet.GetComponent<BulletBehaviour>().SetBullet(a);
            }
            yield return new WaitForSeconds(0.1f);
        }

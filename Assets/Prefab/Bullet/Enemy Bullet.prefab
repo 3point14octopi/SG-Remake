@@ -102,6 +102,8 @@ MonoBehaviour:
   bSpeed: 0
   bDamage: 0
   bRebound: 1
+  ignoreTags:
+  - Enemy
 --- !u!61 &2329756317648098764
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -140,6 +142,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cb7a5673c5b7af43a62227b85d6e500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effects:
-  - targetedStat: 0
-    modifier: 0
+  effects: []
