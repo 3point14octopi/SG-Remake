@@ -1,3 +1,4 @@
+using EntityStats;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -65,13 +66,14 @@ public class FbGun : GunModule
         {
             case GunUpgrades.Damage:
             {
-                currentAmmo.damage += upgrade.modifier;
-                break;
+                    currentAmmo.bulletEffects[(int)EntityStat.Health] = new HitEffect(EntityStat.Health, currentAmmo.bulletEffects[(int)EntityStat.Health].modifier + upgrade.modifier);
+                    //upgrade.modifier;
+                    break;
             }
 
             case GunUpgrades.Speed:
             {
-                    currentAmmo.damage += upgrade.modifier;
+                    currentAmmo.speed += upgrade.modifier;
                     break;
             }
 

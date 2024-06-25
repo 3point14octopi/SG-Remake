@@ -4,17 +4,21 @@ using UnityEngine;
 using JAFprocedural;
 using Unity.VisualScripting;
 using static UnityEngine.RuleTile.TilingRuleOutput;
+using EntityStats;
+using System;
 
 
-public class EnemyBulletBehaviour : MonoBehaviour
+public class BulletBehaviour : MonoBehaviour
 {
     //all 3 of these things are updated by the person that calls them
     public float bSpeed; //bullet speed
-    public float bDamage; //bullet damage
+    public float bDamage = 1; //Delete after merge because we use onhit
     public int bRebound;
     private Vector3 wallCenter;
 
-     // Update is called once per frame
+    public List<string> ignoreTags = new List<string>();
+
+    // Update is called once per frame
     void Update()
     {
         //moves the bullet continously in the direction
@@ -23,13 +27,10 @@ public class EnemyBulletBehaviour : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Enemy" || other.gameObject.tag == "PlayerBullet" || other.gameObject.tag == "EnemyBullet"){
+        if (ignoreTags.Contains(other.gameObject.tag) || other.gameObject.tag == "PlayerBullet" || other.gameObject.tag == "EnemyBullet"){
             
         }
-        //anything else the bullet explodes
-        else if(other.gameObject.tag == "Player"){
-            Destroy(gameObject);
-        }     
+  
         else{
             if (bRebound > 0){
                 bRebound--;
@@ -40,12 +41,18 @@ public class EnemyBulletBehaviour : MonoBehaviour
         }   
     }
     
-    public void SetBullet(Ammo a)
+    //Called by gun when a bullet is instantiated
+    public void SetBullet(Ammo ammo)
     {
 
-        bSpeed = a.speed;
-        bDamage = a.damage;
-        bRebound = a.rebound;
+        bSpeed = ammo.speed;
+        bRebound = ammo.rebound;
+
+        //transfers on hit data from the ammo type to the bullet object
+        for (int i = 0; i < EntityStat.GetNames(typeof(EntityStat)).Length; i++) //transfers on hit data from the ammo type to the bullet object
+        {
+            gameObject.GetComponent<OnHit>().effects.Add(ammo.bulletEffects[i]);
+        }
     }
 }
 /*
