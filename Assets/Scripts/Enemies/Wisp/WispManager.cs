@@ -22,7 +22,7 @@ public class WispManager : MonoBehaviour
 
     public GameObject wanderer;
     public Vector3 wTarg;
-    public float wRot = 0f;
+    //public float wRot = 0f;
     public bool rotating = false;
     private Vector3 wVel = Vector3.zero;
     public GameObject badCollider;
@@ -68,7 +68,7 @@ public class WispManager : MonoBehaviour
                 //rotate towards wisp ahead 
                 wisps[boid].transform.rotation = Quaternion.Euler(0, 0, angle(wisps[boid].transform.position, wisps[boid-1].transform.position));
                 CheckForCollisions(boid);
-                wisps[boid].transform.position = (beFunny)?wisps[boid-1].transform.position:Vector2.MoveTowards(wisps[boid].transform.position, wisps[boid - 1].transform.position, speed * Time.deltaTime);
+                wisps[boid].transform.position = /*(beFunny)?wisps[boid-1].transform.position:*/Vector2.MoveTowards(wisps[boid].transform.position, wisps[boid - 1].transform.position, speed * Time.deltaTime);
             }
 
             //front wisp wanders
@@ -86,7 +86,7 @@ public class WispManager : MonoBehaviour
     {
         if(RNG.GenRand(1, 10) > 9)
         {
-            wRot = (RNG.GenRand(-1, 3) + RNG.GenRand(-1, 3))%2;
+            float wRot = (RNG.GenRand(-1, 3) + RNG.GenRand(-1, 3))%2;
             wisps[0].transform.Rotate(0, 0, wRot * 5);
         }
         
@@ -165,7 +165,7 @@ public class WispManager : MonoBehaviour
         {
             Debug.Log("hit");
             Debug.Log("i just hit a " + wallDetect.collider.gameObject.tag.ToString());
-            if (wallDetect.collider.gameObject.tag == "TempCollision")
+            if (wallDetect.collider.gameObject.tag == "Barrier")
             {
                 Debug.Log("wow, a thing");
                 avoidance -= Avoid(wisps[boid].transform.position, wallDetect.collider.transform.position, true);

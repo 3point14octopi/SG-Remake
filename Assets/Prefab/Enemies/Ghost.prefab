@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 1253262358908222768}
   - component: {fileID: 1253262358908222771}
   - component: {fileID: 1253262358908222772}
+  - component: {fileID: 7055024227770060214}
+  - component: {fileID: 7889947531004672851}
   - component: {fileID: 1253262358908222734}
   - component: {fileID: 1253262358908222773}
   - component: {fileID: 1253262358908222769}
@@ -96,7 +98,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1253262358908222775}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f3ffc8da420ecb44cb6acdb231a686c4, type: 3}
   m_Name: 
@@ -110,6 +112,41 @@ MonoBehaviour:
   flash: {fileID: 2100000, guid: 57b09bca6b8c648429a388570af8be0a, type: 2}
   flashDuration: 0.1
   isPathfinding: 0
+--- !u!114 &7055024227770060214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1253262358908222775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 617a8db9c057fee459c667688e2ff7fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAlive: 1
+  showStats: 1
+  Stats: 320000000100000001000000
+  damageTags:
+  - PlayerBullet
+  damageReactions:
+  - {fileID: 11400000, guid: 9de4910270d3fc34facbc86ae20f35bc, type: 2}
+  deathReactions:
+  - {fileID: 11400000, guid: ce9f9bf6661b5d94293a05b4899c6c71, type: 2}
+  mom: {fileID: 0}
+  roomIndex: -1
+--- !u!114 &7889947531004672851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1253262358908222775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6ae3cde7fbde6145aadc7b5f3c551d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!58 &1253262358908222734
 CircleCollider2D:
   m_ObjectHideFlags: 0

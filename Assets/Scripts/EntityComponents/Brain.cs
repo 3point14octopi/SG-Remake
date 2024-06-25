@@ -39,7 +39,12 @@ public class Brain : MonoBehaviour
             damageReactions[i].OnStart(gameObject);
         }
 
-        foreach (Reaction r in deathReactions) r.OnStart(gameObject);
+        for (int i = 0; i < deathReactions.Count; i++)
+        {
+            deathReactions[i] = Instantiate(deathReactions[i]);
+            deathReactions[i].OnStart(gameObject);
+        }
+            
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

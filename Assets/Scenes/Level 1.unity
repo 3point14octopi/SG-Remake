@@ -1046,7 +1046,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &659065987 stripped
 MonoBehaviour:
@@ -1153,100 +1153,6 @@ MonoBehaviour:
   startTarget: {fileID: 588434236}
   chaseTarget: 0
   speed: 10
---- !u!1 &811887426
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 811887429}
-  - component: {fileID: 811887427}
-  - component: {fileID: 811887430}
-  - component: {fileID: 811887431}
-  m_Layer: 8
-  m_Name: TheWorstCollisionDetectionOfAllTime
-  m_TagString: TempCollision
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &811887427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 811887426}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b04d6fe927ef4bf4ba248e3427aeb9eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  locations: []
---- !u!4 &811887429
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 811887426}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &811887430
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 811887426}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1.05, y: 1.05}
-  m_EdgeRadius: 0
---- !u!50 &811887431
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 811887426}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 7
 --- !u!1 &827539736
 GameObject:
   m_ObjectHideFlags: 0
@@ -2010,7 +1916,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6655629541780897624, guid: f21d1ab52e93e78428a70f294e3c619f, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6655629541780897624, guid: f21d1ab52e93e78428a70f294e3c619f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2491,7 +2397,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 17e551848540ab648ae9985e9af2e6ae, type: 2}
     - target: {fileID: 8629054855627757868, guid: 26adcae18e5653a4a807cc2dc3d549ae, type: 3}
       propertyPath: enableDebuggingVisualizers
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26adcae18e5653a4a807cc2dc3d549ae, type: 3}
@@ -2576,37 +2482,6 @@ Tilemap:
   m_CorrespondingSourceObject: {fileID: 6679902223624626654, guid: 26adcae18e5653a4a807cc2dc3d549ae, type: 3}
   m_PrefabInstance: {fileID: 1241299058}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1321208132
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1321208134}
-  m_Layer: 0
-  m_Name: Fall Ground Fallen Tree
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1321208134
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1321208132}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.74, y: -3.56, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
-  m_ConstrainProportionsScale: 1
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1321878778
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2726,11 +2601,10 @@ MonoBehaviour:
   startingCentre: {x: 0, y: 0, z: 0}
   wisps: []
   roomOn: 0
-  wanderer: {fileID: 1321208132}
+  wanderer: {fileID: 0}
   wTarg: {x: 0, y: 0, z: 0}
-  wRot: 0
   rotating: 0
-  badCollider: {fileID: 811887426}
+  badCollider: {fileID: 0}
   cList: []
   cLayermask:
     serializedVersion: 2
@@ -2938,7 +2812,7 @@ PrefabInstance:
       objectReference: {fileID: 1789278029}
     - target: {fileID: 4977549276091692939, guid: 6f7c800cfd775454294e410171119805, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4977549276091692939, guid: 6f7c800cfd775454294e410171119805, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4635,6 +4509,10 @@ PrefabInstance:
       propertyPath: tileList.Array.data[3]
       value: 
       objectReference: {fileID: 11400000, guid: e4d5e70fb49161a48b759d5dff5f447e, type: 2}
+    - target: {fileID: 5648398932074500663, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
 --- !u!114 &1919764563 stripped

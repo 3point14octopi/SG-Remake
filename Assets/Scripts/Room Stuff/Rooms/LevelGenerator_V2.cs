@@ -19,6 +19,7 @@ public class LevelGenerator_V2 : MonoBehaviour
         dungeon = new SG_Level(false);
 
         PrintFullMap();
+        AstarDebugLayer.Instance.SetRoomMap(dungeon.megaMap);
     }
 
 

@@ -31,7 +31,6 @@ public class RoomTemplate:MonoBehaviour
     { 
         foreach(RoomEnemy enemy in ERoomManager.Instance.Populate(roomLayout, rType))
         {
-            Debug.Log(enemy.enemyID.ToString() + " at " + enemy.startingLocation.x.ToString() + ',' + enemy.startingLocation.y.ToString());
             AddEnemy(EObjPool.Instance.enemyPool[enemy.enemyID].GetComponent<Brain>());
             enemySpawnPositions.Add(enemy.startingLocation);
         }
@@ -60,7 +59,12 @@ public class RoomTemplate:MonoBehaviour
     {
         return population;
     }
+    public Transform GetRoomEnemy(int index = 0)
+    {
+        if (index > -1 && index < population) return roomEnemies[index].transform;
 
+        return (population > 0) ? roomEnemies[0].transform : null;
+    }
 
     public virtual void OnUpdate() 
     {

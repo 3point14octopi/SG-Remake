@@ -142,7 +142,8 @@ MonoBehaviour:
   - PlayerBullet
   damageReactions:
   - {fileID: 11400000, guid: 9de4910270d3fc34facbc86ae20f35bc, type: 2}
-  deathReactions: []
+  deathReactions:
+  - {fileID: 11400000, guid: ce9f9bf6661b5d94293a05b4899c6c71, type: 2}
   mom: {fileID: 0}
   roomIndex: -1
 --- !u!114 &8781343887033756964

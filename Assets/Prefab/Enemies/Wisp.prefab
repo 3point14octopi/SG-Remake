@@ -13,6 +13,9 @@ GameObject:
   - component: {fileID: 2631020425867881453}
   - component: {fileID: 2631020425867881454}
   - component: {fileID: 2631020425867881458}
+  - component: {fileID: 5369605448647889562}
+  - component: {fileID: 424153226698454957}
+  - component: {fileID: 3962952998114717324}
   - component: {fileID: 1058289210}
   - component: {fileID: -276254471561930237}
   m_Layer: 0
@@ -133,7 +136,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2631020425867881459}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dba8d98255b7e9645bfb69033085de8b, type: 3}
   m_Name: 
@@ -152,6 +155,75 @@ MonoBehaviour:
     m_Bits: 256
   flash: {fileID: 2100000, guid: 57b09bca6b8c648429a388570af8be0a, type: 2}
   flashDuration: 0.1
+--- !u!114 &5369605448647889562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2631020425867881459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 617a8db9c057fee459c667688e2ff7fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAlive: 1
+  showStats: 0
+  Stats: 0a0000000400000001000000
+  damageTags:
+  - PlayerBullet
+  damageReactions:
+  - {fileID: 11400000, guid: 9de4910270d3fc34facbc86ae20f35bc, type: 2}
+  deathReactions:
+  - {fileID: 11400000, guid: 96142c586b56004478e700bae6ed10e9, type: 2}
+  - {fileID: 11400000, guid: 98b23fbe2e4b186408effe7e0dfc8f24, type: 2}
+  mom: {fileID: 0}
+  roomIndex: -1
+--- !u!114 &424153226698454957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2631020425867881459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b480d96ca9154124aaa96edb6e08aeb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  avoidVal: 1.5
+--- !u!114 &3962952998114717324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2631020425867881459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5f896aefc387fc4fabf55afde5e50b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentAmmo:
+    ammoName: 
+    speed: 5
+    firerate: 0
+    damage: 2
+    rebound: 0
+    spreadNum: 8
+    burstNum: 1
+    spreadDis: 0
+    spreadAngle: 45
+    prefab: {fileID: 2738970408359458981, guid: b348baa7b0ca38441ba7aa69bef6b51d, type: 3}
+  ammoList: []
+  spreadsAngle: []
+  spreadsDis: []
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  automatic: 0
+  targeted: 0
+  needLOS: 0
 --- !u!95 &1058289210
 Animator:
   serializedVersion: 5

@@ -39,7 +39,6 @@ public class Ghosts : MonoBehaviour
 
     public bool isPathfinding = false;
     public Queue<Vector2> ghostPath = new Queue<Vector2>();
-    bool firstUpdate = true;
     float cooldown = 0f;
 
     //this lets us reset the ghost by re-enabling the game object without having to hardcode our stats
@@ -54,7 +53,7 @@ public class Ghosts : MonoBehaviour
             dead = false;
             anim.SetBool("Death", false);
             //pathDisplay = GameObject.Find("A_ Debug").GetComponent<AstarDebugLayer>();
-            firstUpdate = true;
+           
         }
     }
 

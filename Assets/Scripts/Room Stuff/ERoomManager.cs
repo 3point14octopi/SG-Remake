@@ -172,7 +172,7 @@ public class ERoomManager : MonoBehaviour
         int quantity = 5 - overShoot;
         List<int> rowsSelected = new List<int>();
 
-        for(int i = 0; i < RNG.GenRand(1, quantity);)
+        for(int i = 0; i < RNG.GenRand(0, quantity);)
         {
             Coord location = new Coord(RNG.GenRand(2, room.width - 4), RNG.GenRand(2, room.height - 4));
 
@@ -198,7 +198,7 @@ public class ERoomManager : MonoBehaviour
     private RoomWithEnemies AddSpectres(Space2D room, RoomWithEnemies list)
     {
 
-        for(int i = 0; i < RNG.GenRand(0, 5);)
+        for(int i = 0; i < RNG.GenRand(1, 3);)
         {
             Coord startPos = new Coord(RNG.GenRand(2, room.width - 4), RNG.GenRand(2, room.height - 4));
 
@@ -252,20 +252,20 @@ public class ERoomManager : MonoBehaviour
     {
         RoomWithEnemies eList = new RoomWithEnemies();
 
-        //switch (RNG.GenRand(1, 2))
-        //{
-            //case (1):
-            //    eList = AddBeans(room, eList, 2);
-            //    eList = (RNG.GenRand(0, 2) == 0) ? AddKnights(room, eList, (eList.Population() == 6) ? 1 : 0) : AddSpectres(room, eList);
-            //    break;
-            //case (2):
+        switch (RNG.GenRand(1, 2))
+        {
+            case (1):
+                //eList = AddBeans(room, eList, 2);
+                eList = (RNG.GenRand(0, 2) == 0) ? AddKnights(room, eList, (eList.Population() == 6) ? 1 : 0) : AddSpectres(room, eList);
+                break;
+            case (2):
                 eList = AddKnights(room, eList);
-                //eList = AddSpectres(room, eList);
+                eList = AddSpectres(room, eList);
                 //if (eList.Population() < 2) eList = AddBeans(room, eList, 2);
-        //        break;
-        //    default:
-        //        break;
-        //}
+                break;
+            default:
+                break;
+        }
 
         return eList;
     }
@@ -279,7 +279,7 @@ public class ERoomManager : MonoBehaviour
 
         for(int i = 0; i < 8;)
         {
-            Coord location = new Coord(RNG.GenRand(10, 5), RNG.GenRand(5, 5));
+            Coord location = new Coord(RNG.GenRand(5, 5), RNG.GenRand(2, 5));
             if(room.GetCell(location) == 1)
             {
                 Coord sur = BasicBuilderFunctions.CheckAdjacentCells(room, location, true, new Cell(1));
@@ -305,7 +305,6 @@ public class ERoomManager : MonoBehaviour
             eList.Add(r);
         }
 
-        eList = AddKnights(room, eList, 3);
 
         return eList;
     }
@@ -366,25 +365,14 @@ public class ERoomManager : MonoBehaviour
     public List<RoomEnemy> Populate(Space2D roomMap, int roomType)
     {
         RoomWithEnemies r = new RoomWithEnemies();
-        //touch
 
-        //if (roomType == EMPTY)
-        //{
-        //    //do nothing
-        //}
-        //else if (roomType == WISP)
-        //{
-        //    r = WispRoomGen(roomMap);
-        //}
-        //else if (roomType < JIMMY)
-        //{
-        if(roomType != 1)r = BasicEnemyRoom(roomMap);
-        //}
-        //else if (roomType == BOSS)
-        //{
-        //    r = BossRoom(roomMap);
-
-        //}
+        if(roomType != 1)
+        {
+            if(roomType < 8)
+            {
+                r = (roomType == 3) ? WispRoomGen(roomMap) : BasicEnemyRoom(roomMap);
+            }
+        }
 
         return r.enemies;
     }

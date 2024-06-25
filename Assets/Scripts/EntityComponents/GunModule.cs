@@ -168,7 +168,7 @@ public class GunModule : MonoBehaviour
     }
 
     //fires bullets in preset directions. Picture how the wisp shoots in 8 directions
-   IEnumerator PresetShoot(Ammo a){
+   public IEnumerator PresetShoot(Ammo a){
        for(int j = 0; j < a.burstNum; j++){
            for(int i = 0; i < a.spreadNum; i++){
                launchAng.z = playerAng.z + i* a.spreadAngle;
