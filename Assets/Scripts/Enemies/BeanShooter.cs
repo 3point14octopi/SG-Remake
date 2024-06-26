@@ -121,19 +121,6 @@ public class BeanShooter : MonoBehaviour
         beanTimer -= Time.deltaTime;
     }
 
-    void OnCollisionEnter2D(Collision2D other){
-        //checks if it is hit by a bullet from a player
-        if (other.gameObject.tag == "PlayerBullet")
-        {
-            health = health - other.gameObject.GetComponent<PlayerBulletBehaviour>().bDamage;
-            Flash();
-
-            //if health is 0; start death anim, tell subject to take us off the list and delete the gameobject after the anim is done
-            if(health <= 0 && !dead){
-                StartCoroutine(Death());
-            }
-        }
-    }
 
     //when shooting happens it inits the bullet and updates its variables
     public void Shooting(){    

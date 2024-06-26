@@ -190,8 +190,8 @@ public class GunModule : MonoBehaviour
                 //CalculateShooting(a);
                 launchAng.z = ang.z + spreadsAngle[i];
                 activeBullet = (GameObject)Instantiate(a.prefab, pos + launchDis * spreadsDis[i], Quaternion.Euler(launchAng));
-                activeBullet.GetComponent<PlayerBulletBehaviour>().SetBullet(a);
-            }
+                activeBullet.GetComponent<BulletBehaviour>().SetBullet(a);
+            }   
            yield return new WaitForSeconds(0.1f);
         }
     }

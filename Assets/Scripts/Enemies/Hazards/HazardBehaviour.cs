@@ -71,18 +71,6 @@ public class HazardBehaviour : MonoBehaviour
         }
 
 
-        else if (other.gameObject.tag == "PlayerBullet")
-        {
-            if(breakable){
-                health = health - other.gameObject.GetComponent<PlayerBulletBehaviour>().bDamage;
-                StartCoroutine(Flash());
-                //if the damage is too much the enemy dies
-                if(health <= 0){
-                    Destroy(gameObject);
-                }
-            }
-            Destroy(other.gameObject);
-        }
 
     }
 

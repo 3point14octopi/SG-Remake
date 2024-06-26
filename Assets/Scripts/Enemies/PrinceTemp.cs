@@ -261,16 +261,6 @@ public class PrinceTemp : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        //if it is hit by a bullet it takes damage
-        if (other.gameObject.tag == "PlayerBullet")
-        {
-            TakeDamage(other.gameObject.GetComponent<PlayerBulletBehaviour>().bDamage);
-
-        }
-    }
-
     public void TakeDamage(float damage){
 
         health = health - damage;
