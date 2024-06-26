@@ -22,23 +22,15 @@ public class RoomWithEnemies
 {
     public List<RoomEnemy> enemies = new List<RoomEnemy>();
     int aliveCount = 0;
-    public bool isBossRoom = false;
 
-    public RoomWithEnemies(bool boss = false)
+    public RoomWithEnemies()
     {
         aliveCount = 0;
-        isBossRoom = boss;
     }
     public void Add(RoomEnemy enemy)
     {
         enemies.Add(enemy);
         aliveCount++;
-    }
-
-    //this is really, really bad
-    public void KillAnEnemy()
-    {
-        if (aliveCount > 0) aliveCount--;
     }
 
     public void DropLast()
@@ -55,62 +47,13 @@ public class RoomWithEnemies
     {
         return aliveCount;
     }
-    public bool IsClear()
-    {
-        return (aliveCount <= 0);
-    }
 }
 
 public class ERoomManager : MonoBehaviour
 {
     public static ERoomManager Instance;
 
-    //private Dictionary<Coord, RoomWithEnemies> enemyLists = new Dictionary<Coord, RoomWithEnemies>();
-    private RoomWithEnemies[,] enemyLists = new RoomWithEnemies[4, 6];
-    private Space2D[,] layouts = new Space2D[4, 6];
-    private Space2D bossRoom = null;
-    List<Coord> usedRooms = new List<Coord>();
 
-    public Space2D RequestRoom(Coord id)
-    {
-        return layouts[id.y, id.x];
-    }
-
-    public bool IsFloorCleared()
-    {
-        foreach (Coord room in usedRooms)
-        {
-            if (enemyLists[room.y, room.x].enemies.Count > 0 && enemyLists[room.y, room.x].Population() != 0)
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public bool IsBossUnlocked()
-    {
-        foreach (Coord room in usedRooms)
-        {
-            if (enemyLists[room.y, room.x].enemies.Count > 0 && enemyLists[room.y, room.x].Population() != 0)
-            {
-                if (enemyLists[room.y, room.x].isBossRoom == false)
-                {
-                    Debug.Log("boss room inaccessible");
-                    return false;
-                }
-            }
-        }
-        Debug.Log("boss room accessible");
-        return true;
-    }
-
-
-    private const int EMPTY = 2;
-    private const int TIMMY = 4;
-    private const int WISP = 5;
-    private const int JIMMY = 7;
-    private const int BOSS = 9;
 
 
     private void Awake()
@@ -311,49 +254,14 @@ public class ERoomManager : MonoBehaviour
 
     private RoomWithEnemies BossRoom(Space2D room, int bossID = 0)
     {
-        RoomWithEnemies r = new RoomWithEnemies(true);
+        RoomWithEnemies r = new RoomWithEnemies();
 
         r.Add(new RoomEnemy(25 + bossID, new Coord(12 + room.worldOrigin.x, 7 + room.worldOrigin.y)));
 
         return r;
     }
 
-    public void CreateDataForRoom(int roomValue, Space2D room, Coord location)
-    {
-        if (roomValue < EMPTY)
-        {
-            enemyLists[location.y, location.x] = new RoomWithEnemies();
-            usedRooms.Add(location);
-        }
-        else if (roomValue < TIMMY)
-        {
-            enemyLists[location.y, location.x] = BasicEnemyRoom(room);
-            usedRooms.Add(location);
-        }
-        else if (roomValue < WISP)
-        {
-            enemyLists[location.y, location.x] = WispRoomGen(room);
-            usedRooms.Add(location);
-        }
-        else if (roomValue < JIMMY)
-        {
-            
-            enemyLists[location.y, location.x] = new RoomWithEnemies();
-            usedRooms.Add(location);
-            Debug.Log("empty room at " + location.x.ToString() + ',' + location.y.ToString() + " (room value: " + roomValue.ToString() + ')');
-        }else if(roomValue < BOSS)
-        {
-            enemyLists[location.y, location.x] = BossRoom(room);
-        }
 
-        BasicBuilderFunctions.Flood(room, new Cell(99), new Cell(1));
-        layouts[location.y, location.x] = room;
-    }
-
-    public void OnRoomEnter(Coord roomLoc)
-    {
-        RoomPop.Instance.LoadRoom(enemyLists[roomLoc.y, roomLoc.x], roomLoc);
-    }
 
 
     /// <summary>

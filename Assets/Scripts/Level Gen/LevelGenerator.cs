@@ -1,9 +1,6 @@
 using JAFprocedural;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -11,64 +8,20 @@ using UnityEngine.Tilemaps;
 
 public class LevelGenerator : MonoBehaviour
 {
-    public CurrentDoors doorManager;
-    public CamShift camRef;
-    [SerializeField]public JGridLayer[] layers = new JGridLayer[3];
+    public GameObject roomBlob;
+
+    [SerializeField]public JGridLayer[] layers = new JGridLayer[2];
     public int backgroundLayerIndex = 1;
-    private Space2D room;
     private SG_Level dungeon;
-    [Header("Generation Parameters")]
-    public bool useLazyLoading = true;
-    public bool lazyLoadInBuild;
     // Start is called before the first frame update
     void Start()
     {
-#if !UNITY_EDITOR
-        if(lazyLoadInBuild != null && lazyLoadInBuild){
-            useLazyLoading = true;
-        }else{
-            useLazyLoading = false;
-        }
-#endif
-        dungeon = new SG_Level(useLazyLoading);
-
-        Debug.Log(dungeon.rooms.Count);
-        doorManager.floorMap = dungeon.minimap;
-        foreach(KeyValuePair<Coord, Space2D> kvp in dungeon.rooms)
-        {
-            ERoomManager.Instance.CreateDataForRoom(dungeon.minimap.GetCell(kvp.Key), kvp.Value, kvp.Key);
-        }
+        dungeon = new SG_Level(false);
 
         PrintFullMap();
         AstarDebugLayer.Instance.SetRoomMap(dungeon.megaMap);
-        
     }
 
-    // Update is called once per frame
-#if UNITY_EDITOR
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            //teleport to the boss room
-            Coord location = new Coord();
-            if(dungeon.minimap.FindFirstInstance(7, out location))
-            {
-                GameObject.Find("Frostbite").transform.position = new Vector2((location.x * 25) + 12, (location.y * -15) - 13);
-                camRef.SetPosition(location);
-            }
-        }else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            //teleport to the wisp room
-            Coord location = new Coord();
-            if (dungeon.minimap.FindFirstInstance(3, out location))
-            {
-                GameObject.Find("Frostbite").transform.position = new Vector2((location.x * 25) + 12, (location.y * -15) - 13);
-                camRef.SetPosition(location);
-            }
-        }
-    }
-#endif
 
     private void PrintRoom(Space2D room)
     {
@@ -78,13 +31,15 @@ public class LevelGenerator : MonoBehaviour
             {
                 layers[backgroundLayerIndex].Draw(new Vector3Int(x, -y, 0));
 
-                int index = (room.GetCell(x-room.worldOrigin.x, y-room.worldOrigin.y)%2 == 0)?2:1;
+                int index = (room.GetCell(x-room.worldOrigin.x, y-room.worldOrigin.y));
                 if((index >= 0 && index < layers.Length) && index != backgroundLayerIndex)
                 {
                     layers[index].Draw(new Vector3Int(x, -y, 0));
                 }
             }
         }
+
+        
     }
 
     private void PrintFullMap()
@@ -97,17 +52,19 @@ public class LevelGenerator : MonoBehaviour
         foreach(KeyValuePair<Coord, Space2D> room in dungeon.rooms)
         {
             PrintRoom(room.Value);
+
+            RoomTemplate r = Instantiate(roomBlob, new Vector2((room.Value.worldOrigin.x) + 7.5f, (-room.Value.worldOrigin.y) - 3.5f), Quaternion.identity).GetComponent<RoomTemplate>();
+
+            r.PlaceDoors(room.Value.worldOrigin);
+            r.AssignMap(room.Value);
+            r.rType = dungeon.minimap.GetCell(room.Key);
         }
-        
+        Debug.Log("done room instantiation");
 
         Coord startRoom = new Coord();
         dungeon.minimap.FindFirstInstance(1, out startRoom);
-        GameObject.Find("Frostbite").transform.position = new Vector2((startRoom.x * 25) + 12, (startRoom.y * -15) - 8);
-        camRef.SetPosition(new Coord(startRoom.x, startRoom.y));
-
-        Coord bossRoom = new Coord();
-        dungeon.minimap.FindFirstInstance(7, out bossRoom);
-        camRef.mm.SetBossRoom(bossRoom);
+        GameObject.Find("Frostbite").transform.position = new Vector2((startRoom.x * 15) + 7.5f, (startRoom.y * -9) - 4.5f);
+        FollowCam.Instance.ForceJump(new Vector3((startRoom.x * 15) + 7.5f, (startRoom.y * -9) -4.5f, 0));
 
     }
 

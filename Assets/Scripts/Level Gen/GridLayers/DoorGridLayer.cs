@@ -13,7 +13,6 @@ public class DoorGridLayer : JGridLayer
     public List<DoorTile> tileList = new List<DoorTile>();
     public List<GameObject> doorObj = new List<GameObject>();
     public List<DoorTileBehaviour> instantiatedDoors = new List<DoorTileBehaviour>();
-    public DoorTile exposedTile;
 
     public static DoorGridLayer Instance;
 

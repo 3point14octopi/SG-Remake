@@ -147,7 +147,6 @@ public class BeanShooter : MonoBehaviour
         anim.SetBool("Death", true);
         audioSource.clip = deathSound;
         audioSource.Play();
-        RoomPop.Instance.EnemyKilled();
         yield return new WaitForSeconds(1);
         gameObject.GetComponent<SpriteRenderer>().material = material;
         gameObject.SetActive(false);

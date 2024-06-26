@@ -296,7 +296,6 @@ public class PrinceTemp : MonoBehaviour
     IEnumerator Death()
     {
         dead = true;
-        RoomPop.Instance.EnemyKilled();
         yield return new WaitForSeconds(3);
         GameObject.FindGameObjectWithTag("DDOL").GetComponent<DontDestroy>().win = true;
         SceneManager.LoadScene("EndGame");
