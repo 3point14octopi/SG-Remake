@@ -38,6 +38,7 @@ public class GunModule : MonoBehaviour
     [HideInInspector]
     public bool needLOS; //determines if the gun should only shoot when it has LOS
     protected bool active = true;
+    [HideInInspector] public bool automaticShotThisFrame;
     
 
    // Start is called before the first frame update
@@ -119,6 +120,7 @@ public class GunModule : MonoBehaviour
     IEnumerator TargetShooting(){  
        while(active){
            StartCoroutine(TargetShoot(currentAmmo));
+            automaticShotThisFrame = true;
            yield return new WaitForSeconds(currentAmmo.bullet.firerate);
        }
     }
@@ -137,6 +139,7 @@ public class GunModule : MonoBehaviour
 
            if(LOS){
                StartCoroutine(TargetShoot(currentAmmo));
+                automaticShotThisFrame = true;
            }
 
            yield return new WaitForSeconds(currentAmmo.bullet.firerate);
@@ -180,7 +183,6 @@ public class GunModule : MonoBehaviour
            for(int i = 0; i < ammo.bullet.spreadNum; i++){
                 ammo.bullet = Instantiate(ammo.bullet);
                launchAng.z = playerAng.z + i* ammo.bullet.spreadAngle;
-                Debug.Log(launchAng);
                activeBullet = (GameObject)Instantiate(ammo.casing, gameObject.transform.position, Quaternion.Euler(launchAng));
                activeBullet.GetComponent<BulletBehaviour>().SetBullet(ammo.bullet);
            }

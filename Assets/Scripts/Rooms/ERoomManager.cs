@@ -85,12 +85,12 @@ public class ERoomManager : MonoBehaviour
 
     private RoomWithEnemies AddBeans(Space2D room, RoomWithEnemies list, int min = 0)
     {
-        int amount = RNG.GenRand(0, 4) + RNG.GenRand(0, 4);
+        int amount = RNG.GenRand(0, 2) + RNG.GenRand(0, 2);
         if (min > amount) amount = min;
 
         for(int i = 0; i < amount;)
         {
-            Coord startPos = new Coord(RNG.GenRand(2, room.width - 4), RNG.GenRand(2, room.height - 4));
+            Coord startPos = new Coord(RNG.GenRand(4, room.width - 8), RNG.GenRand(3, room.height - 6));
             if (room.GetCell(startPos) == 1)
             {
                 Coord around = BasicBuilderFunctions.CheckAdjacentCells(room, startPos);
@@ -117,7 +117,7 @@ public class ERoomManager : MonoBehaviour
 
         for(int i = 0; i < RNG.GenRand(0, quantity);)
         {
-            Coord location = new Coord(RNG.GenRand(2, room.width - 4), RNG.GenRand(2, room.height - 4));
+            Coord location = new Coord(RNG.GenRand(4, room.width - 8), RNG.GenRand(3, room.height - 6));
 
             if(!rowsSelected.Contains(location.y) && room.GetCell(location) == 1)
             {
@@ -143,7 +143,7 @@ public class ERoomManager : MonoBehaviour
 
         for(int i = 0; i < RNG.GenRand(1, 3);)
         {
-            Coord startPos = new Coord(RNG.GenRand(2, room.width - 4), RNG.GenRand(2, room.height - 4));
+            Coord startPos = new Coord(RNG.GenRand(4, room.width - 8), RNG.GenRand(3, room.height - 6));
 
             if(room.GetCell(startPos) == 1)
             {
@@ -168,7 +168,7 @@ public class ERoomManager : MonoBehaviour
         int iterations = RNG.GenRand(0, 3);
         for(int i = 0; i < iterations;)
         {
-            Coord startPos = new Coord(RNG.GenRand(3, room.width - 6), RNG.GenRand(3, room.height - 6));
+            Coord startPos = new Coord(RNG.GenRand(4, room.width - 8), RNG.GenRand(3, room.height - 6));
             if (room.GetCell(startPos) == 1)
             {
                 room.SetCell(startPos, new Cell(99));
@@ -198,18 +198,19 @@ public class ERoomManager : MonoBehaviour
         switch (RNG.GenRand(1, 2))
         {
             case (1):
-                //eList = AddBeans(room, eList, 2);
+                eList = AddBeans(room, eList, 2);
                 eList = (RNG.GenRand(0, 2) == 0) ? AddKnights(room, eList, (eList.Population() == 6) ? 1 : 0) : AddSpectres(room, eList);
                 break;
             case (2):
                 eList = AddKnights(room, eList);
                 eList = AddSpectres(room, eList);
-                //if (eList.Population() < 2) eList = AddBeans(room, eList, 2);
+                if (eList.Population() < 2) eList = AddBeans(room, eList, 2);
                 break;
             default:
                 break;
         }
 
+        BasicBuilderFunctions.Flood(room, new Cell(99), new Cell(1));
         return eList;
     }
 
@@ -222,7 +223,7 @@ public class ERoomManager : MonoBehaviour
 
         for(int i = 0; i < 8;)
         {
-            Coord location = new Coord(RNG.GenRand(5, 5), RNG.GenRand(2, 5));
+            Coord location = new Coord(RNG.GenRand(5, 5), RNG.GenRand(3, 3));
             if(room.GetCell(location) == 1)
             {
                 Coord sur = BasicBuilderFunctions.CheckAdjacentCells(room, location, true, new Cell(1));

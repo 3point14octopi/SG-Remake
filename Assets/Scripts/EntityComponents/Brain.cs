@@ -94,7 +94,7 @@ public class Brain : MonoBehaviour
     private IEnumerator Die()
     {
         isAlive = false;
-        Debug.Log("the entity has died. we'd do something here");
+        
         if(roomIndex != -1)
         {
             mom.RemoveEnemy(roomIndex);

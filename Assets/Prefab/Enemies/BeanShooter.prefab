@@ -15,6 +15,9 @@ GameObject:
   - component: {fileID: 6314510192383934003}
   - component: {fileID: 6314510192383934000}
   - component: {fileID: 7464455179325810373}
+  - component: {fileID: 7704652097541396795}
+  - component: {fileID: 3416246949191056370}
+  - component: {fileID: -8119412831308437626}
   m_Layer: 0
   m_Name: BeanShooter
   m_TagString: Enemy
@@ -96,7 +99,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6314510192383934014}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 93a2160055c72604bb77267d2db44d17, type: 3}
   m_Name: 
@@ -266,3 +269,65 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7704652097541396795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6314510192383934014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 617a8db9c057fee459c667688e2ff7fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAlive: 1
+  showStats: 0
+  Stats: 1e0000000000000001000000
+  damageTags:
+  - PlayerBullet
+  damageReactions:
+  - {fileID: 11400000, guid: 9de4910270d3fc34facbc86ae20f35bc, type: 2}
+  deathReactions:
+  - {fileID: 11400000, guid: ce9f9bf6661b5d94293a05b4899c6c71, type: 2}
+  mom: {fileID: 0}
+  roomIndex: -1
+--- !u!114 &3416246949191056370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6314510192383934014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5f896aefc387fc4fabf55afde5e50b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentAmmo:
+    bullet: {fileID: 0}
+    casing: {fileID: 0}
+  ammoList:
+  - bullet: {fileID: 11400000, guid: 98da02ce8d56a0a4e96818199e673ceb, type: 2}
+    casing: {fileID: 7514329530815829435, guid: 1cc0247fcf0cb0246b9702ec00f014fd, type: 3}
+  spreadsAngle: []
+  spreadsDis: []
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  automatic: 1
+  targeted: 1
+  needLOS: 1
+  automaticShotThisFrame: 0
+--- !u!114 &-8119412831308437626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6314510192383934014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3864d43b805134d43941e37ce5176ada, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -100,8 +100,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bSpeed: 0
-  bDamage: 0
-  bRebound: 1
+  bRebound: 0
+  style: 0
   ignoreTags:
   - Enemy
 --- !u!61 &2329756317648098764

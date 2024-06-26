@@ -16,6 +16,7 @@ public class TreeKnightController : MonoBehaviour
         if(anim != null)
         {
             anim.SetBool("Death", false);
+            GetComponent<GunModule>().ToggleAutomatic(true);
         }
     }
 
