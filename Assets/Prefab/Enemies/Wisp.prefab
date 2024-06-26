@@ -177,8 +177,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5f896aefc387fc4fabf55afde5e50b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentAmmo: {fileID: 0}
-  ammoList: []
+  currentAmmo:
+    bullet: {fileID: 0}
+    casing: {fileID: 0}
+  ammoList:
+  - bullet: {fileID: 11400000, guid: 72e801e1fa5624d4ea1238f920459a9a, type: 2}
+    casing: {fileID: 2738970408359458981, guid: b348baa7b0ca38441ba7aa69bef6b51d, type: 3}
   spreadsAngle: []
   spreadsDis: []
   playerMask:

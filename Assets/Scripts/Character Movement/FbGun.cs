@@ -7,11 +7,11 @@ using UpgradeStats;
 
 public class FbGun : GunModule
 {
-    [HideInInspector]
+    //[HideInInspector]
     public KeyCode[] shootKeys = new KeyCode[4];//used for tracking the offsets, matches up with an array
     public Stack<int> keyHistory = new Stack<int>();
 
-    [HideInInspector]
+    //[HideInInspector]
     public Transform[] launchOffset = new Transform[4]; //the offsets for each direction of shooting
 
 
@@ -48,7 +48,7 @@ public class FbGun : GunModule
                 //else if (keyHistory.Peek() == 1) { anim.Play("FrostbiteThrowDown"); }
                 //else if (keyHistory.Peek() == 2) { anim.Play("FrostbiteThrowLeft"); }
                 //else if (keyHistory.Peek() == 3) { anim.Play("FrostbiteThrowRight"); }
-                 yield return new WaitForSeconds(currentAmmo.firerate);
+                 yield return new WaitForSeconds(currentAmmo.bullet.firerate);
                 break;
             }
             else
@@ -66,14 +66,14 @@ public class FbGun : GunModule
         {
             case GunUpgrades.Damage:
             {
-                    currentAmmo.bulletEffects[(int)EntityStat.Health] = new HitEffect(EntityStat.Health, currentAmmo.bulletEffects[(int)EntityStat.Health].modifier + upgrade.modifier);
+                    currentAmmo.bullet.bulletEffects[(int)EntityStat.Health] = new HitEffect(EntityStat.Health, currentAmmo.bullet.bulletEffects[(int)EntityStat.Health].modifier + upgrade.modifier);
                     //upgrade.modifier;
                     break;
             }
 
             case GunUpgrades.Speed:
             {
-                    currentAmmo.speed += upgrade.modifier;
+                    currentAmmo.bullet.speed += upgrade.modifier;
                     break;
             }
 
@@ -86,25 +86,25 @@ public class FbGun : GunModule
 
             case GunUpgrades.Firerate:
                 {
-                    currentAmmo.firerate += upgrade.modifier;
+                    currentAmmo.bullet.firerate += upgrade.modifier;
                     break;
                 }
 
             case GunUpgrades.Rebound:
                 {
-                    currentAmmo.rebound += upgrade.modifier;
+                    currentAmmo.bullet.rebound += upgrade.modifier;
                     break;
                 }
 
             case GunUpgrades.Spread:
                 {
-                    currentAmmo.spreadNum += upgrade.modifier;
+                    currentAmmo.bullet.spreadNum += upgrade.modifier;
                     break;
                 }
 
             case GunUpgrades.Burst:
                 {
-                    currentAmmo.burstNum += upgrade.modifier;
+                    currentAmmo.bullet.burstNum += upgrade.modifier;
                     break;
                 }
 

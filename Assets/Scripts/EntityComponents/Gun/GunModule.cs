@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class GunModule : MonoBehaviour
 {
+    [HideInInspector]
     public Ammo currentAmmo; //bullet being fired
     public List<Ammo> ammoList = new List<Ammo>();
 
@@ -47,24 +48,30 @@ public class GunModule : MonoBehaviour
        //find our layers used for our raycast masks
        playerMask |= 0x1 << 6;
        barrierMask |= 0x1 << 7;
+        for(int i = 0; i < ammoList.Count; i++)
+        {
+            ammoList[i].bullet = Instantiate(ammoList[i].bullet);
+        }
+        currentAmmo = ammoList[0];
        CalculateShooting(currentAmmo);
    }
 
     #region Functions for Changing things
 
     //called to set up a guns spread distance
-    public void CalculateShooting(Ammo a){
+    public void CalculateShooting(Ammo ammo)
+    {
         spreadsAngle.Clear();
         spreadsDis.Clear();
         if (targeted){
-           spreadsAngle.Add(a.spreadAngle * ((a.spreadNum - 1)/ -2));
-           for(int i = 1; i < a.spreadNum; i++ ){
-               spreadsAngle.Add(a.spreadAngle *i + spreadsAngle[0]);
+           spreadsAngle.Add(ammo.bullet.spreadAngle * ((ammo.bullet.spreadNum - 1)/ -2));
+           for(int i = 1; i < ammo.bullet.spreadNum; i++ ){
+               spreadsAngle.Add(ammo.bullet.spreadAngle *i + spreadsAngle[0]);
            }
 
-           spreadsDis.Add(a.spreadDis *((a.spreadNum - 1)/ -2));
-           for(int i = 1; i < a.spreadNum; i++ ){
-               spreadsDis.Add(a.spreadDis *i + spreadsDis[0]);
+           spreadsDis.Add(ammo.bullet.spreadDis *((ammo.bullet.spreadNum - 1)/ -2));
+           for(int i = 1; i < ammo.bullet.spreadNum; i++ ){
+               spreadsDis.Add(ammo.bullet.spreadDis *i + spreadsDis[0]);
            }
 
            if(needLOS && automatic){                
@@ -112,7 +119,7 @@ public class GunModule : MonoBehaviour
     IEnumerator TargetShooting(){  
        while(active){
            StartCoroutine(TargetShoot(currentAmmo));
-           yield return new WaitForSeconds(currentAmmo.firerate);
+           yield return new WaitForSeconds(currentAmmo.bullet.firerate);
        }
     }
 
@@ -132,7 +139,7 @@ public class GunModule : MonoBehaviour
                StartCoroutine(TargetShoot(currentAmmo));
            }
 
-           yield return new WaitForSeconds(currentAmmo.firerate);
+           yield return new WaitForSeconds(currentAmmo.bullet.firerate);
        }
 
    }
@@ -142,7 +149,7 @@ public class GunModule : MonoBehaviour
 
        while(active){
            StartCoroutine(PresetShoot(currentAmmo));
-           yield return new WaitForSeconds(currentAmmo.firerate);
+           yield return new WaitForSeconds(currentAmmo.bullet.firerate);
        }
 
 
@@ -153,44 +160,46 @@ public class GunModule : MonoBehaviour
     #region Functions for making bullets
 
     //used for guns that track the player. They use player.transform.position to find their vector 
-    IEnumerator TargetShoot(Ammo a){
+    IEnumerator TargetShoot(Ammo ammo){
        playerAng = new Vector3(0, 0, (Mathf.Atan2(player.transform.position.y - gameObject.transform.position.y, player.transform.position.x - gameObject.transform.position.x) * Mathf.Rad2Deg - 90f));
        launchDis = new Vector3(-(player.transform.position.y - transform.position.y), (player.transform.position.x - transform.position.x), 0).normalized;
-
-       for(int j = 0; j < currentAmmo.burstNum; j++){
-           for(int i = 0; i < currentAmmo.spreadNum; i++){
+        
+       for(int j = 0; j < currentAmmo.bullet.burstNum; j++){
+           for(int i = 0; i < currentAmmo.bullet.spreadNum; i++){
                launchAng.z = playerAng.z + spreadsAngle[i];
-               activeBullet = (GameObject)Instantiate(a.prefab, gameObject.transform.position + launchDis * spreadsDis[i], Quaternion.Euler(launchAng));
-               activeBullet.GetComponent<BulletBehaviour>().SetBullet(a);
+               activeBullet = (GameObject)Instantiate(ammo.casing, gameObject.transform.position + launchDis * spreadsDis[i], Quaternion.Euler(launchAng));
+               activeBullet.GetComponent<BulletBehaviour>().SetBullet(ammo.bullet);
             }
            yield return new WaitForSeconds(0.1f);
        }
     }
 
     //fires bullets in preset directions. Picture how the wisp shoots in 8 directions
-   public IEnumerator PresetShoot(Ammo a){
-       for(int j = 0; j < a.burstNum; j++){
-           for(int i = 0; i < a.spreadNum; i++){
-               launchAng.z = playerAng.z + i* a.spreadAngle;
-               activeBullet = (GameObject)Instantiate(a.prefab, gameObject.transform.position, Quaternion.Euler(launchAng));
-               activeBullet.GetComponent<BulletBehaviour>().SetBullet(a);
+   public IEnumerator PresetShoot(Ammo ammo){
+       for(int j = 0; j < ammo.bullet.burstNum; j++){
+           for(int i = 0; i < ammo.bullet.spreadNum; i++){
+                ammo.bullet = Instantiate(ammo.bullet);
+               launchAng.z = playerAng.z + i* ammo.bullet.spreadAngle;
+                Debug.Log(launchAng);
+               activeBullet = (GameObject)Instantiate(ammo.casing, gameObject.transform.position, Quaternion.Euler(launchAng));
+               activeBullet.GetComponent<BulletBehaviour>().SetBullet(ammo.bullet);
            }
            yield return new WaitForSeconds(0.1f);
        }
    }
 
     //only used by frostbite needs it own function because we take in a cardinal direction from the arrow keys to know which way to shoot
-    protected IEnumerator FbShoot(Ammo a, Vector3 pos, Vector3 ang)
+    protected IEnumerator FbShoot(Ammo ammo, Vector3 pos, Vector3 ang)
     {
         launchDis = new Vector3(pos.y - player.transform.position.y, pos.x - player.transform.position.x, 0).normalized;
-        for (int j = 0; j < a.burstNum; j++)
+        for (int j = 0; j < ammo.bullet.burstNum; j++)
         {
-            for (int i = 0; i < a.spreadNum; i++)
+            for (int i = 0; i < ammo.bullet.spreadNum; i++)
             {
                 //CalculateShooting(a);
                 launchAng.z = ang.z + spreadsAngle[i];
-                activeBullet = (GameObject)Instantiate(a.prefab, pos + launchDis * spreadsDis[i], Quaternion.Euler(launchAng));
-                activeBullet.GetComponent<BulletBehaviour>().SetBullet(a);
+                activeBullet = (GameObject)Instantiate(ammo.casing, pos + launchDis * spreadsDis[i], Quaternion.Euler(launchAng));
+                activeBullet.GetComponent<BulletBehaviour>().SetBullet(ammo.bullet);
             }   
            yield return new WaitForSeconds(0.1f);
         }

@@ -10,20 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed67a06c19845c243801ca625e2433aa, type: 3}
-  m_Name: Tree Bullet
+  m_Name: Wisp Bullet
   m_EditorClassIdentifier: 
   style: 0
   speed: 7
-  firerate: 2
+  firerate: 1
   rebound: 0
-  bulletEffects:
-  - targetedStat: 0
-    modifier: -1
-  - targetedStat: 1
-    modifier: 0
-  - targetedStat: 2
-    modifier: 0
-  spreadNum: 4
-  burstNum: 2
+  bulletEffects: []
+  spreadNum: 8
+  burstNum: 1
   spreadDis: 0
-  spreadAngle: 90
+  spreadAngle: 45

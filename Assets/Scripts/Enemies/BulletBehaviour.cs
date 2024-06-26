@@ -6,23 +6,42 @@ using Unity.VisualScripting;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 using EntityStats;
 using System;
+using static UnityEngine.GraphicsBuffer;
 
 
 public class BulletBehaviour : MonoBehaviour
 {
     //all 3 of these things are updated by the person that calls them
     public float bSpeed; //bullet speed
-    public float bDamage = 1; //Delete after merge because we use onhit
     public int bRebound;
+
+    public BulletStyles style;
     private Vector3 wallCenter;
+    private GameObject player;
 
     public List<string> ignoreTags = new List<string>();
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        //moves the bullet continously in the direction
-        transform.position += transform.up * Time.deltaTime * bSpeed;
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        switch (style)
+        {
+            case BulletStyles.Straight:
+            {
+                StraightMovement();
+                break;
+            }
+            case BulletStyles.Tracking:
+            {
+                TrackingMovement();
+                break;
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -42,19 +61,36 @@ public class BulletBehaviour : MonoBehaviour
     }
     
     //Called by gun when a bullet is instantiated
-    public void SetBullet(Ammo ammo)
+    public void SetBullet(Bullet bullet)
     {
 
-        bSpeed = ammo.speed;
-        bRebound = ammo.rebound;
+        bSpeed = bullet.speed;
+        bRebound = bullet.rebound;
+        style = bullet.style;
 
         //transfers on hit data from the ammo type to the bullet object
         for (int i = 0; i < EntityStat.GetNames(typeof(EntityStat)).Length; i++) //transfers on hit data from the ammo type to the bullet object
         {
-            gameObject.GetComponent<OnHit>().effects.Add(ammo.bulletEffects[i]);
+            gameObject.GetComponent<OnHit>().effects.Add(bullet.bulletEffects[i]);
         }
     }
+
+    private void StraightMovement()
+    {
+        //moves the bullet continously in same direction it was fired
+        transform.position += transform.up * Time.deltaTime * bSpeed;
+
+    }
+
+    private void TrackingMovement()
+    {
+        transform.up = player.transform.position - transform.position;
+        transform.position += transform.up * Time.deltaTime * bSpeed;
+    }
+
 }
+
+
 /*
 transform.position = Vector3.Reflect(transform.position, Vector3.up);
 if (Mathf.Abs(wallCenter.x - transform.position.x) > Mathf.Abs(wallCenter.y - transform.position.y))

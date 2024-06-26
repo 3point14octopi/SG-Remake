@@ -104,17 +104,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentAmmo:
-    ammoName: 
-    speed: 5
-    firerate: 2
-    damage: 1
-    rebound: 0
-    spreadNum: 4
-    burstNum: 2
-    spreadDis: 0
-    spreadAngle: 90
-    prefab: {fileID: 2738970408359458981, guid: b348baa7b0ca38441ba7aa69bef6b51d, type: 3}
-  ammoList: []
+    bullet: {fileID: 0}
+    casing: {fileID: 0}
+  ammoList:
+  - bullet: {fileID: 11400000, guid: 3a6e3cb5d8b17f4408044fdf7450a7a1, type: 2}
+    casing: {fileID: 2738970408359458981, guid: b348baa7b0ca38441ba7aa69bef6b51d, type: 3}
   spreadsAngle: []
   spreadsDis: []
   playerMask:

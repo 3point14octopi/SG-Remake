@@ -6,18 +6,18 @@ using UnityEngine;
 [Serializable]public class ManualShot : Reaction
 {
     private GunModule gun;
-    public Ammo whatever;
+    public Ammo ammo;
 
     public override void OnStart(GameObject g)
     {
         isCoroutine = false;
         gun = g.GetComponent<GunModule>();
-        whatever = (whatever.prefab == null) ? gun.currentAmmo : whatever;
+        ammo = (ammo.casing == null) ? gun.currentAmmo : ammo;
     }
 
 
     public override void ReactFunction()
     {
-        gun.StartCoroutine(gun.PresetShoot(whatever));
+        gun.StartCoroutine(gun.PresetShoot(ammo));
     }
 }

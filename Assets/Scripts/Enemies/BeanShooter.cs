@@ -126,7 +126,6 @@ public class BeanShooter : MonoBehaviour
     public void Shooting(){    
         activeBullet = (GameObject)Instantiate(bulletPrefab, gameObject.transform.position, launch);
         activeBullet.GetComponent<BulletBehaviour>().bSpeed = speed;
-        activeBullet.GetComponent<BulletBehaviour>().bDamage = damage;
         activeBullet.GetComponent<BulletBehaviour>().bRebound = rebound;
         anim.SetBool("LOS", true);
         

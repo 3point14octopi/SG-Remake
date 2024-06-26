@@ -18,16 +18,16 @@ public class Gun_Editor : Editor
         if (GUILayout.Button("Recalculate", GUILayout.Width(150f))){
             gm.spreadsAngle.Clear();
             gm.spreadsDis.Clear();
-            gm.spreadsAngle.Add(gm.currentAmmo.spreadAngle * ((gm.currentAmmo.spreadNum - 1) / -2));
-            for (int i = 1; i < gm.currentAmmo.spreadNum; i++)
+            gm.spreadsAngle.Add(gm.currentAmmo.bullet.spreadAngle * ((gm.currentAmmo.bullet.spreadNum - 1) / -2));
+            for (int i = 1; i < gm.currentAmmo.bullet.spreadNum; i++)
             {
-                gm.spreadsAngle.Add(gm.currentAmmo.spreadAngle * i + gm.spreadsAngle[0]);
+                gm.spreadsAngle.Add(gm.currentAmmo.bullet.spreadAngle * i + gm.spreadsAngle[0]);
             }
 
-            gm.spreadsDis.Add(gm.currentAmmo.spreadDis * ((gm.currentAmmo.spreadNum - 1) / -2));
-            for (int i = 1; i < gm.currentAmmo.spreadNum; i++)
+            gm.spreadsDis.Add(gm.currentAmmo.bullet.spreadDis * ((gm.currentAmmo.bullet.spreadNum - 1) / -2));
+            for (int i = 1; i < gm.currentAmmo.bullet.spreadNum; i++)
             {
-                gm.spreadsDis.Add(gm.currentAmmo.spreadDis * i + gm.spreadsDis[0]);
+                gm.spreadsDis.Add(gm.currentAmmo.bullet.spreadDis * i + gm.spreadsDis[0]);
             }
         }
         EditorGUILayout.EndHorizontal();
