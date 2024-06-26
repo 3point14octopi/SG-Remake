@@ -18,7 +18,7 @@ MonoBehaviour:
   rebound: 0
   bulletEffects:
   - targetedStat: 0
-    modifier: -1
+    modifier: -5
   - targetedStat: 1
     modifier: 0
   - targetedStat: 2

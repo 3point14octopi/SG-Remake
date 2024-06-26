@@ -16,7 +16,13 @@ MonoBehaviour:
   speed: 7
   firerate: 1
   rebound: 0
-  bulletEffects: []
+  bulletEffects:
+  - targetedStat: 0
+    modifier: -2
+  - targetedStat: 1
+    modifier: 0
+  - targetedStat: 2
+    modifier: 0
   spreadNum: 8
   burstNum: 1
   spreadDis: 0

@@ -12,12 +12,11 @@ using UnityEngine;
     {
         isCoroutine = false;
         gun = g.GetComponent<GunModule>();
-        ammo = (ammo.casing == null) ? gun.currentAmmo : ammo;
     }
 
 
     public override void ReactFunction()
     {
-        gun.StartCoroutine(gun.PresetShoot(ammo));
+        gun.StartCoroutine(gun.PresetShoot((ammo.casing == null)?gun.currentAmmo:ammo));
     }
 }
