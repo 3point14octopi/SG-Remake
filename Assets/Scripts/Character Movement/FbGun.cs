@@ -8,23 +8,57 @@ using UpgradeStats;
 public class FbGun : GunModule
 {
     //[HideInInspector]
-    public KeyCode[] shootKeys = new KeyCode[4];//used for tracking the offsets, matches up with an array
+    public List<KeyCode> shootKeys = new List<KeyCode>();//used for tracking the offsets, matches up with an array
     public Stack<int> keyHistory = new Stack<int>();
+    public List<int> reflectedHistory = new List<int>();
 
     //[HideInInspector]
     public Transform[] launchOffset = new Transform[4]; //the offsets for each direction of shooting
 
+    public bool testActive = true;
 
+    public int testKeyAmount = 0;
+
+    private void Update()
+    {
+        for(int i = 0; i < shootKeys.Count; i++) 
+        {
+            if (Input.GetKeyDown(shootKeys[i])){
+                keyHistory.Push(i);
+                reflectedHistory.Add(keyHistory.Peek());
+                i = 10;
+            }
+        }
+        
+
+    }
     //Is called from states that can shoot, checks for key presses and shoots using the most recent key pressed
     public void CanShoot()
     {
-        for (int i = 0; i < shootKeys.Length; i++)
-        {
-            if (Input.GetKeyDown(shootKeys[i]))
-            {
-                keyHistory.Push(i);
-            }
-        }
+        //else if(Input.anyKey)
+        //{
+        //    for (int i = 0; i < shootKeys.Count; i++)
+        //    {
+        //        if (Input.GetKey(shootKeys[i]) && keyHistory.Peek() != i)
+        //        {
+        //            //stg
+        //            if(key)
+        //            keyHistory.Push(i);
+        //            reflectedHistory.Add(keyHistory.Peek());
+        //            i = 10;
+        //        }
+        //    }
+        //}
+
+        //original loop
+        //for (int i = 0; i < shootKeys.Count; i++)
+        //{
+        //    if (Input.GetKeyDown(shootKeys[i]))
+        //    {
+        //        keyHistory.Push(i);
+        //        reflectedHistory.Add(i + 0);
+        //    }
+        //}
 
         if (keyHistory.Count > 0 && active)
         {
@@ -36,8 +70,9 @@ public class FbGun : GunModule
     IEnumerator Shooting()
     {
         active = false;
+        testActive = false;
         //0:Up 1:Left 2:Down 3:Right
-        for (int i = 1; i <= keyHistory.Count; ++i)
+        for (int i = 0; i < keyHistory.Count; ++i)
         {
 
             if (Input.GetKey(shootKeys[keyHistory.Peek()]))
@@ -49,15 +84,18 @@ public class FbGun : GunModule
                 //else if (keyHistory.Peek() == 2) { anim.Play("FrostbiteThrowLeft"); }
                 //else if (keyHistory.Peek() == 3) { anim.Play("FrostbiteThrowRight"); }
                  yield return new WaitForSeconds(currentAmmo.bullet.firerate);
-                break;
+                //break;
             }
-            else
+            else if(!Input.GetKey(shootKeys[keyHistory.Peek()]))
             {
                 keyHistory.Pop();
+                reflectedHistory.RemoveAt(reflectedHistory.Count - 1);
+                Debug.Log("released");
             }
         }
         active =true;
-        
+        testActive = true;
+        Debug.Log("loop exit");
     }
     //called by our upgrade manager, can upgrade most of the stats on our ammo type
     public void GunUpgrade(GunUpgrade upgrade)

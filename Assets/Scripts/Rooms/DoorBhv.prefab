@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 3838840024869134287}
   - component: {fileID: 4568342900424083694}
   - component: {fileID: 7552733100809360975}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DoorBhv
-  m_TagString: Untagged
+  m_TagString: Barrier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72,3 +72,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileState: 0
+  tileLocation: {x: 0, y: 0, z: 0}
+  unlocked: 0
