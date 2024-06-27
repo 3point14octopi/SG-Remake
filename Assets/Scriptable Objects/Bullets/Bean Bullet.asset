@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   style: 1
   speed: 6
-  firerate: 5
+  firerate: 3
   rebound: 0
   bulletEffects:
   - targetedStat: 0
@@ -24,6 +24,6 @@ MonoBehaviour:
   - targetedStat: 2
     modifier: 0
   spreadNum: 1
-  burstNum: 3
+  burstNum: 2
   spreadDis: 0
   spreadAngle: 0
