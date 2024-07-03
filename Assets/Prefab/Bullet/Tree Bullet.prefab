@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -6521741006920913537}
   m_Layer: 0
   m_Name: Tree Bullet
-  m_TagString: Untagged
+  m_TagString: EnemyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -101,8 +101,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bSpeed: 0
-  bDamage: 0
   bRebound: 0
+  style: 0
   ignoreTags:
   - Enemy
 --- !u!70 &2738970408359459003

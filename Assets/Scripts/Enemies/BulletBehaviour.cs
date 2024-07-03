@@ -41,6 +41,11 @@ public class BulletBehaviour : MonoBehaviour
                 TrackingMovement();
                 break;
             }
+            case BulletStyles.Arcing:
+            {
+                ArcingMovement();
+                break;
+            }
         }
     }
 
@@ -88,23 +93,10 @@ public class BulletBehaviour : MonoBehaviour
         transform.position += transform.up * Time.deltaTime * bSpeed;
     }
 
-}
-
-
-/*
-transform.position = Vector3.Reflect(transform.position, Vector3.up);
-if (Mathf.Abs(wallCenter.x - transform.position.x) > Mathf.Abs(wallCenter.y - transform.position.y))
-{
-}
-else if (Mathf.Abs(wallCenter.x - transform.position.x) < Mathf.Abs(wallCenter.y - transform.position.y))
-{
+    private void ArcingMovement()
+    {
+        transform.Rotate(0, 0, 13);
+        transform.position += transform.up * Time.deltaTime * bSpeed;
+    }
 
 }
-else if (Mathf.Abs(wallCenter.x - transform.position.x) == Mathf.Abs(wallCenter.y - transform.position.y))
-{
-                Debug.Log("I hit a wall");
-                Vector3Int tile = AstarDebugLayer.Instance.renderGrid.WorldToCell(other.rigidbody.ClosestPoint(transform.position));
-                wallCenter = AstarDebugLayer.Instance.renderGrid.GetCellCenterWorld(tile);
- 
- 
- */

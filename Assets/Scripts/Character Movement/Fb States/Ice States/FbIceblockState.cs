@@ -33,9 +33,12 @@ public class FbIceblockState : FbBaseState
     
     //If youa re hit by anything your iceblock with crack a little bit
     public override void Collision(FbStateManager fb, Collision2D Collision2D){
+        if (fb.b.damageTags.Contains(Collision2D.gameObject.tag))
+        {
+            fb.currentIceUses--;
+            fb.b.iceBar.GetComponent<FBIceBar>().IceBar(fb.currentIceUses);
+            fb.b.anim.SetInteger("IceblockHits", fb.currentIceUses);
+        }
 
-        fb.currentIceUses--;
-        fb.b.iceBar.GetComponent<FBIceBar>().IceBar(fb.currentIceUses);
-        fb.b.anim.SetInteger("IceblockHits", fb.currentIceUses);
     }
 }

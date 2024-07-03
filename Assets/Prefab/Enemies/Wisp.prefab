@@ -191,6 +191,7 @@ MonoBehaviour:
   automatic: 0
   targeted: 0
   needLOS: 0
+  automaticShotThisFrame: 0
 --- !u!95 &1058289210
 Animator:
   serializedVersion: 5
