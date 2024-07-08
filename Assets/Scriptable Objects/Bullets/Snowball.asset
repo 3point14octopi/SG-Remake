@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed67a06c19845c243801ca625e2433aa, type: 3}
   m_Name: Snowball
   m_EditorClassIdentifier: 
-  style: 2
-  speed: 15
+  style: 0
+  speed: 10
   firerate: 0.5
   rebound: 0
   bulletEffects:
@@ -26,4 +26,9 @@ MonoBehaviour:
   spreadNum: 1
   burstNum: 1
   spreadDis: 0
-  spreadAngle: 0
+  spreadAngle: 10
+  spreadsDis:
+  - 0
+  spreadsAngle:
+  - 0
+  calculated: 1

@@ -90,12 +90,10 @@ public class FbGun : GunModule
             {
                 keyHistory.Pop();
                 reflectedHistory.RemoveAt(reflectedHistory.Count - 1);
-                Debug.Log("released");
             }
         }
         active =true;
         testActive = true;
-        Debug.Log("loop exit");
     }
     //called by our upgrade manager, can upgrade most of the stats on our ammo type
     public void GunUpgrade(GunUpgrade upgrade)

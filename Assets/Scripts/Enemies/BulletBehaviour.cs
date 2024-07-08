@@ -18,8 +18,10 @@ public class BulletBehaviour : MonoBehaviour
     public BulletStyles style;
     private Vector3 wallCenter;
     private GameObject player;
-
+    
     public List<string> ignoreTags = new List<string>();
+
+    private Vector3 outward; //original direction it was fired
 
     private void Start()
     {
@@ -72,6 +74,7 @@ public class BulletBehaviour : MonoBehaviour
         bSpeed = bullet.speed;
         bRebound = bullet.rebound;
         style = bullet.style;
+        outward = transform.up;
 
         //transfers on hit data from the ammo type to the bullet object
         for (int i = 0; i < EntityStat.GetNames(typeof(EntityStat)).Length; i++) //transfers on hit data from the ammo type to the bullet object
@@ -95,8 +98,8 @@ public class BulletBehaviour : MonoBehaviour
 
     private void ArcingMovement()
     {
-        transform.Rotate(0, 0, 13);
-        transform.position += transform.up * Time.deltaTime * bSpeed;
+        transform.Rotate(0, 0, 35);
+        transform.position += transform.up * Time.deltaTime * bSpeed + outward * Time.deltaTime * bSpeed;
     }
 
 }
