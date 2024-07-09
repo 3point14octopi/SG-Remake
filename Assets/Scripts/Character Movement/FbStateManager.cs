@@ -193,4 +193,13 @@ public class FbStateManager : MonoBehaviour
             }
         }
     }
+    public IEnumerator Stunned(float time)
+    {
+        currentState = StunState;
+        yield return new WaitForSeconds(time);
+        if (b.isAlive)
+        {
+            currentState = IdleState;
+        }
+    }
 }

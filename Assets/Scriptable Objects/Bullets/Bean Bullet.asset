@@ -27,3 +27,6 @@ MonoBehaviour:
   burstNum: 3
   spreadDis: 0
   spreadAngle: 0
+  spreadsDis: []
+  spreadsAngle: []
+  calculated: 0

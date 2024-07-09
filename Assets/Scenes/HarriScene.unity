@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 9324701}
   m_Layer: 0
   m_Name: Background
-  m_TagString: Untagged
+  m_TagString: Hazard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -59098,6 +59098,7 @@ GameObject:
   - component: {fileID: 732994620}
   - component: {fileID: 732994619}
   - component: {fileID: 732994623}
+  - component: {fileID: 732994624}
   m_Layer: 0
   m_Name: Spiky Hazard
   m_TagString: Untagged
@@ -59115,7 +59116,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -59143,16 +59144,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bab880ba1ff2ac24185cf796c8ea8007, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hazardType: 1
-  hitPlayer: 0
-  damage: 0
-  knockBack: 0
-  pitTime: 0
-  speed: 0
-  breakable: 0
+  hitPlayer: 1
+  hazardType: 0
+  stunTime: 1
+  knockBack: 1
+  moving: 1
+  movementDirections: 2
+  speed: 1
+  passthrough: 1
+  breakable: 1
   health: 15
-  flash: {fileID: 2100000, guid: 57b09bca6b8c648429a388570af8be0a, type: 2}
-  flashDuration: 0.1
+  damageReactions:
+  - {fileID: 11400000, guid: 9de4910270d3fc34facbc86ae20f35bc, type: 2}
+  deathReactions: []
 --- !u!212 &732994621
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -59241,6 +59245,25 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 7
+--- !u!114 &732994624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 732994618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cb7a5673c5b7af43a62227b85d6e500, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effects:
+  - targetedStat: 0
+    modifier: -1
+  - targetedStat: 1
+    modifier: 0
+  - targetedStat: 2
+    modifier: 0
 --- !u!1 &753883315
 GameObject:
   m_ObjectHideFlags: 0
@@ -61166,11 +61189,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4977549276091692939, guid: 6f7c800cfd775454294e410171119805, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.04
+      value: 11.3
       objectReference: {fileID: 0}
     - target: {fileID: 4977549276091692939, guid: 6f7c800cfd775454294e410171119805, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.98
+      value: -10.04
       objectReference: {fileID: 0}
     - target: {fileID: 4977549276091692939, guid: 6f7c800cfd775454294e410171119805, type: 3}
       propertyPath: m_LocalPosition.z
@@ -61212,6 +61235,14 @@ PrefabInstance:
       propertyPath: healthbar
       value: 
       objectReference: {fileID: 580312830}
+    - target: {fileID: 4977549276091692940, guid: 6f7c800cfd775454294e410171119805, type: 3}
+      propertyPath: damageTags.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4977549276091692940, guid: 6f7c800cfd775454294e410171119805, type: 3}
+      propertyPath: damageTags.Array.data[2]
+      value: Hazard
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f7c800cfd775454294e410171119805, type: 3}
 --- !u!1001 &5380134709937893973
