@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1912985410}
   - component: {fileID: 1648493380403593613}
   - component: {fileID: 6620849170420790586}
+  - component: {fileID: 4737950408217297838}
   m_Layer: 0
   m_Name: Prince
   m_TagString: Enemy
@@ -267,3 +268,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4737950408217297838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5353378109183891165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 617a8db9c057fee459c667688e2ff7fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAlive: 1
+  showStats: 0
+  Stats: 460500000000000001000000
+  damageTags:
+  - PlayerBullet
+  damageReactions:
+  - {fileID: 11400000, guid: 9de4910270d3fc34facbc86ae20f35bc, type: 2}
+  - {fileID: 11400000, guid: daf532db9299dd54b9db5d0079c22eab, type: 2}
+  deathReactions:
+  - {fileID: 11400000, guid: c7562d4be5b537d4a81dc3bb6a980135, type: 2}
+  mom: {fileID: 0}
+  roomIndex: -1

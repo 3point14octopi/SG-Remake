@@ -279,7 +279,7 @@ public class ERoomManager : MonoBehaviour
         {
             if(roomType < 8)
             {
-                r = /*(roomType == 3) ?*/ WispRoomGen(roomMap) /*: BasicEnemyRoom(roomMap)*/;
+                r = (roomType == 3) ? WispRoomGen(roomMap) : BasicEnemyRoom(roomMap);
             }
         }
 
