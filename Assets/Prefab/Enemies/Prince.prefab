@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -2549555203947612670}
   - component: {fileID: 4651046338545151978}
   - component: {fileID: 2372252886874993162}
+  - component: {fileID: -5740789671055979785}
   m_Layer: 0
   m_Name: Prince
   m_TagString: Enemy
@@ -105,6 +106,13 @@ MonoBehaviour:
   speed: 0
   contactDamage: 1
   princeAnim: {fileID: 4651046338545151978}
+  audioSource: {fileID: 0}
+  vineSound: {fileID: 0}
+  meteorSound: {fileID: 0}
+  meteorLandSound: {fileID: 0}
+  laserSound: {fileID: 0}
+  flash: {fileID: 0}
+  flashDuration: 0
 --- !u!50 &-2549555203947612670
 Rigidbody2D:
   serializedVersion: 4
@@ -163,3 +171,26 @@ CapsuleCollider2D:
   m_Offset: {x: -0.06, y: 0.03}
   m_Size: {x: 0.44, y: 0.87}
   m_Direction: 0
+--- !u!114 &-5740789671055979785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5353378109183891165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 617a8db9c057fee459c667688e2ff7fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAlive: 1
+  showStats: 1
+  Stats: 460500000000000000000000
+  damageTags:
+  - PlayerBullet
+  damageReactions:
+  - {fileID: 11400000, guid: 9de4910270d3fc34facbc86ae20f35bc, type: 2}
+  deathReactions:
+  - {fileID: 11400000, guid: ce9f9bf6661b5d94293a05b4899c6c71, type: 2}
+  mom: {fileID: 0}
+  roomIndex: -1

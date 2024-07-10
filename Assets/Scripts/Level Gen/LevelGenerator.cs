@@ -9,6 +9,7 @@ using UnityEngine.Tilemaps;
 public class LevelGenerator : MonoBehaviour
 {
     public GameObject roomBlob;
+    public GameObject bossRoomBlob;
 
     [SerializeField]public JGridLayer[] layers = new JGridLayer[2];
     public int backgroundLayerIndex = 1;
@@ -20,6 +21,7 @@ public class LevelGenerator : MonoBehaviour
 
         PrintFullMap();
         AstarDebugLayer.Instance.SetRoomMap(dungeon.megaMap);
+
     }
 
 
@@ -53,7 +55,7 @@ public class LevelGenerator : MonoBehaviour
         {
             PrintRoom(room.Value);
 
-            RoomTemplate r = Instantiate(roomBlob, new Vector2((room.Value.worldOrigin.x) + 7.5f, (-room.Value.worldOrigin.y) - 3.5f), Quaternion.identity).GetComponent<RoomTemplate>();
+            RoomTemplate r = Instantiate((dungeon.minimap.GetCell(room.Key) != 9)?roomBlob:bossRoomBlob, new Vector2((room.Value.worldOrigin.x) + 7.5f, (-room.Value.worldOrigin.y) - 3.5f), Quaternion.identity).GetComponent<RoomTemplate>();
 
             r.PlaceDoors(room.Value.worldOrigin);
             r.AssignMap(room.Value);
