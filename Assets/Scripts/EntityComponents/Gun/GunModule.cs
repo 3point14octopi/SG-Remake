@@ -8,8 +8,18 @@ public class GunModule : MonoBehaviour
 {
     [HideInInspector]
     public Ammo currentAmmo; //bullet being fired
+
+    [Tooltip("List of all the ammos this gun uses. First element will become the current ammo")]
     public List<Ammo> ammoList = new List<Ammo>();
 
+    [Tooltip("Should it fire automatically?")]
+    public bool automatic; //if we should fire constantly
+
+    [Tooltip("Should it fire at the player or in a preset direction?")]
+    public bool targeted;   //if we should fire preset or targeted
+
+    [Tooltip("Should it need to see the player to fire?")]
+    public bool needLOS; //determines if the gun should only shoot when it has LOS
 
 
 
@@ -28,15 +38,9 @@ public class GunModule : MonoBehaviour
     private Vector3 playerAng; // this is where the bullet is launched from
 
     private bool LOS; //Used to track if we can see the player
-    public LayerMask playerMask; //layer reference for player
+    private LayerMask playerMask; //layer reference for player
     private LayerMask barrierMask; //layer reference for trees
 
-    [HideInInspector]
-    public bool automatic; //if we should fire constantly
-    [HideInInspector]
-    public bool targeted;   //if we should fire preset or targeted
-    [HideInInspector]
-    public bool needLOS; //determines if the gun should only shoot when it has LOS
     protected bool active = true;
     [HideInInspector] public bool automaticShotThisFrame;
     
