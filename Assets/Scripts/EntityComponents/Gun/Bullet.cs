@@ -8,7 +8,8 @@ public enum BulletStyles
 {
     Straight,
     Tracking,
-    Arcing
+    Arcing,
+    Spinning
 }
 
 [CreateAssetMenu(menuName = "ScriptableObjects/Bullet")]
@@ -27,10 +28,9 @@ public class Bullet : ScriptableObject
 
     public float spreadDis;
     public float spreadAngle;
+    public float arcAngle;
 
-    [HideInInspector]
     public List<float> spreadsDis = new List<float>();//gap between multiple bullets
-    [HideInInspector]
     public List<float> spreadsAngle = new List<float>();//angle difference when fired multiple bullets
   
     public bool calculated = false;

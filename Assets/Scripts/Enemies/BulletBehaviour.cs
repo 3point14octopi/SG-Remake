@@ -14,6 +14,7 @@ public class BulletBehaviour : MonoBehaviour
     //all 3 of these things are updated by the person that calls them
     public float bSpeed; //bullet speed
     public int bRebound;
+    public float bArc;
 
     public BulletStyles style;
     private Vector3 wallCenter;
@@ -22,6 +23,10 @@ public class BulletBehaviour : MonoBehaviour
     public List<string> ignoreTags = new List<string>();
 
     private Vector3 outward; //original direction it was fired
+
+    //can remove if this sucks
+    private float lifetime = 0f;
+    private float ogRot = 0f;
 
     private void Start()
     {
@@ -34,20 +39,17 @@ public class BulletBehaviour : MonoBehaviour
         switch (style)
         {
             case BulletStyles.Straight:
-            {
                 StraightMovement();
                 break;
-            }
             case BulletStyles.Tracking:
-            {
                 TrackingMovement();
                 break;
-            }
             case BulletStyles.Arcing:
-            {
-                ArcingMovement();
+                ArchingMovement();
                 break;
-            }
+            case BulletStyles.Spinning:
+                SpinningMovement();
+                break;
         }
     }
 
@@ -73,8 +75,12 @@ public class BulletBehaviour : MonoBehaviour
 
         bSpeed = bullet.speed;
         bRebound = bullet.rebound;
+        bArc = bullet.arcAngle;
         style = bullet.style;
         outward = transform.up;
+
+
+        ogRot = transform.rotation.z;
 
         //transfers on hit data from the ammo type to the bullet object
         for (int i = 0; i < EntityStat.GetNames(typeof(EntityStat)).Length; i++) //transfers on hit data from the ammo type to the bullet object
@@ -96,10 +102,21 @@ public class BulletBehaviour : MonoBehaviour
         transform.position += transform.up * Time.deltaTime * bSpeed;
     }
 
-    private void ArcingMovement()
+    private void SpinningMovement()
     {
-        transform.Rotate(0, 0, 35);
+        transform.Rotate(0, 0, bArc);
         transform.position += transform.up * Time.deltaTime * bSpeed + outward * Time.deltaTime * bSpeed;
     }
 
+    private void ArchingMovement()
+    {
+        if (lifetime == 0)
+        {
+            ogRot = transform.eulerAngles.z + 0f;
+        }
+        
+        transform.eulerAngles = new Vector3(transform.rotation.x, transform.rotation.y, ogRot + lifetime);
+        lifetime += (Mathf.Sin(Time.deltaTime * (float)Math.PI) * 20);
+        transform.position += transform.up * Time.deltaTime * bSpeed;
+    }
 }

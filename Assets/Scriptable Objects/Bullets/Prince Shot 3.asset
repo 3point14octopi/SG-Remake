@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed67a06c19845c243801ca625e2433aa, type: 3}
+  m_Name: Prince Shot 3
+  m_EditorClassIdentifier: 
+  style: 2
+  speed: 5
+  firerate: 3
+  rebound: 0
+  bulletEffects:
+  - targetedStat: 0
+    modifier: -1
+  - targetedStat: 1
+    modifier: 0
+  - targetedStat: 2
+    modifier: 0
+  spreadNum: 4
+  burstNum: 1
+  spreadDis: 0
+  spreadAngle: 90
+  arcAngle: 0
+  spreadsDis:
+  - -0
+  - 0
+  - 0
+  - 0
+  spreadsAngle:
+  - -90
+  - 0
+  - 90
+  - 180
+  calculated: 1

@@ -59,6 +59,7 @@ public class GunModule : MonoBehaviour
             {
                 CalculateShooting(ammoList[i].bullet);
                 ammoList[i].bullet.calculated = true;
+                Debug.Log("calculated it for you, IDIOT");
             }
             ammoList[i].bullet = Instantiate(ammoList[i].bullet);
         }
@@ -194,7 +195,7 @@ public class GunModule : MonoBehaviour
        for(int j = 0; j < ammo.bullet.burstNum; j++){
            for(int i = 0; i < ammo.bullet.spreadNum; i++){
                 ammo.bullet = Instantiate(ammo.bullet);
-               launchAng.z = playerAng.z + i* ammo.bullet.spreadAngle;
+                launchAng.z = ammo.bullet.spreadsAngle[i];
                activeBullet = (GameObject)Instantiate(ammo.casing, gameObject.transform.position, Quaternion.Euler(launchAng));
                activeBullet.GetComponent<BulletBehaviour>().SetBullet(ammo.bullet);
            }

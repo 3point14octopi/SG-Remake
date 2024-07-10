@@ -1,10 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using JAFprocedural;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class RoomEnemy
 {
@@ -257,7 +254,7 @@ public class ERoomManager : MonoBehaviour
     {
         RoomWithEnemies r = new RoomWithEnemies();
 
-        r.Add(new RoomEnemy(25 + bossID, new Coord(12 + room.worldOrigin.x, 7 + room.worldOrigin.y)));
+        r.Add(new RoomEnemy(25 + bossID, new Coord(7 + room.worldOrigin.x, 4 + room.worldOrigin.y)));
 
         return r;
     }
@@ -280,6 +277,9 @@ public class ERoomManager : MonoBehaviour
             if(roomType < 8)
             {
                 r = (roomType == 3) ? WispRoomGen(roomMap) : BasicEnemyRoom(roomMap);
+            }else if(roomType == 9)
+            {
+                r = BossRoom(roomMap);
             }
         }
 
