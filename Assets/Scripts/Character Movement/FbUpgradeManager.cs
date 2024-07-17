@@ -11,10 +11,23 @@ public class FbUpgradeManager : MonoBehaviour
     public FbStateManager states;
     public FbGun gun;
 
+    public KeyCode inventoryKey;
+    public GameObject inventoryScreen;
+
     //The lists that are used to store current upgrades
-    [SerializeField] public List<PlayerUpgrade> CurrentPlayerUpgrades = new List<PlayerUpgrade>();
-    [SerializeField] public List<IceUpgrade> CurrentIceUpgrades = new List<IceUpgrade>();
-    [SerializeField] public List<GunUpgrade> CurrentGunUpgrades = new List<GunUpgrade>();
+    [SerializeField] public List<Upgrade> CurrentUpgrades = new List<Upgrade>();
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(inventoryKey))
+        {
+            inventoryScreen.SetActive(true);
+        }
+        if (Input.GetKeyUp(inventoryKey))
+        {
+            inventoryScreen.SetActive(false);
+        }
+    }
 
     //Looks our pickups which are labelled with "Pickup:" calls a function built into their cubclass which will redirect to the correct FB script
     private void OnTriggerEnter2D(Collider2D collision)
@@ -22,27 +35,22 @@ public class FbUpgradeManager : MonoBehaviour
 
         if (collision.gameObject.tag == "Pickup")
         {
-            for (int i = 0; i < collision.gameObject.GetComponent<Pickup>().effects.Count; i++)
-            {
-                collision.gameObject.GetComponent<Pickup>().effects[i].ApplyUpgrade(this);
-            }
+            UpgradeTracker(collision.gameObject.GetComponent<Pickup>().upgrade);
+            
+            foreach (PlayerUpgrade upgrade in collision.gameObject.GetComponent<Pickup>().upgrade.playerEffects) brain.PlayerUpgrade(upgrade);
+            foreach (IceUpgrade upgrade in collision.gameObject.GetComponent<Pickup>().upgrade.iceEffects) states.IceUpgrade(upgrade);
+            foreach (GunUpgrade upgrade in collision.gameObject.GetComponent<Pickup>().upgrade.gunEffects) gun.GunUpgrade(upgrade);
+            inventoryScreen.GetComponent<FbInventory>().AddUpgrade(collision.gameObject.GetComponent<Pickup>().upgrade);
             Destroy(collision.gameObject);
         }
     }
     
-    //These 3 functions maintain a list of upgrades currently applied to our character.
-    public void PlayerUpgradeTracker(PlayerUpgrade playerUpgrade)
+    //Maintains a list of all the upgrades on our character
+
+    public void UpgradeTracker(Upgrade upgrade)
     {
-        CurrentPlayerUpgrades.Add(playerUpgrade);
-    }
-    public void IceUpgradeTracker(IceUpgrade iceUpgrade)
-    {
-        CurrentIceUpgrades.Add(iceUpgrade);
+        CurrentUpgrades.Add(upgrade); 
     }
 
-    public void GunUpgradeTracker(GunUpgrade gunUpgrade)
-    {
-        CurrentGunUpgrades.Add(gunUpgrade);
-    }
 
 }

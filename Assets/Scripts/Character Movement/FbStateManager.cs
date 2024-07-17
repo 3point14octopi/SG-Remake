@@ -110,25 +110,28 @@ public class FbStateManager : MonoBehaviour
         switch (upgrade.iceUpgrade)
         {
             case IceUpgrades.Block:
-            {
+            
                 maxIceUses = 5;
                 currentIceUses = 5;
                 currentIceState = IceBlockState;
                 break;
-            }
+            
             case IceUpgrades.Wall:
-            {
+            
                 maxIceUses = 2;
                 currentIceUses = 2;
-                ice = iceWall;
+                ice = iceWall; //this is what we place down
                 currentIceState = IceItemState;
                 break;
-            }
+            
             //case IceUpgrades.Decoy:
-            //{
+            
+            //    maxIceUses = 1;
+            //    currentIceUses = 1;
+            //    ice = iceStatue;
             //    currentIceState = IceItemState;
             //    break;
-            //}
+            
         }
     }
 

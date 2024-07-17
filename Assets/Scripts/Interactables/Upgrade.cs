@@ -1,41 +1,17 @@
 using System;
-using UnityEditor.Timeline.Actions;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
-namespace UpgradeStats
+[CreateAssetMenu(fileName = "New Upgrade", menuName = "ScriptableObjects/Upgrades")]
+[Serializable] public class Upgrade : ScriptableObject
 {
-    public enum PlayerUpgrades
-    {
-        Health,
-        Speed
-    }
-    public enum IceUpgrades
-    {
-        Block,
-        Wall,
-        Decoy
-    }
+    public string upgradeName; 
+    public string upgradeDescription;
+    public Sprite uiPic;
+    public List<PlayerUpgrade> playerEffects = new List<PlayerUpgrade>();
+    public List<IceUpgrade> iceEffects = new List<IceUpgrade>();
+    public List<GunUpgrade> gunEffects = new List<GunUpgrade>();
 
-    public enum GunUpgrades
-    {
-        Damage,
-        Speed,
-        Size,
-        Firerate,
-        Rebound,
-        Spread,
-        Burst
-    }
-
-
-
-    [Serializable]public class Upgrade: ScriptableObject
-    {
-        
-
-        public virtual void ApplyUpgrade(FbUpgradeManager upgradeManager)
-        {
-
-        }
-    }
 }
