@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4213693709709547346}
   m_Layer: 0
   m_Name: funny bullet
-  m_TagString: Untagged
+  m_TagString: EnemyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -118,9 +118,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bSpeed: 0
   bRebound: 0
+  bArc: 0
   style: 0
+  target: {fileID: 0}
   ignoreTags:
   - Enemy
+  outward: {x: 0, y: 0, z: 0}
+  lifetime: 0
 --- !u!114 &-4059187022523736059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,7 +137,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cb7a5673c5b7af43a62227b85d6e500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effects: []
+  effects:
+  - targetedStat: 0
+    modifier: 0
+  - targetedStat: 1
+    modifier: 0
+  - targetedStat: 2
+    modifier: 0
 --- !u!95 &4213693709709547346
 Animator:
   serializedVersion: 5

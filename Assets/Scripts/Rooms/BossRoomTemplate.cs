@@ -30,7 +30,14 @@ public class BossRoomTemplate:RoomTemplate
             //drama??? portal to next level?
         }
     }
-    
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            GameObject.Find("Frostbite").transform.position = transform.position + new Vector3(6, 0, 0);
+            FollowCam.Instance.ForceJump(transform.position);
+        }
+    }
 
     public override void OnUpdate() 
     {

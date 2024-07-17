@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed67a06c19845c243801ca625e2433aa, type: 3}
   m_Name: Prince Shot 1
   m_EditorClassIdentifier: 
-  style: 2
+  style: 5
   speed: 5
-  firerate: 3
+  firerate: 0
   rebound: 0
   bulletEffects:
   - targetedStat: 0
@@ -23,18 +23,13 @@ MonoBehaviour:
     modifier: 0
   - targetedStat: 2
     modifier: 0
-  spreadNum: 4
+  spreadNum: 1
   burstNum: 1
   spreadDis: 0
   spreadAngle: 90
+  arcAngle: 0
   spreadsDis:
-  - -0
-  - 0
-  - 0
   - 0
   spreadsAngle:
-  - -90
   - 0
-  - 90
-  - 180
   calculated: 1
