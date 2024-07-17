@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Snowball
   m_EditorClassIdentifier: 
   style: 0
-  speed: 15
+  speed: 10
   firerate: 0.5
   rebound: 0
   bulletEffects:
@@ -26,4 +26,9 @@ MonoBehaviour:
   spreadNum: 1
   burstNum: 1
   spreadDis: 0
-  spreadAngle: 0
+  spreadAngle: 10
+  spreadsDis:
+  - 0
+  spreadsAngle:
+  - 0
+  calculated: 1

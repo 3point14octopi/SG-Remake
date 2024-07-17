@@ -2,6 +2,7 @@ using EntityStats;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UpgradeStats;
@@ -39,11 +40,15 @@ public class FbBrain : Brain
 
     }
 
-    //called by the states that need it
+    //called by Moving state on update || Handles moving our player and our movement animations
     public void Moving()
     {
-        //WASD movement || finds our vector then gives momentum in that direction
-        rb.MovePosition(rb.position + movement * currentStats[1] * Time.fixedDeltaTime);
+        //If we are moving in both x and y (on a diagonal) we move at a reduced speed
+        if(movement.x != 0 && movement.y != 0) rb.MovePosition(rb.position + movement * currentStats[1] * Time.fixedDeltaTime * 0.72f);
+        //if not on a diagonal we can move at full speed
+        else rb.MovePosition(rb.position + movement * currentStats[1] * Time.fixedDeltaTime);
+
+        //handles our animation for moving
         if (movement.x == 1) { anim.Play("FrostbiteWalkRight"); }
         else if (movement.x == -1) { anim.Play("FrostbiteWalkLeft"); }
         else if (movement.x == 0 && movement.y == 1) { anim.Play("FrostbiteWalkUp"); }

@@ -31,7 +31,7 @@ public class FollowCam : MonoBehaviour
     void Start()
     {
         transform.position = new Vector3(startTarget.position.x, startTarget.position.y, -5);
-        Application.targetFrameRate = 60;
+        //Application.targetFrameRate = 60;
     }
 
     // Update is called once per frame

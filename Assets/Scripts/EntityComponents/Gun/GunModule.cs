@@ -8,14 +8,24 @@ public class GunModule : MonoBehaviour
 {
     [HideInInspector]
     public Ammo currentAmmo; //bullet being fired
+
+    [Tooltip("List of all the ammos this gun uses. First element will become the current ammo")]
     public List<Ammo> ammoList = new List<Ammo>();
 
+    [Tooltip("Should it fire automatically?")]
+    public bool automatic; //if we should fire constantly
+
+    [Tooltip("Should it fire at the player or in a preset direction?")]
+    public bool targeted;   //if we should fire preset or targeted
+
+    [Tooltip("Should it need to see the player to fire?")]
+    public bool needLOS; //determines if the gun should only shoot when it has LOS
 
 
 
-    public List<float> spreadsAngle = new List<float>();//angle difference when fired multiple bullets
+
     private Vector3 launchAng;
-    public List<float> spreadsDis = new List<float>();//gap between multiple bullets
+
     private Vector3 launchDis;
 
     
@@ -28,15 +38,9 @@ public class GunModule : MonoBehaviour
     private Vector3 playerAng; // this is where the bullet is launched from
 
     private bool LOS; //Used to track if we can see the player
-    public LayerMask playerMask; //layer reference for player
+    private LayerMask playerMask; //layer reference for player
     private LayerMask barrierMask; //layer reference for trees
 
-    [HideInInspector]
-    public bool automatic; //if we should fire constantly
-    [HideInInspector]
-    public bool targeted;   //if we should fire preset or targeted
-    [HideInInspector]
-    public bool needLOS; //determines if the gun should only shoot when it has LOS
     protected bool active = true;
     [HideInInspector] public bool automaticShotThisFrame;
     
@@ -51,46 +55,55 @@ public class GunModule : MonoBehaviour
        barrierMask |= 0x1 << 7;
         for(int i = 0; i < ammoList.Count; i++)
         {
+            if(ammoList[i].bullet.calculated == false)
+            {
+                CalculateShooting(ammoList[i].bullet);
+                ammoList[i].bullet.calculated = true;
+                Debug.Log("calculated it for you, IDIOT");
+            }
             ammoList[i].bullet = Instantiate(ammoList[i].bullet);
         }
+
         currentAmmo = ammoList[0];
-       CalculateShooting(currentAmmo);
+        SelectFiringType();
    }
 
     #region Functions for Changing things
 
     //called to set up a guns spread distance
-    public void CalculateShooting(Ammo ammo)
+    public void CalculateShooting(Bullet bullet)
     {
-        spreadsAngle.Clear();
-        spreadsDis.Clear();
-        if (targeted){
-           spreadsAngle.Add(ammo.bullet.spreadAngle * ((ammo.bullet.spreadNum - 1)/ -2));
-           for(int i = 1; i < ammo.bullet.spreadNum; i++ ){
-               spreadsAngle.Add(ammo.bullet.spreadAngle *i + spreadsAngle[0]);
-           }
+        bullet.spreadsAngle.Clear();
+        bullet.spreadsDis.Clear();
 
-           spreadsDis.Add(ammo.bullet.spreadDis *((ammo.bullet.spreadNum - 1)/ -2));
-           for(int i = 1; i < ammo.bullet.spreadNum; i++ ){
-               spreadsDis.Add(ammo.bullet.spreadDis *i + spreadsDis[0]);
-           }
+        bullet.spreadsAngle.Add(bullet.spreadAngle * ((bullet.spreadNum - 1)/ -2));
+        for(int i = 1; i < bullet.spreadNum; i++ ){
+            bullet.spreadsAngle.Add(bullet.spreadAngle *i + bullet.spreadsAngle[0]);
+        }
 
-           if(needLOS && automatic){                
+        bullet.spreadsDis.Add(bullet.spreadDis *((bullet.spreadNum - 1)/ -2));
+        for(int i = 1; i < bullet.spreadNum; i++ ){
+            bullet.spreadsDis.Add(bullet.spreadDis *i + bullet.spreadsDis[0]);
+        }
 
-               StartCoroutine(LOSTargetShooting());
-           }
+    }
 
-           else if(!needLOS && automatic){StartCoroutine(TargetShooting());}
+    public void SelectFiringType()
+    {
+        if (targeted)
+        {
 
-       }
-       else if(!targeted && automatic){StartCoroutine(PresetShooting());}
-   }
+            if (needLOS && automatic) StartCoroutine(LOSTargetShooting());
+            else if (!needLOS && automatic) StartCoroutine(TargetShooting());
+
+        }
+        else if (!targeted && automatic) StartCoroutine(PresetShooting());
+    }
 
     //changes current ammo to be a different ammo type we have stored
     public void SwapAmmo(int i)
     {
         currentAmmo = ammoList[i];
-        CalculateShooting(currentAmmo);
     }
 
     //changes the gun fromautomatic to not. Could mean stopping the coroutines could mean starting one up
@@ -169,8 +182,8 @@ public class GunModule : MonoBehaviour
         
        for(int j = 0; j < currentAmmo.bullet.burstNum; j++){
            for(int i = 0; i < currentAmmo.bullet.spreadNum; i++){
-               launchAng.z = playerAng.z + spreadsAngle[i];
-               activeBullet = (GameObject)Instantiate(ammo.casing, gameObject.transform.position + launchDis * spreadsDis[i], Quaternion.Euler(launchAng));
+               launchAng.z = playerAng.z + ammo.bullet.spreadsAngle[i];
+               activeBullet = (GameObject)Instantiate(ammo.casing, gameObject.transform.position + launchDis * ammo.bullet.spreadsDis[i], Quaternion.Euler(launchAng));
                activeBullet.GetComponent<BulletBehaviour>().SetBullet(ammo.bullet);
             }
            yield return new WaitForSeconds(0.1f);
@@ -182,7 +195,7 @@ public class GunModule : MonoBehaviour
        for(int j = 0; j < ammo.bullet.burstNum; j++){
            for(int i = 0; i < ammo.bullet.spreadNum; i++){
                 ammo.bullet = Instantiate(ammo.bullet);
-               launchAng.z = playerAng.z + i* ammo.bullet.spreadAngle;
+                launchAng.z = ammo.bullet.spreadsAngle[i];
                activeBullet = (GameObject)Instantiate(ammo.casing, gameObject.transform.position, Quaternion.Euler(launchAng));
                activeBullet.GetComponent<BulletBehaviour>().SetBullet(ammo.bullet);
            }
@@ -199,8 +212,8 @@ public class GunModule : MonoBehaviour
             for (int i = 0; i < ammo.bullet.spreadNum; i++)
             {
                 //CalculateShooting(a);
-                launchAng.z = ang.z + spreadsAngle[i];
-                activeBullet = (GameObject)Instantiate(ammo.casing, pos + launchDis * spreadsDis[i], Quaternion.Euler(launchAng));
+                launchAng.z = ang.z + ammo.bullet.spreadsAngle[i];
+                activeBullet = (GameObject)Instantiate(ammo.casing, pos + launchDis * ammo.bullet.spreadsDis[i], Quaternion.Euler(launchAng));
                 activeBullet.GetComponent<BulletBehaviour>().SetBullet(ammo.bullet);
             }   
            yield return new WaitForSeconds(0.1f);

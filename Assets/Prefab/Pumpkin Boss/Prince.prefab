@@ -15,6 +15,9 @@ GameObject:
   - component: {fileID: 1912985410}
   - component: {fileID: 1648493380403593613}
   - component: {fileID: 6620849170420790586}
+  - component: {fileID: 6411477369824264630}
+  - component: {fileID: 5560807253558529649}
+  - component: {fileID: 8334549834686569484}
   m_Layer: 0
   m_Name: Prince
   m_TagString: Enemy
@@ -96,7 +99,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5353378109183891165}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a8dc67d9b7f736e48994ec889b5679e3, type: 3}
   m_Name: 
@@ -267,3 +270,66 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6411477369824264630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5353378109183891165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 617a8db9c057fee459c667688e2ff7fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isAlive: 1
+  showStats: 1
+  Stats: ee0200000000000001000000
+  damageTags:
+  - PlayerBullet
+  damageReactions:
+  - {fileID: 11400000, guid: 9de4910270d3fc34facbc86ae20f35bc, type: 2}
+  - {fileID: 11400000, guid: daf532db9299dd54b9db5d0079c22eab, type: 2}
+  deathReactions:
+  - {fileID: 11400000, guid: c7562d4be5b537d4a81dc3bb6a980135, type: 2}
+  mom: {fileID: 0}
+  roomIndex: -1
+--- !u!114 &5560807253558529649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5353378109183891165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5f896aefc387fc4fabf55afde5e50b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentAmmo:
+    bullet: {fileID: 0}
+    casing: {fileID: 0}
+  ammoList:
+  - bullet: {fileID: 11400000, guid: eb86f64e1520de04d939b5603ec6be36, type: 2}
+    casing: {fileID: 3749876296657990220, guid: 26cdd341d60a55d408e9f41cad2e95a1, type: 3}
+  - bullet: {fileID: 11400000, guid: d07a4f1fec91d364391326e1d818b1a1, type: 2}
+    casing: {fileID: 3749876296657990220, guid: 26cdd341d60a55d408e9f41cad2e95a1, type: 3}
+  - bullet: {fileID: 11400000, guid: e0d90b7801eb6e445a02922716ed82b2, type: 2}
+    casing: {fileID: 3749876296657990220, guid: 26cdd341d60a55d408e9f41cad2e95a1, type: 3}
+  automatic: 0
+  targeted: 0
+  needLOS: 0
+  automaticShotThisFrame: 0
+--- !u!114 &8334549834686569484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5353378109183891165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feb54b5d1960cf64ba7f750d81af6984, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  badjoke: {fileID: 8300000, guid: b0ab147604edd8b418d58c007b8cb559, type: 3}

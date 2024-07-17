@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed67a06c19845c243801ca625e2433aa, type: 3}
-  m_Name: Bean Bullet
+  m_Name: Prince_OpeningShot
   m_EditorClassIdentifier: 
-  style: 1
-  speed: 6
+  style: 4
+  speed: 5
   firerate: 3
   rebound: 0
   bulletEffects:
@@ -23,10 +23,27 @@ MonoBehaviour:
     modifier: 0
   - targetedStat: 2
     modifier: 0
-  spreadNum: 1
-  burstNum: 2
+  spreadNum: 8
+  burstNum: 1
   spreadDis: 0
-  spreadAngle: 0
-  spreadsDis: []
-  spreadsAngle: []
-  calculated: 0
+  spreadAngle: 45
+  arcAngle: 0
+  spreadsDis:
+  - -0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  spreadsAngle:
+  - -135
+  - -90
+  - -45
+  - 0
+  - 45
+  - 90
+  - 135
+  - 180
+  calculated: 1

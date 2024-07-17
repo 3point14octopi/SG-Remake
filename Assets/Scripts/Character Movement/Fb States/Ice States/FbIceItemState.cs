@@ -15,7 +15,7 @@ public class FbIceItemState : FbBaseState
     public override void UpdateState(FbStateManager fb)
     {
         //calculates the direction so we can put the indicator in the right spot
-        for (int i = 0; i < fb.g.shootKeys.Length; i++)
+        for (int i = 0; i < fb.g.shootKeys.Count; i++)
         {
             if (Input.GetKey(fb.g.shootKeys[i]))
             {

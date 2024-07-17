@@ -77,8 +77,8 @@ GameObject:
   - component: {fileID: 4977549276091692943}
   - component: {fileID: 4977549276091692941}
   - component: {fileID: 4977549276091692936}
-  - component: {fileID: 4977549276091692937}
   - component: {fileID: 4977549276091692942}
+  - component: {fileID: 8125577097451961302}
   m_Layer: 6
   m_Name: Frostbite
   m_TagString: Player
@@ -228,20 +228,22 @@ MonoBehaviour:
   ammoList:
   - bullet: {fileID: 11400000, guid: 2e782204abc9e034f996365eaa227df8, type: 2}
     casing: {fileID: 7514329530815829435, guid: fc5abc491a550354a81b6fd74da96239, type: 3}
-  spreadsAngle: []
-  spreadsDis: []
   playerMask:
     serializedVersion: 2
     m_Bits: 0
   automatic: 0
   targeted: 1
   needLOS: 0
+  automaticShotThisFrame: 0
   shootKeys: 11010000140100001201000013010000
+  reflectedHistory: 
   launchOffset:
   - {fileID: 4977549275983694841}
   - {fileID: 4977549276119169468}
   - {fileID: 4977549275383278174}
   - {fileID: 4977549276254392749}
+  testActive: 1
+  testKeyAmount: 0
 --- !u!114 &4977549276091692941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,22 +283,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!58 &4977549276091692937
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4977549276091692932}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.03}
-  serializedVersion: 2
-  m_Radius: 0.29
 --- !u!95 &4977549276091692942
 Animator:
   serializedVersion: 5
@@ -318,6 +304,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!70 &8125577097451961302
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4977549276091692932}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.07}
+  m_Size: {x: 0.27, y: 0.58}
+  m_Direction: 0
 --- !u!1 &4977549276119169471
 GameObject:
   m_ObjectHideFlags: 0

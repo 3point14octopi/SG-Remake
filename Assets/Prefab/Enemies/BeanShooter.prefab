@@ -310,8 +310,6 @@ MonoBehaviour:
   ammoList:
   - bullet: {fileID: 11400000, guid: 98da02ce8d56a0a4e96818199e673ceb, type: 2}
     casing: {fileID: 7514329530815829435, guid: 1cc0247fcf0cb0246b9702ec00f014fd, type: 3}
-  spreadsAngle: []
-  spreadsDis: []
   playerMask:
     serializedVersion: 2
     m_Bits: 0
