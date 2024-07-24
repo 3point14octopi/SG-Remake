@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e10f02e791e1e764eba82e9e375feaf4
+guid: 43b708bdfec3e9b4dadf456f5099612f
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -105,7 +105,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Health Sprite_0
+      name: Health_Sprite_0
       rect:
         serializedVersion: 2
         x: 0
@@ -119,14 +119,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 710326eed9b6d7742a0bb7febcf7bffd
-      internalID: 493368743
+      spriteID: 2a1fe1f1a90b2bd479de9685171cfd6d
+      internalID: -270400070
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Health Sprite_1
+      name: Health_Sprite_1
       rect:
         serializedVersion: 2
         x: 32
@@ -140,14 +140,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 91c14bd7772c16d4393b0223e1c0e9f4
-      internalID: -329509797
+      spriteID: 54842e3fc84609d468fac2952dff53e0
+      internalID: 1608611121
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Health Sprite_2
+      name: Health_Sprite_2
       rect:
         serializedVersion: 2
         x: 64
@@ -161,8 +161,71 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f48ed193ab972e44590bac55f37e6ac1
-      internalID: -336607217
+      spriteID: b16963a70d2c2774793f92e7e45fc452
+      internalID: -386858358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Sprite_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c3b01dbe87ad7d41ae489ed403c8e22
+      internalID: 214925408
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Sprite_4
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25f69b55126ad644fa9f9638db554601
+      internalID: -1471688291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Health_Sprite_5
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ebd6efdb7950564faeebbd2280198c6
+      internalID: -946855112
       vertices: []
       indices: 
       edges: []
@@ -178,9 +241,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Health Sprite_0: 493368743
-      Health Sprite_1: -329509797
-      Health Sprite_2: -336607217
+      Health_Sprite_0: -270400070
+      Health_Sprite_1: 1608611121
+      Health_Sprite_2: -386858358
+      Health_Sprite_3: 214925408
+      Health_Sprite_4: -1471688291
+      Health_Sprite_5: -946855112
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

@@ -9,7 +9,11 @@ using UpgradeStats;
 
 public class FbBrain : Brain
 {
-    public FbStateManager s;
+    [Tooltip("State manager reference")]
+    public FbStateManager stateManager;
+
+    [Tooltip("these are the highest values stats go up to. Ex. Max possible health")]
+    public int[] maxStats = new int[3]; 
 
     [Header("\nRunning")]
     public Vector2 movement;
@@ -65,7 +69,7 @@ public class FbBrain : Brain
             foreach (HitEffect effect in collision.gameObject.GetComponent<OnHit>().effects) OnHit(effect);
             if (currentStats[(int)EntityStat.Health] <= 0)
             {
-                s.SwitchState(s.DeathState);
+                stateManager.SwitchState(stateManager.DeathState);
             }
             else
             {
@@ -97,29 +101,34 @@ public class FbBrain : Brain
 
         }
     }
-
     //given  by upgrade manager lets us vary any of our entity states based on a upgrade pickup. Currently needs to be a switch(or lookup I guess) cause of things like the healthbar being updated
     public void PlayerUpgrade(PlayerUpgrade upgrade)
     {
         switch (upgrade.playerUpgrade)
         {
             case PlayerUpgrades.Health:
-            {
-                if (currentStats[(int)upgrade.playerUpgrade] + upgrade.modifier <= Stats[(int)upgrade.playerUpgrade]){ 
-                    currentStats[(int)upgrade.playerUpgrade] += upgrade.modifier;
-                    healthbar.GetComponent<FbHealthBar>().HealthBar(currentStats[(int)upgrade.playerUpgrade]);
+ 
+                if (currentStats[0] + upgrade.modifier <= Stats[0]){ 
+                    currentStats[0] += upgrade.modifier;
+                    healthbar.GetComponent<FbHealthBar>().HealthBar(currentStats[0]);
                 }
-                break;
-            }
+            break;
+
+            case PlayerUpgrades.MaxHealth:
+                if (Stats[0] < maxStats[0]){
+                    Stats[0] += upgrade.modifier;
+                    currentStats[0] += upgrade.modifier;
+                    healthbar.GetComponent<FbHealthBar>().MaxHealthBar(Stats[0], currentStats[0]);
+                }
+            break;
+
 
             case PlayerUpgrades.Speed:
-            {
-                if (currentStats[(int)upgrade.playerUpgrade] + upgrade.modifier <= Stats[(int)upgrade.playerUpgrade])
-                {
-                    currentStats[(int)upgrade.playerUpgrade] += upgrade.modifier;
-                }
-                break;
-            }
+
+                if (Stats[1] < maxStats[1]) currentStats[1] += upgrade.modifier;
+                
+            break;
+
 
         }
     }

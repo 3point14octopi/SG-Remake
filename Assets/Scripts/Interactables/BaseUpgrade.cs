@@ -7,6 +7,7 @@ namespace UpgradeStats
     public enum PlayerUpgrades
     {
         Health,
+        MaxHealth,
         Speed
     }
     public enum IceUpgrades

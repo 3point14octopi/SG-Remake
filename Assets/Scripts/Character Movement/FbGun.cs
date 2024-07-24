@@ -135,12 +135,14 @@ public class FbGun : GunModule
             case GunUpgrades.Spread:
                 {
                     currentAmmo.bullet.spreadNum += upgrade.modifier;
+                    CalculateShooting(currentAmmo.bullet);
                     break;
                 }
 
             case GunUpgrades.Burst:
                 {
                     currentAmmo.bullet.burstNum += upgrade.modifier;
+                    CalculateShooting(currentAmmo.bullet);
                     break;
                 }
 

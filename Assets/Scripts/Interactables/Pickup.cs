@@ -9,4 +9,9 @@ public class Pickup : MonoBehaviour
     public List<string> effectTags = new List<string>();
     public Upgrade upgrade;
 
+    private void Start()
+    {
+        gameObject.GetComponent<SpriteRenderer>().sprite = upgrade.uiPic;
+    }
+
 }

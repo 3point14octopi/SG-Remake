@@ -11,10 +11,13 @@ public class Brain : MonoBehaviour
     public int[] Stats = new int[3];
     //internal stats
     [SerializeField] public int[] currentStats { get; protected set; }
-    //stuff that damages the entity (probably player bullets)
+    
+
+    [Tooltip("What should this take damage from?")]
     public List<string> damageTags = new List<string>();
-    //reactions to taking damage and dying (two different things!)
+    [Tooltip("What should this do when it takes damage?")]
     [SerializeField]public List<Reaction> damageReactions = new List<Reaction>();
+    [Tooltip("What should this do when it dies?")]
     [SerializeField] public List<Reaction> deathReactions = new List<Reaction>();
 
     //room stuff

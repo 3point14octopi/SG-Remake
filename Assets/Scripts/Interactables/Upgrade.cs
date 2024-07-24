@@ -10,6 +10,7 @@ using UnityEngine;
     public string upgradeName; 
     public string upgradeDescription;
     public Sprite uiPic;
+    public bool storeInUI = true; 
     public List<PlayerUpgrade> playerEffects = new List<PlayerUpgrade>();
     public List<IceUpgrade> iceEffects = new List<IceUpgrade>();
     public List<GunUpgrade> gunEffects = new List<GunUpgrade>();

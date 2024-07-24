@@ -10,11 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 604cbc6350a14a54a9581b43b5083005, type: 3}
-  m_Name: New Upgrade
+  m_Name: Speed Up
   m_EditorClassIdentifier: 
-  upgradeName: Bean
-  upgradeDescription: BEEEEEEEEEN
-  uiPic: {fileID: 21300000, guid: dfc37920b13251942a18aebe8909a04c, type: 3}
-  playerEffects: []
+  upgradeName: Speed Up
+  upgradeDescription: Makes FrostBite move around faster
+  uiPic: {fileID: 1147390810, guid: f580db2583f57794e89031434c62c558, type: 3}
+  storeInUI: 1
+  playerEffects:
+  - playerUpgrade: 2
+    modifier: 1
   iceEffects: []
   gunEffects: []

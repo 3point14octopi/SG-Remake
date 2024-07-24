@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed67a06c19845c243801ca625e2433aa, type: 3}
-  m_Name: Snowball
+  m_Name: TestShooter Bullet
   m_EditorClassIdentifier: 
   style: 0
-  speed: 10
-  firerate: 0.5
+  speed: 2
+  firerate: 1
   rebound: 0
   bulletEffects:
   - targetedStat: 0
-    modifier: -5
+    modifier: -1
   - targetedStat: 1
     modifier: 0
   - targetedStat: 2
     modifier: 0
   spreadNum: 1
   burstNum: 1
-  spreadDis: 0.4
+  spreadDis: 0
   spreadAngle: 0
   arcAngle: 0
   spreadsDis:
