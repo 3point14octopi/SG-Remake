@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using EntityStats;
-using System;
-using System.Xml.Linq;
 
 
 public class BulletBehaviour : MonoBehaviour
@@ -28,11 +26,16 @@ public class BulletBehaviour : MonoBehaviour
     private float bLifeSpan = 30;
     private float distance = 0;
     private Vector2 spawnPoint = new Vector2();
+    private OnHit onHitComponent;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    private void Start() { target = GameObject.FindGameObjectWithTag("Player"); }
+    private void OnEnable() { 
+        target = GameObject.FindGameObjectWithTag("Player");
+        onHitComponent = gameObject.GetComponent<OnHit>();
+        spawnPoint = transform.position;
+    }
     
     void FixedUpdate() { 
         movement.BulletUpdate(this);
@@ -42,10 +45,10 @@ public class BulletBehaviour : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!ignoreTags.Contains(other.gameObject.tag) && other.gameObject.tag == "PlayerBullet" && other.gameObject.tag == "EnemyBullet"){
+        if (!ignoreTags.Contains(other.gameObject.tag) && other.gameObject.tag != "PlayerBullet" && other.gameObject.tag != "EnemyBullet"){
 
             //if it isnt a character and has some juice left it will bounce off the wall
-            if (bRebound > 0 && other.gameObject.tag == "Player" && other.gameObject.tag == "Enemy"){
+            if (bRebound > 0 && other.gameObject.tag != "Player" && other.gameObject.tag != "Enemy"){
                 bRebound--;
                 transform.Rotate(0.0f, 0.0f, 180.0f, Space.Self);
             }
@@ -54,28 +57,35 @@ public class BulletBehaviour : MonoBehaviour
         }   
     }
     
-    //Called by gun when a bullet is instantiated
+    /// <summary>
+    /// should happen everytime a bullet is instantiated. Puts its stored variables into action
+    /// </summary>
+    /// <param name="bullet"></param>
     public void SetBullet(Bullet bullet)
     {
 
         bSpeed = bullet.speed;
         bRebound = bullet.rebound;
         bArc = bullet.arcAngle;
+        gameObject.transform.localScale = new Vector2(bullet.size, bullet.size);
         if(bullet.lifeSpan != -1) bLifeSpan = bullet.lifeSpan;
-        spawnPoint = gameObject.transform.position;
         AssignBehaviour(bullet.style);
         outward = transform.up;
-
-
         ogRot = transform.rotation.z;
 
+
         //transfers on hit data from the ammo type to the bullet object
-        for (int i = 0; i < EntityStat.GetNames(typeof(EntityStat)).Length; i++) //transfers on hit data from the ammo type to the bullet object
+        var effectNames = EntityStat.GetNames(typeof(EntityStat)).Length;
+        for (int i = 0; i < effectNames; i++) //transfers on hit data from the ammo type to the bullet object
         {
-            gameObject.GetComponent<OnHit>().effects.Add(bullet.bulletEffects[i]);
+            onHitComponent.effects.Add(bullet.bulletEffects[i]);
         }
     }
 
+    /// <summary>
+    /// uses the style variable from a bullet to choose what logic it will use to move
+    /// </summary>
+    /// <param name="newStyle"></param>
     public void AssignBehaviour(BulletStyles newStyle)
     {
         switch (newStyle)

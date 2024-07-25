@@ -115,8 +115,7 @@ public class FbGun : GunModule
 
             case GunUpgrades.Size:
             
-                Debug.Log("No size upgrade available");
-                //currentAmmo.size += upgrade.modifier;
+                currentAmmo.bullet.size += ((float)upgrade.modifier / 10);
                 break;
             
 
