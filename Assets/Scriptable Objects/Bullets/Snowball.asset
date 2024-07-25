@@ -16,6 +16,7 @@ MonoBehaviour:
   speed: 10
   firerate: 0.5
   rebound: 0
+  lifeSpan: 6
   bulletEffects:
   - targetedStat: 0
     modifier: -5

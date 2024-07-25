@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using EntityStats;
 using System;
+using System.Xml.Linq;
 
 
 public class BulletBehaviour : MonoBehaviour
@@ -24,30 +25,32 @@ public class BulletBehaviour : MonoBehaviour
     public float lifetime = 0f;
     [HideInInspector] float ogRot = 0f;
 
-    private void Start()
-    {
-        target = GameObject.FindGameObjectWithTag("Player");
-    }
+    private float bLifeSpan = 30;
+    private float distance = 0;
+    private Vector2 spawnPoint = new Vector2();
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    private void Start() { target = GameObject.FindGameObjectWithTag("Player"); }
+    
+    void FixedUpdate() { 
         movement.BulletUpdate(this);
+        if (distance < bLifeSpan) distance = Vector3.Distance(spawnPoint, gameObject.transform.position);
+        else Kill();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (ignoreTags.Contains(other.gameObject.tag) || other.gameObject.tag == "PlayerBullet" || other.gameObject.tag == "EnemyBullet"){
-            
-        }
-  
-        else{
-            if (bRebound > 0){
+        if (!ignoreTags.Contains(other.gameObject.tag) && other.gameObject.tag == "PlayerBullet" && other.gameObject.tag == "EnemyBullet"){
+
+            //if it isnt a character and has some juice left it will bounce off the wall
+            if (bRebound > 0 && other.gameObject.tag == "Player" && other.gameObject.tag == "Enemy"){
                 bRebound--;
                 transform.Rotate(0.0f, 0.0f, 180.0f, Space.Self);
             }
 
-            else if(bRebound == 0){Destroy(gameObject);}
+            else Kill();
         }   
     }
     
@@ -58,6 +61,8 @@ public class BulletBehaviour : MonoBehaviour
         bSpeed = bullet.speed;
         bRebound = bullet.rebound;
         bArc = bullet.arcAngle;
+        if(bullet.lifeSpan != -1) bLifeSpan = bullet.lifeSpan;
+        spawnPoint = gameObject.transform.position;
         AssignBehaviour(bullet.style);
         outward = transform.up;
 
@@ -103,42 +108,6 @@ public class BulletBehaviour : MonoBehaviour
         style = newStyle;
     }
 
-    private void StraightMovement()
-    {
-        //moves the bullet continously in same direction it was fired
-        transform.position += transform.up * Time.deltaTime * bSpeed;
-
-    }
-
-    private void TrackingMovement()
-    {
-        transform.up = target.transform.position - transform.position;
-        transform.position += transform.up * Time.deltaTime * bSpeed;
-    }
-
-    private void SpinningMovement()
-    {
-        transform.Rotate(0, 0, bArc);
-        transform.position += transform.up * Time.deltaTime * bSpeed + outward * Time.deltaTime * bSpeed;
-    }
-
-    private void ArchingMovement()
-    {
-        //if (first)
-        //{
-        //    ogRot = transform.eulerAngles.z + 0f;
-        //    first = false;
-        //}
-        
-        transform.eulerAngles = new Vector3(transform.rotation.x, transform.rotation.y, ogRot + lifetime);
-        lifetime += (Mathf.Sin(Time.deltaTime * (float)Math.PI) * 65);
-        if (lifetime >= 1170)
-        {
-            Debug.Log("full loop");
-            style = BulletStyles.Tracking;
-        }
-        transform.position += transform.up * Time.deltaTime * bSpeed;
-    }
 
     public void Kill()
     {

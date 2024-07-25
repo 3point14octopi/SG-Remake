@@ -23,6 +23,7 @@ namespace UpgradeStats
         Speed,
         Size,
         Firerate,
+        Lifespan,
         Rebound,
         Spread,
         Burst

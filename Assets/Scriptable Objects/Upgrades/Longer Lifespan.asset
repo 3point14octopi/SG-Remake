@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 604cbc6350a14a54a9581b43b5083005, type: 3}
-  m_Name: More Health
+  m_Name: Longer Lifespan
   m_EditorClassIdentifier: 
-  upgradeName: More Health
-  upgradeDescription: Frostbite's max health is raised
-  uiPic: {fileID: 1856308033, guid: f580db2583f57794e89031434c62c558, type: 3}
-  storeInUI: 0
-  playerEffects:
-  - playerUpgrade: 1
-    modifier: 1
+  upgradeName: Longer Lifespan
+  upgradeDescription: Frostbite's bullets travel further before dissolving
+  uiPic: {fileID: 128533458, guid: 4ea70714c097fcd46b0106116a56d4ce, type: 3}
+  storeInUI: 1
+  playerEffects: []
   iceEffects: []
-  gunEffects: []
+  gunEffects:
+  - gunUpgrade: 4
+    modifier: 2

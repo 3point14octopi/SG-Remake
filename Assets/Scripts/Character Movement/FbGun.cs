@@ -101,50 +101,55 @@ public class FbGun : GunModule
         switch (upgrade.gunUpgrade)
         {
             case GunUpgrades.Damage:
-            {
-                    currentAmmo.bullet.bulletEffects[(int)EntityStat.Health] = new HitEffect(EntityStat.Health, currentAmmo.bullet.bulletEffects[(int)EntityStat.Health].modifier + upgrade.modifier);
-                    //upgrade.modifier;
-                    break;
-            }
+            
+                currentAmmo.bullet.bulletEffects[(int)EntityStat.Health] = new HitEffect(EntityStat.Health, currentAmmo.bullet.bulletEffects[(int)EntityStat.Health].modifier + upgrade.modifier);
+                //upgrade.modifier;
+                break;
+            
 
             case GunUpgrades.Speed:
-            {
-                    currentAmmo.bullet.speed += upgrade.modifier;
-                    break;
-            }
+            
+                currentAmmo.bullet.speed += upgrade.modifier;
+                break;
+            
 
             case GunUpgrades.Size:
-                {
-                    Debug.Log("No size upgrade available");
-                    //currentAmmo.size += upgrade.modifier;
-                    break;
-                }
+            
+                Debug.Log("No size upgrade available");
+                //currentAmmo.size += upgrade.modifier;
+                break;
+            
 
             case GunUpgrades.Firerate:
-                {
-                    currentAmmo.bullet.firerate += upgrade.modifier;
-                    break;
-                }
+            
+                currentAmmo.bullet.firerate += upgrade.modifier;
+                break;
+
+            case GunUpgrades.Lifespan:
+
+                currentAmmo.bullet.lifeSpan += upgrade.modifier;
+                break;
+
 
             case GunUpgrades.Rebound:
-                {
-                    currentAmmo.bullet.rebound += upgrade.modifier;
-                    break;
-                }
+                
+                currentAmmo.bullet.rebound += upgrade.modifier;
+                break;
+                
 
             case GunUpgrades.Spread:
-                {
-                    currentAmmo.bullet.spreadNum += upgrade.modifier;
-                    CalculateShooting(currentAmmo.bullet);
-                    break;
-                }
+                
+                currentAmmo.bullet.spreadNum += upgrade.modifier;
+                CalculateShooting(currentAmmo.bullet);
+                break;
+                
 
             case GunUpgrades.Burst:
-                {
-                    currentAmmo.bullet.burstNum += upgrade.modifier;
-                    CalculateShooting(currentAmmo.bullet);
-                    break;
-                }
+                
+                currentAmmo.bullet.burstNum += upgrade.modifier;
+                CalculateShooting(currentAmmo.bullet);
+                break;
+                
 
 
         }

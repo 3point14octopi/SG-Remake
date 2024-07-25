@@ -13,30 +13,24 @@ public class FbUpgradeManager : MonoBehaviour
 
     public KeyCode inventoryKey;
     public GameObject inventoryScreen;
+    public bool inventoryActive = false;
 
-    //The lists that are used to store current upgrades
-    [SerializeField] public List<Upgrade> CurrentUpgrades = new List<Upgrade>();
+
 
     private void Update()
     {
         if (Input.GetKeyDown(inventoryKey))
         {
-            inventoryScreen.SetActive(true);
-        }
-        if (Input.GetKeyUp(inventoryKey))
-        {
-            inventoryScreen.SetActive(false);
+            inventoryActive = !inventoryActive;
+            inventoryScreen.SetActive(inventoryActive);
         }
     }
 
-    //Looks our pickups which are labelled with "Pickup:" calls a function built into their cubclass which will redirect to the correct FB script
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
         if (collision.gameObject.tag == "Pickup")
         {
-            UpgradeTracker(collision.gameObject.GetComponent<Pickup>().upgrade);
-            
             foreach (PlayerUpgrade upgrade in collision.gameObject.GetComponent<Pickup>().upgrade.playerEffects) brain.PlayerUpgrade(upgrade);
             foreach (IceUpgrade upgrade in collision.gameObject.GetComponent<Pickup>().upgrade.iceEffects) states.IceUpgrade(upgrade);
             foreach (GunUpgrade upgrade in collision.gameObject.GetComponent<Pickup>().upgrade.gunEffects) gun.GunUpgrade(upgrade);
@@ -45,12 +39,7 @@ public class FbUpgradeManager : MonoBehaviour
         }
     }
     
-    //Maintains a list of all the upgrades on our character
 
-    public void UpgradeTracker(Upgrade upgrade)
-    {
-        CurrentUpgrades.Add(upgrade); 
-    }
 
 
 }
