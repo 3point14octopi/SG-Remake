@@ -6,7 +6,6 @@ using UpgradeStats;
 
 [Serializable] public class IceUpgrade
 {
-
     public IceUpgrades iceUpgrade;
-
 }
+

@@ -15,7 +15,7 @@ MonoBehaviour:
   upgradeName: More Health
   upgradeDescription: Frostbite's max health is raised
   uiPic: {fileID: 1856308033, guid: f580db2583f57794e89031434c62c558, type: 3}
-  storeInUI: 0
+  storeInUI: 1
   playerEffects:
   - playerUpgrade: 1
     modifier: 1

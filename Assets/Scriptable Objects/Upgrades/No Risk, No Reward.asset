@@ -10,14 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 604cbc6350a14a54a9581b43b5083005, type: 3}
-  m_Name: Bigger Snowballs
+  m_Name: No Risk, No Reward
   m_EditorClassIdentifier: 
-  upgradeName: Bigger Snowballs
-  upgradeDescription: Frostbite's snowballs are larger now
-  uiPic: {fileID: -496107250, guid: 4ea70714c097fcd46b0106116a56d4ce, type: 3}
+  upgradeName: No Risk, No Reward
+  upgradeDescription: You have very low health but deal significantly more damage
+  uiPic: {fileID: 920015102, guid: f580db2583f57794e89031434c62c558, type: 3}
   storeInUI: 1
-  playerEffects: []
+  playerEffects:
+  - playerUpgrade: 3
+    modifier: 0
   iceEffects: []
   gunEffects:
-  - gunUpgrade: 2
-    modifier: 5
+  - gunUpgrade: 8
+    modifier: 0

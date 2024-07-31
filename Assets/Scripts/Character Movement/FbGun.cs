@@ -1,7 +1,6 @@
 using EntityStats;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using UnityEngine;
 using UpgradeStats;
 
@@ -19,6 +18,12 @@ public class FbGun : GunModule
 
     public int testKeyAmount = 0;
 
+    public float rawDamage;
+
+    private void Start()
+    {
+        rawDamage = ammoList[0].bullet.bulletEffects[(int)EntityStat.Health].modifier;
+    }
     private void Update()
     {
         for(int i = 0; i < shootKeys.Count; i++) 
@@ -26,7 +31,7 @@ public class FbGun : GunModule
             if (Input.GetKeyDown(shootKeys[i])){
                 keyHistory.Push(i);
                 reflectedHistory.Add(keyHistory.Peek());
-                i = 10;
+                break;
             }
         }
         
@@ -35,30 +40,6 @@ public class FbGun : GunModule
     //Is called from states that can shoot, checks for key presses and shoots using the most recent key pressed
     public void CanShoot()
     {
-        //else if(Input.anyKey)
-        //{
-        //    for (int i = 0; i < shootKeys.Count; i++)
-        //    {
-        //        if (Input.GetKey(shootKeys[i]) && keyHistory.Peek() != i)
-        //        {
-        //            //stg
-        //            if(key)
-        //            keyHistory.Push(i);
-        //            reflectedHistory.Add(keyHistory.Peek());
-        //            i = 10;
-        //        }
-        //    }
-        //}
-
-        //original loop
-        //for (int i = 0; i < shootKeys.Count; i++)
-        //{
-        //    if (Input.GetKeyDown(shootKeys[i]))
-        //    {
-        //        keyHistory.Push(i);
-        //        reflectedHistory.Add(i + 0);
-        //    }
-        //}
 
         if (keyHistory.Count > 0 && active)
         {
@@ -101,9 +82,9 @@ public class FbGun : GunModule
         switch (upgrade.gunUpgrade)
         {
             case GunUpgrades.Damage:
-            
-                currentAmmo.bullet.bulletEffects[(int)EntityStat.Health] = new HitEffect(EntityStat.Health, currentAmmo.bullet.bulletEffects[(int)EntityStat.Health].modifier + upgrade.modifier);
-                //upgrade.modifier;
+
+                rawDamage += upgrade.modifier;
+                currentAmmo.bullet.bulletEffects[(int)EntityStat.Health] = new HitEffect(EntityStat.Health, currentAmmo.bullet.bulletEffects[(int)EntityStat.Health].modifier + upgrade.modifier);               
                 break;
             
 
@@ -148,9 +129,12 @@ public class FbGun : GunModule
                 currentAmmo.bullet.burstNum += upgrade.modifier;
                 CalculateShooting(currentAmmo.bullet);
                 break;
-                
 
+            case GunUpgrades.NoRiskNoReward:
 
+                currentAmmo.bullet.bulletEffects[(int)EntityStat.Health] = new HitEffect(EntityStat.Health, currentAmmo.bullet.bulletEffects[(int)EntityStat.Health].modifier * 3);
+
+                break;
         }
     }
 

@@ -27,7 +27,7 @@ public class Brain_Editor : Editor
             for(int i = 0; i < b.Stats.Length; i++)
             {
                 EditorGUILayout.LabelField(((EntityStat)i).ToString());
-                b.Stats[i] = EditorGUILayout.IntField(b.Stats[i]);
+                b.Stats[i] = EditorGUILayout.FloatField(b.Stats[i]);
             }
         }
         

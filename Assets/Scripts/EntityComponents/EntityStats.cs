@@ -13,9 +13,9 @@ namespace EntityStats
     [Serializable]public struct HitEffect //Hiteffects have a reference to the stat they are trying to affect and how it affects it
     {
         public EntityStat targetedStat;
-        public int modifier;
+        public float modifier;
 
-        public HitEffect(EntityStat entityStat, int mod)
+        public HitEffect(EntityStat entityStat, float mod)
         {
             targetedStat = entityStat;
             modifier = mod;

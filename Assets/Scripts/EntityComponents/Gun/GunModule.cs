@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
 
 public class GunModule : MonoBehaviour
 {
-    [HideInInspector]
+    //[HideInInspector]
     public Ammo currentAmmo; //bullet being fired
 
     [Tooltip("List of all the ammos this gun uses. First element will become the current ammo")]
@@ -46,7 +47,7 @@ public class GunModule : MonoBehaviour
     
 
    // Start is called before the first frame update
-   void Start()
+   void Awake()
    {
        //so we can have the players transform
        player = GameObject.FindWithTag("Player");

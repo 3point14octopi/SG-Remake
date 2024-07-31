@@ -8,9 +8,9 @@ public class Brain : MonoBehaviour
     public bool isAlive = true;
     //public stats
     public bool showStats = true;
-    public int[] Stats = new int[3];
+    public float[] Stats = new float[3];
     //internal stats
-    [SerializeField] public int[] currentStats { get; protected set; }
+    [SerializeField] public float[] currentStats { get; protected set; }
     
 
     [Tooltip("What should this take damage from?")]
@@ -29,7 +29,7 @@ public class Brain : MonoBehaviour
         isAlive = true;
         roomIndex = -1;
         //this is so that we don't have any holdover from previously being alive
-        currentStats = new int[Stats.Length];
+        currentStats = new float[Stats.Length];
         for (int i = 0; i < Stats.Length; currentStats[i] = Stats[i] + 0, i++) ;
     }
 

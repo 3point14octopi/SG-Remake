@@ -10,14 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 604cbc6350a14a54a9581b43b5083005, type: 3}
-  m_Name: Bigger Snowballs
+  m_Name: Extra Ability Uses
   m_EditorClassIdentifier: 
-  upgradeName: Bigger Snowballs
-  upgradeDescription: Frostbite's snowballs are larger now
-  uiPic: {fileID: -496107250, guid: 4ea70714c097fcd46b0106116a56d4ce, type: 3}
+  upgradeName: 
+  upgradeDescription: 
+  uiPic: {fileID: 0}
   storeInUI: 1
   playerEffects: []
   iceEffects: []
-  gunEffects:
-  - gunUpgrade: 2
-    modifier: 5
+  gunEffects: []

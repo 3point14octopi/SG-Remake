@@ -8,6 +8,7 @@ public class FbStateManager : MonoBehaviour
 
     public FbBrain b;
     public FbGun g;
+
     //Catalog of all states
     public FbIdleState IdleState = new FbIdleState();
     public FbMoveState MoveState = new FbMoveState();
@@ -39,6 +40,7 @@ public class FbStateManager : MonoBehaviour
     public GameObject indicator; //used to show where an object will be placed
     public int currentIceUses = 5;
     public int maxIceUses = 5;
+    public int extraUseUpgrades = 0;
 
     public float iceBlockHealRate = 2f;//time it tkes for the iceblock to go back a level
     public float iceBlockTimer = 0;
@@ -111,27 +113,40 @@ public class FbStateManager : MonoBehaviour
         {
             case IceUpgrades.Block:
             
-                maxIceUses = 5;
+                maxIceUses = 5 + 2 * extraUseUpgrades;
                 currentIceUses = 5;
                 currentIceState = IceBlockState;
                 break;
             
             case IceUpgrades.Wall:
             
-                maxIceUses = 2;
+                maxIceUses = 2 + extraUseUpgrades;
                 currentIceUses = 2;
                 ice = iceWall; //this is what we place down
                 currentIceState = IceItemState;
                 break;
-            
+
             //case IceUpgrades.Decoy:
-            
+
             //    maxIceUses = 1;
             //    currentIceUses = 1;
             //    ice = iceStatue;
             //    currentIceState = IceItemState;
             //    break;
-            
+
+            case IceUpgrades.AbilityUses:
+                extraUseUpgrades++;
+                if (currentIceState == IceBlockState)
+                {
+                    maxIceUses = 5 + 2 * extraUseUpgrades;
+                    currentIceUses += 2;
+                }
+                else if (currentIceState == IceItemState)
+                {
+                    maxIceUses = 2 + extraUseUpgrades;
+                    currentIceUses += 2;
+                }
+                break;
         }
     }
 

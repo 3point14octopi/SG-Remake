@@ -8,13 +8,16 @@ namespace UpgradeStats
     {
         Health,
         MaxHealth,
-        Speed
+        Speed,
+        NoRiskNoReward,
+        BleedingHearts
     }
     public enum IceUpgrades
     {
         Block,
         Wall,
-        Decoy
+        Decoy,
+        AbilityUses
     }
 
     public enum GunUpgrades
@@ -26,7 +29,8 @@ namespace UpgradeStats
         Lifespan,
         Rebound,
         Spread,
-        Burst
+        Burst,
+        NoRiskNoReward
     }
 
 }
