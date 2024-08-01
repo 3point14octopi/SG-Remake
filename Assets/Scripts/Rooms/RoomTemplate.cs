@@ -82,7 +82,7 @@ public class RoomTemplate:MonoBehaviour
 
     protected virtual void SpawnEnemies()
     {
-        for (int i = 0; i < roomEnemies.Count; i++)
+        for (int i = 0; i < population; i++)
         {
             roomEnemies[i].gameObject.SetActive(true);
             roomEnemies[i].roomIndex = i + 0;

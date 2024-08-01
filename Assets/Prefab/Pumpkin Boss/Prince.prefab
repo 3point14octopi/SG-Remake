@@ -284,7 +284,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAlive: 1
   showStats: 1
-  Stats: ee0200000000000001000000
+  Stats: 580200000000000001000000
   damageTags:
   - PlayerBullet
   damageReactions:
@@ -333,3 +333,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   badjoke: {fileID: 8300000, guid: b0ab147604edd8b418d58c007b8cb559, type: 3}
+  vinePrefab: {fileID: 4890414333185944774, guid: 5ad9fb54252264747862bdb815642abe, type: 3}
+  bulbPrefab: {fileID: 3546155282092467744, guid: dca52d7e6424ffc4e9ae573dfea0c537, type: 3}
+  tracker: {fileID: 0}
+  chaseLength: 15
+  chaseStartIndex: 20
+  lanternPrefab: {fileID: 3297683803177538958, guid: b5914fa7e789749448bf3911972eece4, type: 3}
+  lanternSpeed: 3
+  princeBrain: {fileID: 0}

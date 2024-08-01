@@ -17,6 +17,7 @@ using UnityEngine;
         isCoroutine = true;
         srRef = g.GetComponent<SpriteRenderer>();
         baseMaterial = srRef.material;
+        Debug.Log("flashing " + g.name);
     }
 
     public override IEnumerator ReactCoroutine()

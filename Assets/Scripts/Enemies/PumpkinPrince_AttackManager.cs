@@ -1,6 +1,8 @@
 using JAFprocedural;
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -21,6 +23,16 @@ public class PrinceAttack_Motion
 
 public class PumpkinPrince_AttackManager : MonoBehaviour
 {
+    private enum DebugVineDir
+    {
+        UNKNOWN = -1,
+        UP = 0,
+        RIGHT = 1,
+        DOWN = 2,
+        LEFT = 3
+    };
+
+
     public Space2D room;
     Prince_Attack currentAttack = Prince_Attack.NONE;
     private bool fireballAttacking = false;
@@ -38,6 +50,8 @@ public class PumpkinPrince_AttackManager : MonoBehaviour
     public GameObject vinePrefab;
     [SerializeField] public List<GameObject> vineWaves = new List<GameObject>();
     private Stack<int> vineIndexes = new Stack<int>();
+    private Stack<int> trackVineIndexes = new Stack<int>();
+    Transform tracked;
     Coord[,] offshoots = new Coord[2, 2]
         { { new Coord(1, 0), new Coord(-1, 0) },
         { new Coord(0, -1), new Coord(0, 1) } };
@@ -81,6 +95,13 @@ public class PumpkinPrince_AttackManager : MonoBehaviour
 
         
     }
+
+    private void Start()
+    {
+        tracked = GameObject.FindGameObjectWithTag("Player").transform;
+    }
+
+
     public void Update()
     {
         //move fireballs
@@ -130,7 +151,11 @@ public class PumpkinPrince_AttackManager : MonoBehaviour
     {
         StartCoroutine(StartLanternWindup());
     }
-
+    public void Chase(Vector3 me, Vector3 you)
+    {
+        StartCoroutine(RootChase(me, you));
+        //StartCoroutine(RootSpawn());
+    }
 
 
     //Fireball functions
@@ -186,49 +211,140 @@ public class PumpkinPrince_AttackManager : MonoBehaviour
     }
 
     //Vine Wave functions
-    IEnumerator RootSpawn()
+    IEnumerator RootSpawn(int chaseIndex = -1)
     {
-        Coord start = new Coord(12, 7);
+        Coord start = new Coord(7, 4);
+        //up, right, down, left
         Coord[] directions = new Coord[] { new Coord(0, -1), new Coord(1, 0), new Coord(0, 1), new Coord(-1, 0) };
         int[] subtract = new int[4] { 1, 1, 1, 1 };
         Coord[] add = new Coord[4] { new Coord(), new Coord(), new Coord(), new Coord() };
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 5; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                Debug.Log("root at" + ((i * 4) + j).ToString());
-                Debug.Log("root size is" + vineWaves.Count.ToString());
-                vineWaves[((i * 4) + j)].SetActive(true);
-                if (i > 1 && RNG.GenRand(1, 10) > 8)
+                if (j != chaseIndex)
                 {
-                    int alt = RNG.GenRand(0, 2);
-                    add[j] = new Coord(add[j].x + offshoots[j % 2, alt].x, add[j].y + offshoots[j % 2, alt].y);
-                    subtract[j]--;
-                }
-                Coord vLoc = new Coord((start.x + (directions[j].x * (i + subtract[j])) + add[j].x), (start.y + (directions[j].y * (i + subtract[j])) + add[j].y));
-                //directions[j] = new Coord(directions[j].x + add.x, directions[j].y + add.y);
-                vineWaves[(i * 4) + j].transform.position = new Vector3(vLoc.x + room.worldOrigin.x + 0.5f, -vLoc.y - room.worldOrigin.y + 0.5f, 0.5f);
+                    vineWaves[((i * 4) + j)].SetActive(true);
+                    if (i > 1 && RNG.GenRand(1, 10) > 8)
+                    {
+                        int alt = RNG.GenRand(0, 2);
+                        add[j] = new Coord(add[j].x + offshoots[j % 2, alt].x, add[j].y + offshoots[j % 2, alt].y);
+                        subtract[j]--;
+                    }
+                    Coord vLoc = new Coord((start.x + (directions[j].x * (i + subtract[j])) + add[j].x), (start.y + (directions[j].y * (i + subtract[j])) + add[j].y));
+                    //directions[j] = new Coord(directions[j].x + add.x, directions[j].y + add.y);
+                    vineWaves[(i * 4) + j].transform.position = new Vector3(vLoc.x + room.worldOrigin.x + 0.5f, -vLoc.y - room.worldOrigin.y + 0.5f, 0.5f);
 
-                vineIndexes.Push((i * 4) + j);
+                    vineIndexes.Push((i * 4) + j);
+                }
             }
-            yield return new WaitForSeconds(0.15f);
+            yield return new WaitForSeconds(0.1f);
         }
 
-        StartCoroutine(RootDespawn());
+        StartCoroutine(RootDespawn(chaseIndex));
     }
-    IEnumerator RootDespawn()
+    IEnumerator RootDespawn(int jIndex = -1)
     {
-        yield return new WaitForSeconds(2);
-        for (int i = 0; i < 10; i++)
+        yield return new WaitForSeconds(10);
+        for (int i = 0; i < 5; i++)
         {
             for (int j = 0; j < 4; j++)
             {
-                vineWaves[vineIndexes.Pop()].GetComponent<SpikyVinesBehaviour>().Wither();
+                if (jIndex != j) vineWaves[vineIndexes.Pop()].GetComponent<SpikyVinesBehaviour>().Wither();
             }
             yield return new WaitForSeconds(0.1f);
         }
     }
 
+    IEnumerator VinePoke(Queue<Vector2> vineLocations)
+    {
+        //int pleg = vineLocations.Count;
+        
+        for(int i= 0; i < 15 && vineLocations.Count != 0; i++)
+        {
+            vineWaves[20 + i].SetActive(true);
+            Vector3 cPos = new Vector3(vineLocations.Peek().x, vineLocations.Peek().y, 0.5f);
+            vineWaves[20 + i].transform.position = cPos;
+            trackVineIndexes.Push(20 + i);
+
+            Queue<Vector2> newPath = AstarDebugLayer.Instance.AstarPath(cPos, tracked.position);
+
+            if(newPath != null && newPath.Count > 0)
+            {
+                if(vineLocations.Peek() == newPath.Peek())
+                {
+                    vineLocations = newPath;
+                }
+            }
+
+            vineLocations.Dequeue();
+            yield return new WaitForSeconds(0.3f);
+        }
+        Debug.Log("the end");
+
+
+        ////we'll do them all at once to start
+        //for(int i = 0; i < pleg && i < 10; i++)
+        //{
+        //    Debug.Log(vineLocations.Count + " remaining in stack after " + i.ToString() + " iterations");
+            
+        //    trackVineIndexes.Push(20 + i);
+        //    vineLocations.Dequeue();
+        //    yield return new WaitForSeconds(0.5f);
+        //}
+
+        StartCoroutine(PokeDespawn());
+    }
+
+    IEnumerator PokeDespawn()
+    {
+        yield return new WaitForSeconds(10f);
+        int pleg = trackVineIndexes.Count;
+        for(int i = 0; i < pleg; i++)
+        {
+            vineWaves[trackVineIndexes.Pop()].GetComponent<SpikyVinesBehaviour>().Wither();
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
+
+    IEnumerator RootChase(Vector3 start, Vector3 target)
+    {
+        Queue<Vector2> path = AstarDebugLayer.Instance.AstarPath(start, target);
+        int pleg = (path!=null)?path.Count:0;
+        Queue<Vector2> p2 = new Queue<Vector2>();
+
+        Vector2[] dirs = new Vector2[4] { new Vector2(0, 1), new Vector2(1, 0), new Vector2(0, -1), new Vector2(-1, 0) };
+        int pdir = -1;
+        Vector2 sPos = new Vector2();
+        Vector2 fDir;
+
+        for(int i = 0; i < pleg; i++)
+        {
+            if (i == 0)
+            {
+                sPos = path.Dequeue();
+            }
+            else if (i == 1)
+            {
+                fDir = path.Peek();
+
+                Vector2 sub = fDir - sPos;
+                for (int j = 0; j < 4 && pdir == -1; pdir = (sub == dirs[j]) ? j + 0 : -1, j++) ;
+                Debug.Log("the direction is " + (DebugVineDir)pdir);
+            }
+
+            if (i > 0)
+            {
+                p2.Enqueue(path.Dequeue());
+                Debug.Log("path size: " + p2.Count.ToString() + " (original queue contains " + pleg.ToString() + ")");
+            }
+
+        }
+        yield return RootSpawn(pdir);
+        //when RootSpawn has ended (but not RootDespawn, because that's a different process) this function will continue
+        if(p2.Count > 0)yield return VinePoke(p2);
+        AstarDebugLayer.Instance.Clear();
+    }
 
     //Lantern Beam functions
     IEnumerator StartLanternWindup()

@@ -1,5 +1,6 @@
 ﻿using JAFprocedural;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum AstarTileTypes
@@ -42,20 +43,21 @@ public class AstarDebugLayer : SimpleGridLayer
         worldOrigin = map.worldOrigin;
     }
 
-    private Queue<Vector2> CoordListToQueue(List<Coord> nodes)
+    private Queue<Vector2> CoordListToQueue(List<Coord> nodes, Vector3Int start)
     {
         if (enableDebuggingVisualizers) Clear();
-
+        
         Queue<Vector2> queue = new Queue<Vector2>();
-        foreach (Coord node in nodes)
+        for(int i = 0; i < nodes.Count; i++)
         {
+            Coord node = nodes[i];
             queue.Enqueue(new Vector2(node.x + worldOrigin.x + 0.5f, -node.y - worldOrigin.y + 0.5f));
             if (enableDebuggingVisualizers) Draw(new Vector3Int(node.x + worldOrigin.x, -node.y - worldOrigin.y, 0), (int)AstarTileTypes.Node);
         }
         if (enableDebuggingVisualizers)
         {
-            Draw(new Vector3Int((int)queue.Peek().x, (int)queue.Peek().y, 0), (int)AstarTileTypes.Start);
-            Draw(new Vector3Int((int)nodes[nodes.Count - 1].x + worldOrigin.x, -(int)nodes[nodes.Count - 1].y - worldOrigin.y, 0), (int)AstarTileTypes.Goal);
+            Draw(new Vector3Int((int)queue.Peek().x, (int)(queue.Peek().y-0.5f), 0), (int)AstarTileTypes.Start);
+            Draw(new Vector3Int((int)(nodes[nodes.Count - 1].x + worldOrigin.x + 0.5f), -(int)(nodes[nodes.Count - 1].y - worldOrigin.y+0.5f), 0), (int)AstarTileTypes.Goal);
         }
         return queue;
     }
@@ -67,9 +69,10 @@ public class AstarDebugLayer : SimpleGridLayer
         Vector3Int target = renderGrid.WorldToCell(goal);
 
         List<Coord> nodes = aStar.AStar(new Coord(loc.x - worldOrigin.x, -(loc.y) - worldOrigin.y), new Coord(target.x-worldOrigin.x, -(target.y) - worldOrigin.y), 3500);
-        if (nodes != null) path = CoordListToQueue(nodes);
+        if (nodes != null) path = CoordListToQueue(nodes, loc);
 
         return path;
     }
+
 
 }

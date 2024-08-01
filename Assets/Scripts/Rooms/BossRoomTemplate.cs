@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BossRoomTemplate:RoomTemplate
 {
-
+    
     private void Start()
     {
         rType = 9;
@@ -22,7 +22,7 @@ public class BossRoomTemplate:RoomTemplate
             for (int i = 0; i < population; roomEnemies[i].roomIndex = (i + 0), i++) ;
         }
 
-        if (population == 0)
+        if (population == 0 || index == 0)
         {
             Cleared = true;
             DoorGridLayer.Instance.OpenShutDoors(true);
@@ -37,6 +37,8 @@ public class BossRoomTemplate:RoomTemplate
             GameObject.Find("Frostbite").transform.position = transform.position + new Vector3(6, 0, 0);
             FollowCam.Instance.ForceJump(transform.position);
         }
+
+       
     }
 
     public override void OnUpdate() 
@@ -51,6 +53,16 @@ public class BossRoomTemplate:RoomTemplate
 
 
         //music? drama? cutscene?
+    }
+
+    protected override void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            FollowCam.Instance.SlideToNew(transform.position + new Vector3(0, 0.5f, 0));
+            OnEnter();
+            roomEnemies[0].gameObject.GetComponent<PrinceController>().tracker = collision.gameObject.transform;
+        }
     }
 
 
