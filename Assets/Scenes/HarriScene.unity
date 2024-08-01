@@ -59532,7 +59532,7 @@ GameObject:
   - component: {fileID: 732994624}
   m_Layer: 0
   m_Name: Spiky Hazard
-  m_TagString: Untagged
+  m_TagString: Hazard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59579,7 +59579,7 @@ MonoBehaviour:
   hazardType: 0
   stunTime: 1
   knockBack: 1
-  moving: 1
+  moving: 0
   movementDirections: 2
   speed: 1
   passthrough: 1
@@ -59637,7 +59637,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &732994622

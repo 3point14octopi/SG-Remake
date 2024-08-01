@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 604cbc6350a14a54a9581b43b5083005, type: 3}
   m_Name: Extra Ability Uses
   m_EditorClassIdentifier: 
-  upgradeName: 
-  upgradeDescription: 
-  uiPic: {fileID: 0}
+  upgradeName: Extra Ability Uses
+  upgradeDescription: Frostbite's ice abilities can be called on more
+  uiPic: {fileID: 1591086247, guid: f580db2583f57794e89031434c62c558, type: 3}
   storeInUI: 1
   playerEffects: []
-  iceEffects: []
+  iceEffects:
+  - iceUpgrade: 3
   gunEffects: []

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1ac11fb4bdaa03f4b9a3f9791719de13
+guid: 5991209ae718a3e4cad527310f2a3094
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -105,7 +105,70 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Vine_0
+      name: BeanSprite_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 984154156b3bdc449a4b7bae9b5abb82
+      internalID: 1759113679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeanSprite_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 85b9767987a0e4144b02059aa64fdddd
+      internalID: -266676146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeanSprite_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 64
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a493cf50bbc33445a954218a4b93fc2
+      internalID: 1468944019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BeanSprite_3
       rect:
         serializedVersion: 2
         x: 0
@@ -119,14 +182,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ec4bcc7e6e5181243b7f3adf5e7ee132
-      internalID: -1181981214
+      spriteID: 3bad4fdbc3641be4a9e38eca80e0e643
+      internalID: -336081223
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Vine_1
+      name: BeanSprite_4
       rect:
         serializedVersion: 2
         x: 32
@@ -140,14 +203,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 232342b031acca44e86518f055d3dd73
-      internalID: -1977608294
+      spriteID: d03367cab6f0b0242a8d9b4f208ddfd7
+      internalID: 1118773914
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Vine_2
+      name: BeanSprite_5
       rect:
         serializedVersion: 2
         x: 64
@@ -161,14 +224,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 555f13f6788c27345a2d28cd88efebed
-      internalID: -636349769
+      spriteID: 94cd81a8c06abbc44be7bafdb9b4335f
+      internalID: 354554502
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Vine_3
+      name: BeanSprite_6
       rect:
         serializedVersion: 2
         x: 0
@@ -182,50 +245,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 852a99fa6c5aea54aa577f7fbf0d3a68
-      internalID: 2031175271
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Vine_4
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fc8735321f2f26d4187216d06d7a69c9
-      internalID: -1856053223
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Vine_5
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f6adb0c07b91ac349adef77c9ba690ca
-      internalID: 393479280
+      spriteID: 5857798675565d34a8c315ddb0a29581
+      internalID: 1667295119
       vertices: []
       indices: 
       edges: []
@@ -241,12 +262,13 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Vine_0: -1181981214
-      Vine_1: -1977608294
-      Vine_2: -636349769
-      Vine_3: 2031175271
-      Vine_4: -1856053223
-      Vine_5: 393479280
+      BeanSprite_0: 1759113679
+      BeanSprite_1: -266676146
+      BeanSprite_2: 1468944019
+      BeanSprite_3: -336081223
+      BeanSprite_4: 1118773914
+      BeanSprite_5: 354554502
+      BeanSprite_6: 1667295119
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
