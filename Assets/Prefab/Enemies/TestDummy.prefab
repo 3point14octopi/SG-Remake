@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9215513454690690365}
   - component: {fileID: 9215513454690690361}
   - component: {fileID: 9215513454690690360}
+  - component: {fileID: 401629824816980345}
   m_Layer: 0
   m_Name: TestDummy
   m_TagString: Untagged
@@ -156,3 +157,15 @@ MonoBehaviour:
   deathReactions: []
   mom: {fileID: 0}
   roomIndex: -1
+--- !u!114 &401629824816980345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9215513454690690366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cc79b95195424b4ab2d93705e1c84e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

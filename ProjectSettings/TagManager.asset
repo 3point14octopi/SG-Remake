@@ -12,6 +12,8 @@ TagManager:
   - DDOL
   - Pickup
   - Hazard
+  - R_PlayerBullet
+  - L_EnemyBullet
   layers:
   - Default
   - TransparentFX
