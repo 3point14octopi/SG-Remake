@@ -16,6 +16,8 @@ MonoBehaviour:
   speed: 7
   firerate: 1
   rebound: 0
+  lifeSpan: 10
+  size: 1
   bulletEffects:
   - targetedStat: 0
     modifier: -2
@@ -27,3 +29,23 @@ MonoBehaviour:
   burstNum: 1
   spreadDis: 0
   spreadAngle: 45
+  arcAngle: 0
+  spreadsDis:
+  - -0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  spreadsAngle:
+  - -135
+  - -90
+  - -45
+  - 0
+  - 45
+  - 90
+  - 135
+  - 180
+  calculated: 1

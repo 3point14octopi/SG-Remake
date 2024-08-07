@@ -284,12 +284,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAlive: 1
   showStats: 1
-  Stats: 580200000000000001000000
+  Stats:
+  - 600
+  - 0
+  - 1
   damageTags:
   - PlayerBullet
   damageReactions:
-  - {fileID: 11400000, guid: 9de4910270d3fc34facbc86ae20f35bc, type: 2}
   - {fileID: 11400000, guid: daf532db9299dd54b9db5d0079c22eab, type: 2}
+  - {fileID: 11400000, guid: fd49027d5a47b1646bd52bbec12b588b, type: 2}
+  - {fileID: 11400000, guid: 9de4910270d3fc34facbc86ae20f35bc, type: 2}
   deathReactions:
   - {fileID: 11400000, guid: c7562d4be5b537d4a81dc3bb6a980135, type: 2}
   mom: {fileID: 0}
