@@ -8,7 +8,7 @@ public class LanternController : MonoBehaviour
 {
     Vector3 centredSide;
     Vector3 target;
-    bool isBobbing = false;
+    public bool isBobbing = false;
     float bobSpeed = 1;
 
     Animator anims;
@@ -60,16 +60,11 @@ public class LanternController : MonoBehaviour
         anims.Play("Blast");
         yield return new WaitForSeconds(1f);
 
-        //this variable will let us know what direction to slide the collider in 
-        //so that it looks like it is being emitted from the lantern
-        float mult = (transform.rotation.y / 180 == 0) ? -1 : 1;
-        Debug.Log("mult is " + mult.ToString());
+        
         for(int i = 2; i < 12; i++)
         {
-            //shift the collider left (or right) depending on the orientation of the lantern
-            float x = ((i - 1) / (2 * mult));
-            Debug.Log(x.ToString());
-            myCollider.offset = new Vector2((float)((i - 1) /2) , 0);
+            //because one of the objects is flipped, it will expand in the opposite direction
+            myCollider.offset = new Vector2((float)((i - 1) / 2), 0);
             myCollider.size = new Vector2(i, 1);
 
             //wait for next frame
@@ -81,5 +76,37 @@ public class LanternController : MonoBehaviour
         anims.Play("Idle");
         yield return null;
         StartBob(bobSpeed);
+    }
+
+    public IEnumerator SpinBlast()
+    {
+        isBobbing = false;
+
+        yield return ReturnToOrigin();
+        StartCoroutine(Blast());
+        yield return Rotate();
+    }
+
+    private IEnumerator ReturnToOrigin()
+    {
+        for(Vector3 target = new Vector3(transform.parent.position.x, transform.parent.position.y, transform.position.z); 
+            transform.position != target;)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target, bobSpeed * Time.deltaTime);
+            yield return new WaitForSeconds(0);
+        }
+    }
+
+    private IEnumerator Rotate()
+    {
+        yield return new WaitForSeconds(0.3f);
+        for(Vector3 rot = new Vector3(0, 0, 2); transform.rotation.z < 240;)
+        {
+            transform.Rotate(rot);
+            yield return new WaitForSeconds(0.02f);
+        }
+        
+        yield return new WaitForSeconds(1.5f);
+        transform.Rotate(new Vector3(0, 0, 120));
     }
 }
