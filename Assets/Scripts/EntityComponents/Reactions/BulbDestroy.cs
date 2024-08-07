@@ -19,7 +19,6 @@ using UnityEngine;
     public override void ReactFunction()
     {
         gob.GetComponent<Brain>().mom.GetRoomEnemy(0).gameObject.GetComponent<PrinceController>().RetractVineTrail(bCon.vineDirection);
-        Debug.Log(gob.GetComponent<Brain>().mom.GetRoomEnemy(0).gameObject.GetComponent<Brain>().currentStats[(int)EntityStats.EntityStat.Health]);
         gob.SetActive(false);
     }
 }

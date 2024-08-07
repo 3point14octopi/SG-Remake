@@ -95,18 +95,21 @@ public class LanternController : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, target, bobSpeed * Time.deltaTime);
             yield return new WaitForSeconds(0);
         }
+        Debug.Log("shmorp");
     }
 
     private IEnumerator Rotate()
     {
         yield return new WaitForSeconds(0.3f);
-        for(Vector3 rot = new Vector3(0, 0, 2); transform.rotation.z < 240;)
+
+        Vector3 rot = new Vector3(0, 0, 2);
+        for (int i = 0; i < 120; i++)
         {
             transform.Rotate(rot);
             yield return new WaitForSeconds(0.02f);
         }
-        
-        yield return new WaitForSeconds(1.5f);
+
+        yield return new WaitForSeconds(0.75f);
         transform.Rotate(new Vector3(0, 0, 120));
     }
 }

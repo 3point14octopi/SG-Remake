@@ -40,7 +40,9 @@ public class LanternMaster : MonoBehaviour
                 //StartCoroutine(SpinLantern(lanterns[i].gameObject));
 
                 lanterns[i].StartCoroutine(lanterns[i].SpinBlast());
+                Debug.Log("shmeep");
             }
+            
         }
     }
 
