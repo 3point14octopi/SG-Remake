@@ -345,3 +345,4 @@ MonoBehaviour:
   lanternPrefab: {fileID: 3297683803177538958, guid: b5914fa7e789749448bf3911972eece4, type: 3}
   lanternSpeed: 3
   princeBrain: {fileID: 0}
+  healthBar: {fileID: 0}

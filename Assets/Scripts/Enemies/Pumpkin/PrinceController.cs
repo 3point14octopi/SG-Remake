@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using JAFprocedural;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class PrinceController : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class PrinceController : MonoBehaviour
     LanternController[] lanterns = new LanternController[2];
 
     Animator anims;
-    [HideInInspector]public Brain princeBrain;
+    [HideInInspector] public Brain princeBrain;
     GunModule shootyMcShootface;
     [HideInInspector] public PrincePhase attackPhase;
     bool phase1 = true;
@@ -28,15 +29,25 @@ public class PrinceController : MonoBehaviour
     int chaseDir = -1;
     GameObject[] vines = new GameObject[40];
     GameObject[] bulbs = new GameObject[4];
+    [Tooltip("Reference for the healthbar game object")]
+    public GameObject healthBar;
+    public Slider healthBarSlider;
 
     private void OnEnable()
     {
-       
-    }
 
+    }
+    private void Awake()
+    {
+        healthBar = GameObject.Find("Prince Health Bar");
+        healthBarSlider = healthBar.transform.Find("Prince Slider").GetComponent<Slider>();
+        if (healthBar != null) healthBar.SetActive(false);
+        
+    }
     // Start is called before the first frame update
     void Start()
     {
+        if(healthBar != null) healthBar.SetActive(true);
         anims = GetComponent<Animator>();
         princeBrain = GetComponent<Brain>();
         shootyMcShootface = GetComponent<GunModule>();

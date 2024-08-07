@@ -11,7 +11,8 @@ using UnityEngine.UI;
     {
         isCoroutine = false;
 
-        slider = GameObject.Find("Prince Slider").GetComponent<Slider>();
+        //slider = GameObject.Find("Prince Slider").GetComponent<Slider>();
+        slider = g.GetComponent<PrinceController>().healthBarSlider;
         prince = g.GetComponent<Brain>();
     }
 
