@@ -9,6 +9,7 @@ public class UpgradeIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 {
     public Upgrade upgrade;
     [SerializeField] private GameObject upgradeLabel;
+    [SerializeField] private GameObject upgradeIcon;
     public TMP_Text descriptionText;
 
     public int multipleCount = 1;
@@ -18,8 +19,7 @@ public class UpgradeIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         upgrade = a;
         descriptionText = b;
-        gameObject.GetComponent<Image>().sprite = upgrade.uiPic;
-        upgradeLabel = transform.Find("Upgrade Label").gameObject;
+        upgradeIcon.GetComponent<Image>().sprite = upgrade.uiPic;
         upgradeLabel.GetComponent<TMP_Text>().SetText(upgrade.upgradeName);
     }
     //Detect when Cursor enters the GameObject and turns on the description
