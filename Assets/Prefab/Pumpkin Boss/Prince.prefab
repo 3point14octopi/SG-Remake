@@ -296,6 +296,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9de4910270d3fc34facbc86ae20f35bc, type: 2}
   deathReactions:
   - {fileID: 11400000, guid: c7562d4be5b537d4a81dc3bb6a980135, type: 2}
+  - {fileID: 11400000, guid: 321271551e69462439b1e720872f0444, type: 2}
   mom: {fileID: 0}
   roomIndex: -1
 --- !u!114 &5560807253558529649
@@ -346,3 +347,4 @@ MonoBehaviour:
   lanternSpeed: 3
   princeBrain: {fileID: 0}
   healthBar: {fileID: 0}
+  healthBarSlider: {fileID: 0}
