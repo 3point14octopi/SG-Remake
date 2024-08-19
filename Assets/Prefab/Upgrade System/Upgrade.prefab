@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5312586101065529364}
   - component: {fileID: 5312586101065529365}
   m_Layer: 0
-  m_Name: John (6)
+  m_Name: Upgrade
   m_TagString: Pickup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,4 +116,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectTags:
   - Player
-  upgrade: {fileID: 11400000, guid: bb03f2005d11f654f9b508c27cf55f37, type: 2}
+  upgrade: {fileID: 0}

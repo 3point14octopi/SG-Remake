@@ -23,7 +23,8 @@ public class SimpleGridLayer_Editor : Editor
             }
 
 
-            DrawPropertiesExcluding(serializedObject, "odds");
+            // DrawPropertiesExcluding(serializedObject, "odds");
+            DrawDefaultInspector();
 
             int sum = 0;
             for(int i = 0; i < sgl.odds.Length; i++)
@@ -37,7 +38,7 @@ public class SimpleGridLayer_Editor : Editor
         }
         else
         {
-            DrawPropertiesExcluding(serializedObject, "odds", "tileRange");
+            DrawPropertiesExcluding(serializedObject, /*"odds",*/ "tileRange");
         }
 
         serializedObject.ApplyModifiedProperties();
