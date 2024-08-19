@@ -90,6 +90,7 @@ public class LanternPhase : PrincePhase
     PrinceController pRef;
     float countdown;
     float warningShot;
+    bool doSpin;
 
     public void OnPhaseStart(PrinceController pcon)
     {
@@ -99,6 +100,7 @@ public class LanternPhase : PrincePhase
 
         countdown = RNG.GenRand(500, 300) / 100;
         warningShot = RNG.GenRand(100, 1000) / 100;
+        doSpin = false;
     }
 
     public void OnPhaseUpdate()
@@ -113,14 +115,27 @@ public class LanternPhase : PrincePhase
 
         if (countdown <= 0)
         {
-            pRef.Blast();
-            countdown = RNG.GenRand(500, 300) / 100;
+            if(doSpin && RNG.GenRand(0, 2) > 0)
+            {
+                pRef.SpinBlast();
+                countdown = RNG.GenRand(700, 300) / 100;
+            }
+            else
+            {
+                pRef.Blast();
+                countdown = RNG.GenRand(500, 300) / 100;
+            }
+            
         }
     }
 
     public void CheckPhaseStatus()
     {
-        if (pRef.princeBrain.currentStats[(int)EntityStat.Health] <= 400)
+        float health = pRef.princeBrain.currentStats[(int)EntityStat.Health];
+        if (health <= 100 && !doSpin)
+        {
+            doSpin = true;
+        }else if(health <= 0)
         {
             OnPhaseEnd();
         }
