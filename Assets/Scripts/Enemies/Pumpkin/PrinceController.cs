@@ -65,9 +65,6 @@ public class PrinceController : MonoBehaviour
         attackPhase.OnPhaseUpdate();
     }
 
-    /// <summary>
-    /// EDIT THIS to be a state machine
-    /// </summary>
     public void CheckHealthState()
     {
         attackPhase.CheckPhaseStatus();
@@ -176,6 +173,7 @@ public class PrinceController : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
+        //if the chase vine is not originating right, add another vine block in that direction so it touches the wall
         if(chaseDir != 1)
         {
             vines[16].SetActive(true);
@@ -184,6 +182,7 @@ public class PrinceController : MonoBehaviour
             
         }
 
+        //ditto for left
         if(chaseDir != 3)
         {
             vines[18].SetActive(true);
@@ -191,6 +190,7 @@ public class PrinceController : MonoBehaviour
             vines[18].transform.position = new Vector3(vLoc.x + princeBrain.mom.roomLayout.worldOrigin.x + 0.5f, -vLoc.y - princeBrain.mom.roomLayout.worldOrigin.y + 0.5f, 0.5f);
         }
         
+        //dropping the bulbs at the end of the walls
         for(int i = 0; i < 4; i++)
         {
             if(i != chaseDir)
@@ -318,5 +318,16 @@ public class PrinceController : MonoBehaviour
     public void Blast()
     {
         for (int i = 0; i < lanterns.Length; lanterns[i].StartCoroutine(lanterns[i].Blast()), i++) ;
+    }
+
+    public void SpinBlast()
+    {
+        for (int i = 0; i < lanterns.Length; i++)
+        {
+            //sync lantern arrival time by messing with their speeds
+            float syncSpeed = Vector2.Distance(lanterns[i].transform.position, transform.position) / 3;
+
+            lanterns[i].StartCoroutine(lanterns[i].SpinBlast(syncSpeed));
+        }
     }
 }

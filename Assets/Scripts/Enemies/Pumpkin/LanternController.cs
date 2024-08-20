@@ -78,38 +78,38 @@ public class LanternController : MonoBehaviour
         StartBob(bobSpeed);
     }
 
-    public IEnumerator SpinBlast()
+    public IEnumerator SpinBlast(float contractionSpeed = 0f)
     {
         isBobbing = false;
 
-        yield return ReturnToOrigin();
+        yield return ReturnToOrigin(contractionSpeed);
         StartCoroutine(Blast());
         yield return Rotate();
     }
 
-    private IEnumerator ReturnToOrigin()
+    private IEnumerator ReturnToOrigin(float speedOverload = 0f)
     {
+        float returnRate = (speedOverload != 0f) ? speedOverload : bobSpeed;
         for(Vector3 target = new Vector3(transform.parent.position.x, transform.parent.position.y, transform.position.z); 
             transform.position != target;)
         {
-            transform.position = Vector3.MoveTowards(transform.position, target, bobSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, target, returnRate * Time.deltaTime);
             yield return new WaitForSeconds(0);
         }
-        Debug.Log("shmorp");
     }
 
     private IEnumerator Rotate()
     {
         yield return new WaitForSeconds(0.3f);
-
-        Vector3 rot = new Vector3(0, 0, 2);
+        
+        Vector3 gobRot = new Vector3(0, 0, 2);
         for (int i = 0; i < 120; i++)
         {
-            transform.Rotate(rot);
+            transform.Rotate(gobRot);
             yield return new WaitForSeconds(0.02f);
         }
 
-        yield return new WaitForSeconds(0.75f);
+        yield return new WaitForSeconds(0.4f);
         transform.Rotate(new Vector3(0, 0, 120));
     }
 }

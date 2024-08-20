@@ -35,14 +35,11 @@ public class LanternMaster : MonoBehaviour
         {
             for(int i = 0;i < lanterns.Length; i++)
             {
-                //lanterns[i].StopAllCoroutines();
-                //lanterns[i].isBobbing = false;
-                //StartCoroutine(SpinLantern(lanterns[i].gameObject));
+                //sync lantern arrival time by messing with their speeds
+                float syncSpeed = Vector2.Distance(lanterns[i].transform.position, transform.position) / 3;
 
-                lanterns[i].StartCoroutine(lanterns[i].SpinBlast());
-                Debug.Log("shmeep");
+                lanterns[i].StartCoroutine(lanterns[i].SpinBlast(syncSpeed));
             }
-            
         }
     }
 
