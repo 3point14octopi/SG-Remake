@@ -11,27 +11,33 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 5829215367210630764}
-    m_Position: {x: 340, y: -40, z: 0}
+    m_Position: {x: 520, y: 600, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -7049279498117818445}
-    m_Position: {x: 200, y: -100, z: 0}
+    m_Position: {x: 380, y: 540, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8927789953774343032}
-    m_Position: {x: 500, y: -100, z: 0}
+    m_Position: {x: 680, y: 540, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4579989365143852423}
-    m_Position: {x: 340, y: 20, z: 0}
+    m_Position: {x: 520, y: 660, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4989708523558757732}
-    m_Position: {x: 340, y: 80, z: 0}
+    m_Position: {x: 530, y: 740, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -121680170012855713}
+    m_Position: {x: 550, y: 790, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 4644885744022382324}
+    m_Position: {x: 590, y: 850, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 40, y: 0, z: 0}
-  m_EntryPosition: {x: 40, y: -30, z: 0}
-  m_ExitPosition: {x: 590, y: 90, z: 0}
+  m_AnyStatePosition: {x: 220, y: 640, z: 0}
+  m_EntryPosition: {x: 220, y: 610, z: 0}
+  m_ExitPosition: {x: 770, y: 730, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 5829215367210630764}
 --- !u!1102 &-7049279498117818445
@@ -109,6 +115,32 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1102 &-121680170012855713
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Pumpkin Prince Vine Attack idle
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 38567a711fa5f3444b9bff3a59eee47c, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
@@ -131,6 +163,32 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
+--- !u!1102 &4644885744022382324
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Pumpkin Prince Vine Attack Exit
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 310cd61b9012c0e4893651d72b1c4003, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &4989708523558757732
 AnimatorState:
   serializedVersion: 6

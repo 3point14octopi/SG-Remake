@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Pumpkin Prince Lantern Attack
+  m_Name: Pumpkin Prince Vine Attack Idle
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,15 +20,15 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 121670773, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
+      value: {fileID: -1524189939, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
     - time: 0.2
-      value: {fileID: 687610621, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
+      value: {fileID: -1205534605, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
     - time: 0.4
-      value: {fileID: -1638295527, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
+      value: {fileID: 1042014795, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
     - time: 0.6
-      value: {fileID: -479616080, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
+      value: {fileID: -649143819, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
     - time: 0.8
-      value: {fileID: 121670773, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
+      value: {fileID: -1524189939, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -48,11 +48,11 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 121670773, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
-    - {fileID: 687610621, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
-    - {fileID: -1638295527, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
-    - {fileID: -479616080, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
-    - {fileID: 121670773, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
+    - {fileID: -1524189939, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
+    - {fileID: -1205534605, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
+    - {fileID: 1042014795, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
+    - {fileID: -649143819, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
+    - {fileID: -1524189939, guid: c5761a960656a4a44919a7cbbf61f377, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
