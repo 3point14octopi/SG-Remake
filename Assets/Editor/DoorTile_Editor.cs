@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Reflection;
 using System.Linq;
 
 [CustomEditor(typeof(DoorTile)), CanEditMultipleObjects]
