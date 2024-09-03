@@ -104,7 +104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAlive: 1
   showStats: 1
-  Stats: 320000000100000001000000
+  Stats: []
   damageTags:
   - PlayerBullet
   damageReactions:

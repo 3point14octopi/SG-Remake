@@ -144,13 +144,13 @@ public class PrinceController : MonoBehaviour
         //up, right, down, left
         Coord[] directions = new Coord[] { new Coord(0, -1), new Coord(1, 0), new Coord(0, 1), new Coord(-1, 0) };
 
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < 4; i++)
         {
             for(int j = 0; j < 4; j++)
             {
                 if(j != chaseDir)
                 {
-                    if(i < 3 || j % 2 == 1)
+                    if(i < 2 || j % 2 == 1)
                     {
                         vines[(i * 4) + j].SetActive(true);
                         Coord vLoc = new Coord((start.x + (directions[j].x * (i + 1))), (start.y + (directions[j].y * (i + 1))));
@@ -165,18 +165,18 @@ public class PrinceController : MonoBehaviour
         //if the chase vine is not originating right, add another vine block in that direction so it touches the wall
         if(chaseDir != 1)
         {
-            vines[16].SetActive(true);
-            Coord vLoc = new Coord((start.x + directions[1].x * 6), start.y + (directions[1].y * 6));
-            vines[16].transform.position = new Vector3(vLoc.x + princeBrain.mom.roomLayout.worldOrigin.x + 0.5f, -vLoc.y - princeBrain.mom.roomLayout.worldOrigin.y + 0.5f, 0.5f);
+            vines[12].SetActive(true);
+            Coord vLoc = new Coord((start.x + directions[1].x * 5), start.y + (directions[1].y * 5));
+            vines[12].transform.position = new Vector3(vLoc.x + princeBrain.mom.roomLayout.worldOrigin.x + 0.5f, -vLoc.y - princeBrain.mom.roomLayout.worldOrigin.y + 0.5f, 0.5f);
             
         }
 
         //ditto for left
         if(chaseDir != 3)
         {
-            vines[18].SetActive(true);
-            Coord vLoc = new Coord((start.x + directions[3].x * 6), start.y + (directions[3].y * 6));
-            vines[18].transform.position = new Vector3(vLoc.x + princeBrain.mom.roomLayout.worldOrigin.x + 0.5f, -vLoc.y - princeBrain.mom.roomLayout.worldOrigin.y + 0.5f, 0.5f);
+            vines[14].SetActive(true);
+            Coord vLoc = new Coord((start.x + directions[3].x * 5), start.y + (directions[3].y * 5));
+            vines[14].transform.position = new Vector3(vLoc.x + princeBrain.mom.roomLayout.worldOrigin.x + 0.5f, -vLoc.y - princeBrain.mom.roomLayout.worldOrigin.y + 0.5f, 0.5f);
         }
         
         //dropping the bulbs at the end of the walls
@@ -214,14 +214,17 @@ public class PrinceController : MonoBehaviour
             }
 
             last = vineLocs.Dequeue();
-            yield return new WaitForSeconds(0.25f);
-        }
+            
+            if(i == chaseLength-1 || vineLocs.Count == 0)
+            {
+                bulbs[chaseDir].SetActive(true);
+                bulbs[chaseDir].GetComponent<BulbController>().vineDirection = chaseDir + 0;
+                bulbs[chaseDir].transform.position = new Vector3(last.x, last.y, 0);
 
-        if(last != new Vector2())
-        {
-            bulbs[chaseDir].SetActive(true);
-            bulbs[chaseDir].GetComponent<BulbController>().vineDirection = chaseDir + 0;
-            bulbs[chaseDir].transform.position = new Vector3(last.x, last.y, 0);
+                vines[chaseStartIndex + i].SetActive(false);
+            }
+            yield return new WaitForSeconds(0.25f);
+
         }
 
         anims.Play("Pumpkin Prince Idle");
@@ -245,7 +248,7 @@ public class PrinceController : MonoBehaviour
     {
         if(index % 2 == 1)
         {
-            vines[15 + index].GetComponent<SpikyVinesBehaviour>().Wither();
+            vines[11 + index].GetComponent<SpikyVinesBehaviour>().Wither();
             yield return new WaitForSeconds(0.2f);
         }
 

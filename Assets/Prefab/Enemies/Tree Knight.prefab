@@ -109,9 +109,6 @@ MonoBehaviour:
   ammoList:
   - bullet: {fileID: 11400000, guid: 3a6e3cb5d8b17f4408044fdf7450a7a1, type: 2}
     casing: {fileID: 2738970408359458981, guid: b348baa7b0ca38441ba7aa69bef6b51d, type: 3}
-  playerMask:
-    serializedVersion: 2
-    m_Bits: 0
   automatic: 1
   targeted: 0
   needLOS: 0
@@ -130,7 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAlive: 1
   showStats: 1
-  Stats: 320000000200000001000000
+  Stats: []
   damageTags:
   - PlayerBullet
   damageReactions:
