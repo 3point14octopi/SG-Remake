@@ -31,15 +31,19 @@ public class FbUpgradeManager : MonoBehaviour
     {
         if (collision.gameObject.tag == "Pickup")
         {
-            foreach (PlayerUpgrade upgrade in collision.gameObject.GetComponent<Pickup>().upgrade.playerEffects) brain.PlayerUpgrade(upgrade);
-            foreach (IceUpgrade upgrade in collision.gameObject.GetComponent<Pickup>().upgrade.iceEffects) states.IceUpgrade(upgrade);
-            foreach (GunUpgrade upgrade in collision.gameObject.GetComponent<Pickup>().upgrade.gunEffects) gun.GunUpgrade(upgrade);
-            if(collision.gameObject.GetComponent<Pickup>().upgrade.storeInUI)inventoryScreen.GetComponent<FbInventory>().AddUpgrade(collision.gameObject.GetComponent<Pickup>().upgrade);
+            AddUpgrade(collision.gameObject.GetComponent<Pickup>().upgrade);
             Destroy(collision.gameObject);
         }
     }
     
+    public void AddUpgrade(Upgrade a) 
+    {
+        foreach (PlayerUpgrade upgrade in a.playerEffects) brain.PlayerUpgrade(upgrade);
+        foreach (IceUpgrade upgrade in a.iceEffects) states.IceUpgrade(upgrade);
+        foreach (GunUpgrade upgrade in a.gunEffects) gun.GunUpgrade(upgrade);
+        if (a.storeInUI) inventoryScreen.GetComponent<FbInventory>().AddUpgrade(a);
 
+    }
 
 
 }

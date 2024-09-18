@@ -5,7 +5,7 @@ using UnityEngine;
 public class FbIdleState : FbBaseState
 {
     public override void EnterState(FbStateManager fb){
-        fb.b.anim.SetBool("Throwing", false);
+
     }
 
     public override void UpdateState(FbStateManager fb){

@@ -7,6 +7,9 @@ using UpgradeStats;
 public class FbGun : GunModule
 {
     //[HideInInspector]
+    public Animator anim;
+    public int lastShot = 4;
+
     public List<KeyCode> shootKeys = new List<KeyCode>();//used for tracking the offsets, matches up with an array
     public Stack<int> keyHistory = new Stack<int>();
     public List<int> reflectedHistory = new List<int>();
@@ -43,7 +46,14 @@ public class FbGun : GunModule
 
         if (keyHistory.Count > 0 && active)
         {
+            anim.SetBool("Throwing", true);
+
             StartCoroutine(Shooting());
+        }
+        else if(keyHistory.Count == 0)
+        {
+            lastShot = 4; 
+            anim.SetBool("Throwing", false);
         }
     }
 
@@ -58,14 +68,10 @@ public class FbGun : GunModule
 
             if (Input.GetKey(shootKeys[keyHistory.Peek()]))
             {
+                if (lastShot != keyHistory.Peek()) GunAnimation(keyHistory.Peek());
                 StartCoroutine(FbShoot(currentAmmo, launchOffset[keyHistory.Peek()].position, launchOffset[keyHistory.Peek()].rotation.eulerAngles));
+                yield return new WaitForSeconds(currentAmmo.bullet.firerate);
 
-                //if (keyHistory.Peek() == 0) { anim.Play("FrostbiteThrowUp"); }
-                //else if (keyHistory.Peek() == 1) { anim.Play("FrostbiteThrowDown"); }
-                //else if (keyHistory.Peek() == 2) { anim.Play("FrostbiteThrowLeft"); }
-                //else if (keyHistory.Peek() == 3) { anim.Play("FrostbiteThrowRight"); }
-                 yield return new WaitForSeconds(currentAmmo.bullet.firerate);
-                //break;
             }
             else if(!Input.GetKey(shootKeys[keyHistory.Peek()]))
             {
@@ -76,6 +82,13 @@ public class FbGun : GunModule
         active =true;
         testActive = true;
     }
+
+    //Used by the ice drill state to launch the ice drill
+    public void IceDrill(int i)
+    {
+        StartCoroutine(FbShoot(ammoList[1], launchOffset[i].position, launchOffset[i].rotation.eulerAngles));
+    }
+
     //called by our upgrade manager, can upgrade most of the stats on our ammo type
     public void GunUpgrade(GunUpgrade upgrade)
     {
@@ -136,6 +149,15 @@ public class FbGun : GunModule
 
                 break;
         }
+    }
+
+    private void GunAnimation(int direction)
+    {
+        if (direction == 0) { anim.Play("FrostbiteThrowUp"); }
+        else if (direction == 1) { anim.Play("FrostbiteThrowLeft"); }
+        else if (direction == 2) { anim.Play("FrostbiteThrowDown"); }
+        else if (direction == 3) { anim.Play("FrostbiteThrowRight"); }
+        lastShot = direction;
     }
 
 }

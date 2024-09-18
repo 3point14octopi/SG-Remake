@@ -54,12 +54,11 @@ public class FbBrain : Brain
         else rb.MovePosition(rb.position + movement * currentStats[1] * Time.fixedDeltaTime);
 
         //handles our animation for moving
-        if (movement.x == 1) { anim.Play("FrostbiteWalkRight"); }
-        else if (movement.x == -1) { anim.Play("FrostbiteWalkLeft"); }
-        else if (movement.x == 0 && movement.y == 1) { anim.Play("FrostbiteWalkUp"); }
-        else if (movement.x == 0 && movement.y == -1)
-        {
-            anim.Play("FrostbiteWalkDown");
+        if(gun.keyHistory.Count == 0 && anim.GetBool("Hit") != true) { 
+            if (movement.x == 1)  anim.Play("FrostbiteWalkRight"); 
+            else if (movement.x == -1)  anim.Play("FrostbiteWalkLeft"); 
+            else if (movement.x == 0 && movement.y == 1)  anim.Play("FrostbiteWalkUp"); 
+            else if (movement.x == 0 && movement.y == -1) anim.Play("FrostbiteWalkDown");
         }
     }
 
