@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using EntityStats;
 
-[CreateAssetMenu(fileName = "PrinceHealthBarUpdate", menuName = "ScriptableObjects/Reactions/PhaseCheck", order = 1)]
+[CreateAssetMenu(fileName = "PhaseCheck", menuName = "ScriptableObjects/Reactions/PhaseCheck", order = 1)]
 
 [Serializable]public class PhaseCheck : Reaction
 {
