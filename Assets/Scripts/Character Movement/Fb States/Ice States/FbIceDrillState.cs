@@ -7,25 +7,44 @@ public class FbIceDrillState : FbBaseState
     FbBrain brain;
     FbGun gun;
     int lastShot;
+    bool directionCalc = false;
     public override void EnterState(FbStateManager fb)
     {
         brain = fb.b;
         gun = fb.g;
+        brain.anim.SetBool("IceDrill", true);
+        if (gun.keyHistory.Count > 0){
+            if (lastShot != gun.keyHistory.Peek()) IceDrillAnimation(gun.keyHistory.Peek());
+        }
+        else lastShot = brain.direction;
+
     }
 
     public override void UpdateState(FbStateManager fb)
     {
+        //if (!directionCalc)
+        //{
+        //    if (brain.anim.GetCurrentAnimatorStateInfo(0).IsName("FrostbiteIceDrillUp")) lastShot = 0;
+        //    else if (brain.anim.GetCurrentAnimatorStateInfo(0).IsName("FrostbiteIceDrillLeft")) lastShot = 1;
+        //    else if (brain.anim.GetCurrentAnimatorStateInfo(0).IsName("FrostbiteIceDrillDown")) lastShot = 2;
+        //    else if (brain.anim.GetCurrentAnimatorStateInfo(0).IsName("FrostbiteIceDrillRight")) lastShot = 3;
+        //    else Debug.Log("Animation hasnt triggered yet");
+        //    directionCalc = true;
+
+        //}
         if (Input.GetKeyUp(fb.iceBlockKey)){
-            if (lastShot == 0) { brain.anim.Play("FrostbiteWalkUp"); }
-            else if (lastShot == 1) { brain.anim.Play("FrostbiteWalkLeft"); }
-            else if (lastShot == 2) { brain.anim.Play("FrostbiteWalkDown"); }
-            else if (lastShot == 3) { brain.anim.Play("FrostbiteWalkRight"); }
+            brain.anim.SetBool("IceDrill", false);
             fb.g.IceDrill(lastShot);
+            directionCalc = false;
             fb.SwitchState(fb.IdleState);
         }
 
         IceDrillMoving();
-        if (gun.keyHistory.Count > 0) { if (lastShot != gun.keyHistory.Peek()) IceDrillAnimation(gun.keyHistory.Peek())};
+        //loop looks gross but if we use an and gate the .peek could throw errors
+        if (gun.keyHistory.Count > 0) {
+            if (lastShot != gun.keyHistory.Peek()) IceDrillAnimation(gun.keyHistory.Peek());
+
+        }
     }
 
     public override void FixedUpdateState(FbStateManager fb)

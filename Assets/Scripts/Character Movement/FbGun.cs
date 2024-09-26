@@ -7,6 +7,7 @@ using UpgradeStats;
 public class FbGun : GunModule
 {
     //[HideInInspector]
+    public FbBrain brain;
     public Animator anim;
     public int lastShot = 4;
 
@@ -153,10 +154,19 @@ public class FbGun : GunModule
 
     private void GunAnimation(int direction)
     {
-        if (direction == 0) { anim.Play("FrostbiteThrowUp"); }
-        else if (direction == 1) { anim.Play("FrostbiteThrowLeft"); }
-        else if (direction == 2) { anim.Play("FrostbiteThrowDown"); }
-        else if (direction == 3) { anim.Play("FrostbiteThrowRight"); }
+        brain.direction = direction;
+        if (direction == 0) {
+            anim.Play("FrostbiteThrowUp"); 
+        }
+        else if (direction == 1) {
+            anim.Play("FrostbiteThrowLeft");
+        }
+        else if (direction == 2) { 
+            anim.Play("FrostbiteThrowDown"); 
+        }
+        else if (direction == 3) {
+            anim.Play("FrostbiteThrowRight"); 
+        }
         lastShot = direction;
     }
 
