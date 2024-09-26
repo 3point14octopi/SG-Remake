@@ -15,6 +15,7 @@ public class FbBrain : Brain
 
     [Header("\nRunning")]
     public Vector2 movement;
+    public int direction;
     public Rigidbody2D rb; //player rigidbody
     public bool iFrame = false;
 
@@ -53,13 +54,24 @@ public class FbBrain : Brain
         //if not on a diagonal we can move at full speed
         else rb.MovePosition(rb.position + movement * currentStats[1] * Time.fixedDeltaTime);
 
-        //handles our animation for moving
-        if (movement.x == 1) { anim.Play("FrostbiteWalkRight"); }
-        else if (movement.x == -1) { anim.Play("FrostbiteWalkLeft"); }
-        else if (movement.x == 0 && movement.y == 1) { anim.Play("FrostbiteWalkUp"); }
-        else if (movement.x == 0 && movement.y == -1)
-        {
-            anim.Play("FrostbiteWalkDown");
+        //handles our animation for moving and stores the direction we are facing
+        if(gun.keyHistory.Count == 0 && anim.GetBool("Hit") != true) {
+            if (movement.x == 0 && movement.y == 1){
+                anim.Play("FrostbiteWalkUp");
+                direction = 0;
+            }
+            else if (movement.x == -1) { 
+                anim.Play("FrostbiteWalkLeft");
+                direction = 1;
+            }
+            else if (movement.x == 0 && movement.y == -1) { 
+                anim.Play("FrostbiteWalkDown");
+                direction = 2;
+            }
+            else if (movement.x == 1) { 
+                anim.Play("FrostbiteWalkRight"); 
+                direction = 3;
+            }
         }
     }
 

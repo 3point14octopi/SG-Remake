@@ -4904,7 +4904,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4649522290106588782, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
       propertyPath: tileRange
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4649522290106588782, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
       propertyPath: renderGrid
@@ -4912,11 +4912,11 @@ PrefabInstance:
       objectReference: {fileID: 1117823218}
     - target: {fileID: 4649522290106588782, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
       propertyPath: selectionStyle
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4649522290106588782, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
       propertyPath: odds.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4649522290106588782, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
       propertyPath: test.Array.size
@@ -4924,11 +4924,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4649522290106588782, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
       propertyPath: odds.Array.data[0]
-      value: 15
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4649522290106588782, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
       propertyPath: odds.Array.data[1]
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4649522290106588782, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
       propertyPath: odds.Array.data[2]
@@ -4948,7 +4948,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4649522290106588782, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
       propertyPath: tileList.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4649522290106588782, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
       propertyPath: tileList.Array.data[0]
@@ -4957,7 +4957,7 @@ PrefabInstance:
     - target: {fileID: 4649522290106588782, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
       propertyPath: tileList.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: cb007739cde680f48b18448bdb80ecea, type: 2}
+      objectReference: {fileID: 11400000, guid: e751e6edf32b8de4f8ba25b04af7b4ba, type: 2}
     - target: {fileID: 4649522290106588782, guid: ecaeb01d1d5f1914d89887f8c53d61dc, type: 3}
       propertyPath: tileList.Array.data[2]
       value: 

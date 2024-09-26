@@ -50,12 +50,9 @@ public class BulletBehaviour : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-            Debug.Log("Phase 1");
         if (!ignoreTags.Contains(other.gameObject.tag) && other.gameObject.tag != "PlayerBullet" && other.gameObject.tag != "EnemyBullet"){
-            Debug.Log("Phase 2");
             //if it isnt a character and has some juice left it will bounce off the wall
             if (bRebound > 0 && other.gameObject.tag != "Player" && other.gameObject.tag != "Enemy"){
-                Debug.Log("Phase 3");
                 bRebound--;
                 transform.Rotate(0.0f, 0.0f, 180.0f, Space.Self);
             }
@@ -74,7 +71,7 @@ public class BulletBehaviour : MonoBehaviour
         bSpeed = bullet.speed;
         bRebound = bullet.rebound;
         bArc = bullet.arcAngle;
-        gameObject.transform.localScale = new Vector2(bullet.size, bullet.size);
+        gameObject.transform.localScale *= new Vector2(bullet.size, bullet.size);
         if(bullet.lifeSpan != -1) bLifeSpan = bullet.lifeSpan;
         AssignBehaviour(bullet.style);
         outward = transform.up;
@@ -128,7 +125,7 @@ public class BulletBehaviour : MonoBehaviour
     public IEnumerator Kill()
     {
         if (dissolveAnimation) Animator.Play("Dissolve");
-        bSpeed = 0.5f;
+        bSpeed = 0f;
         yield return new WaitForSeconds(0.2f);
         Destroy(gameObject);
     }

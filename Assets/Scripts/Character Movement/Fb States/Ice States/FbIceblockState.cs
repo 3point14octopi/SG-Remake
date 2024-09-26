@@ -7,7 +7,7 @@ public class FbIceblockState : FbBaseState
     public override void EnterState(FbStateManager fb){
         fb.b.iFrame = true;
         fb.b.anim.SetBool("Iceblock", true);
-        fb.b.anim.SetInteger("IceblockHits", fb.currentIceUses);
+        fb.b.anim.SetInteger("IceblockHits", Mathf.FloorToInt(fb.currentIceUses));
     }
 
     public override void UpdateState(FbStateManager fb){
@@ -35,9 +35,10 @@ public class FbIceblockState : FbBaseState
     public override void Collision(FbStateManager fb, Collision2D Collision2D){
         if (fb.b.damageTags.Contains(Collision2D.gameObject.tag))
         {
+            Debug.Log("Ouchie");
             fb.currentIceUses--;
-            fb.b.iceBar.GetComponent<FBIceBar>().IceBar(fb.currentIceUses);
-            fb.b.anim.SetInteger("IceblockHits", fb.currentIceUses);
+            fb.b.iceBar.GetComponent<FBIceBar>().IceBar(Mathf.FloorToInt(fb.currentIceUses));
+            fb.b.anim.SetInteger("IceblockHits", Mathf.FloorToInt(fb.currentIceUses));
         }
 
     }

@@ -22,7 +22,7 @@ public class SimpleGridLayer : JGridLayer
 
 
 
-    int[] indexes;
+    public int[] indexes;
 
     public override void Draw(Vector3Int position, int tileType = -1)
     {
@@ -73,7 +73,10 @@ public class SimpleGridLayer : JGridLayer
     }
     private int RNGindex()
     {
-        return indexes[RNG.GenRand(0, indexes.Length-1)];
+        Debug.Log(indexes.Length.ToString());
+        int a = RNG.GenRand(0, indexes.Length - 1);
+        Debug.Log(a.ToString() + " is the index");
+        return indexes[a];
     }
 
 }

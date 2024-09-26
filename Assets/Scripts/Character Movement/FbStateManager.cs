@@ -20,6 +20,8 @@ public class FbStateManager : MonoBehaviour
     [Header("\nIce states and variables")]
     public FbIceblockState IceBlockState = new FbIceblockState();
     public FbIceItemState IceItemState = new FbIceItemState();
+    public FbIceTimeState IceTimeState = new FbIceTimeState();
+    public FbIceDrillState IceDrillState = new FbIceDrillState();
 
 
     //Keeps track of our current state.
@@ -38,8 +40,9 @@ public class FbStateManager : MonoBehaviour
     private GameObject ice;
     private GameObject temp;
     public GameObject indicator; //used to show where an object will be placed
-    public int currentIceUses = 5;
-    public int maxIceUses = 5;
+    public GameObject freezeScreen; //used to show that time is slow
+    public float currentIceUses = 5;
+    public float maxIceUses = 5;
     public int extraUseUpgrades = 0;
 
     public float iceBlockHealRate = 2f;//time it tkes for the iceblock to go back a level
@@ -79,10 +82,17 @@ public class FbStateManager : MonoBehaviour
             if(iceBlockTimer <= 0){
                 if(currentIceUses < maxIceUses && currentState != IceBlockState){
                     currentIceUses++;
-                    b.iceBar.GetComponent<FBIceBar>().IceBar(currentIceUses);
+                    b.iceBar.GetComponent<FBIceBar>().IceBar(Mathf.FloorToInt(currentIceUses));
                     iceBlockTimer = iceBlockHealRate;
                 }
             }else{iceBlockTimer -= Time.deltaTime;}
+        }
+        if(currentIceState == IceTimeState)
+        {
+            if(currentIceUses < maxIceUses)
+            {
+                currentIceUses += Time.deltaTime / 6f;
+            }
         }
     }
 
@@ -126,12 +136,26 @@ public class FbStateManager : MonoBehaviour
                 currentIceState = IceItemState;
                 break;
 
-            //case IceUpgrades.Decoy:
+            case IceUpgrades.Time:
+
+                maxIceUses = 2;
+                currentIceUses = 2;
+                currentIceState = IceTimeState;
+                break;
+
+            case IceUpgrades.Drill:
+
+                maxIceUses = 1;
+                currentIceUses = 1;
+                currentIceState = IceDrillState;
+                break;
+
+            //case IceUpgrades.Teleport:
 
             //    maxIceUses = 1;
             //    currentIceUses = 1;
-            //    ice = iceStatue;
-            //    currentIceState = IceItemState;
+            //    ice = iceTeleport;
+            //    currentIceState = IceTeleportState;
             //    break;
 
             case IceUpgrades.AbilityUses:
