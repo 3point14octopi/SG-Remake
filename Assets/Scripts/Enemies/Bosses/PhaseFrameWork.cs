@@ -47,17 +47,38 @@ public abstract class PhaseFrameWork : MonoBehaviour
     }
 
     // Holds the logic for each phase of the boss and the death
-    protected abstract void PhaseOne();
+    protected virtual void PhaseOne()
+    {
 
-    protected abstract void PhaseTwo();
+    }
 
-    protected abstract void PhaseThree();
+    protected virtual void PhaseTwo()
+    {
 
-    protected abstract void PhaseFour();
+    }
 
-    protected abstract void PhaseFive();
+    protected virtual void PhaseThree()
+    {
 
-    protected abstract void Death();
+    }
+
+    protected virtual void PhaseFour()
+    {
+
+    }
+
+    protected virtual void PhaseFive()
+    {
+
+    }
+
+    /// <summary>
+    /// you MUST implement an override for each boss
+    /// </summary>
+    protected virtual void Death()
+    {
+        Debug.Log("this idiot didn't implement a death function!");
+    }
 
     //called as a reaction from the brain
     public void OnDeath()

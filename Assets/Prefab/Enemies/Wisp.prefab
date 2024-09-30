@@ -141,16 +141,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAlive: 1
-<<<<<<< Updated upstream
-  showStats: 0
-  Stats: []
-=======
   showStats: 1
   Stats:
   - 20
   - 4
   - 2
->>>>>>> Stashed changes
   damageTags:
   - PlayerBullet
   damageReactions:
