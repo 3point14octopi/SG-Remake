@@ -17,34 +17,24 @@ public abstract class PhaseFrameWork : MonoBehaviour
 
     [Tooltip("The amount of health the boss will have left when a phase is over")]
     public float[] PhaseHealth = new float[4];
-    private bool isAlive = true;
+    protected bool isAlive = true;
 
 
-    private int currentPhase = 0; //tracks our current phase
+    protected int currentPhase = 0; //tracks our current phase
 
-    private delegate void PhaseDelegate(); //our delegate variable type
-    private PhaseDelegate currentPhaseDelegate; //our current phase is stored in this delegate
-    private PhaseDelegate[] PhaseDelegateArray = new PhaseDelegate[5]; //all 5 phases are stored in this array
+    protected delegate void PhaseDelegate(); //our delegate variable type
+    protected PhaseDelegate currentPhaseDelegate; //our current phase is stored in this delegate
+    protected PhaseDelegate[] PhaseDelegateArray = new PhaseDelegate[5]; //all 5 phases are stored in this array
 
-    void Start()
-    {
-      // Fills our delegate array with our phase logic
-      PhaseDelegateArray = new PhaseDelegate[]
-      {
-            PhaseOne,
-            PhaseTwo,
-            PhaseThree,
-            PhaseFour,
-            PhaseFive
-      };
-
-    }
 
     //executes the code of the current phase
     void FixedUpdate()
     {
        if(isAlive) currentPhaseDelegate();
     }
+
+    
+
 
     // Holds the logic for each phase of the boss and the death
     protected virtual void PhaseOne()
