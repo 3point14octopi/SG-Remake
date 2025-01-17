@@ -79,9 +79,12 @@ public class BulletBehaviour : MonoBehaviour
 
         //transfers on hit data from the ammo type to the bullet object
         var effectNames = EntityStat.GetNames(typeof(EntityStat)).Length;
-        for (int i = 0; i < effectNames; i++) //transfers on hit data from the ammo type to the bullet object
+        if (effectNames > 0)
         {
-            onHitComponent.effects.Add(bullet.bulletEffects[i]);
+            for (int i = 0; i < effectNames; i++) //transfers on hit data from the ammo type to the bullet object
+            {
+                onHitComponent.effects.Add(bullet.bulletEffects[i]);
+            }
         }
     }
 

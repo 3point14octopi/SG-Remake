@@ -17,12 +17,15 @@ MonoBehaviour:
   firerate: 0.5
   rebound: 0
   lifeSpan: 6
+  size: 1
   bulletEffects:
   - targetedStat: 0
     modifier: -5
   - targetedStat: 1
     modifier: 0
   - targetedStat: 2
+    modifier: 0
+  - targetedStat: 3
     modifier: 0
   spreadNum: 1
   burstNum: 1

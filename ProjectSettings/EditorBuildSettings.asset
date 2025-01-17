@@ -9,9 +9,18 @@ EditorBuildSettings:
     path: Assets/Scenes/Main Menu.unity
     guid: b1992184b9a784248afda12b533d2994
   - enabled: 1
-    path: Assets/Scenes/Level 1.unity
-    guid: df1709d23ee49b849ae7d5180e1943f4
-  - enabled: 1
     path: Assets/Scenes/EndGame.unity
     guid: 9e397e93b54e07a4a874b2153ee69153
+  - enabled: 1
+    path: Assets/Scenes/Shop.unity
+    guid: 169cec276d4c270488bd140def1741e2
+  - enabled: 1
+    path: Assets/Scenes/Boss Scenes/Level 1.unity
+    guid: df1709d23ee49b849ae7d5180e1943f4
+  - enabled: 1
+    path: Assets/Scenes/Boss Scenes/Rat King.unity
+    guid: 0fd62f197086a274d81b4180d0a622a8
+  - enabled: 1
+    path: Assets/Scenes/Boss Scenes/Squirrel.unity
+    guid: 110df3bc1fb3c2848922f4c27c923b9e
   m_configObjects: {}

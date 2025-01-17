@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,7 +48,6 @@ public class FbStateManager : MonoBehaviour
 
     public float iceBlockHealRate = 2f;//time it tkes for the iceblock to go back a level
     public float iceBlockTimer = 0;
-
 
 
 
@@ -244,4 +244,8 @@ public class FbStateManager : MonoBehaviour
             currentState = IdleState;
         }
     }
+
+
+
+
 }

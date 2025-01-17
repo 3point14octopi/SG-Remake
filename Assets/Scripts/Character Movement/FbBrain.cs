@@ -1,4 +1,5 @@
 using EntityStats;
+using System.Collections;
 using UnityEngine;
 using UpgradeStats;
 
@@ -17,7 +18,7 @@ public class FbBrain : Brain
     public Vector2 movement;
     public int direction;
     public Rigidbody2D rb; //player rigidbody
-    public bool iFrame = false;
+   
 
     public Animator anim;
     public GameObject healthbar;
@@ -26,6 +27,12 @@ public class FbBrain : Brain
     //Variables for upgrades
     private bool allowHealth = true;
     private bool bleedingHearts = false;
+
+
+    //knockback variables
+    public bool IsBeingKnockedBack { get; private set; }
+    private Coroutine knockBackCoroutine;
+    public float knockBackTime = 0.2f;
 
     // Start is called before the first frame update
     private void Start()
@@ -49,28 +56,36 @@ public class FbBrain : Brain
     //called by Moving state on update || Handles moving our player and our movement animations
     public void Moving()
     {
-        //If we are moving in both x and y (on a diagonal) we move at a reduced speed
-        if(movement.x != 0 && movement.y != 0) rb.MovePosition(rb.position + movement * currentStats[1] * Time.fixedDeltaTime * 0.72f);
-        //if not on a diagonal we can move at full speed
-        else rb.MovePosition(rb.position + movement * currentStats[1] * Time.fixedDeltaTime);
+        if (!IsBeingKnockedBack)
+        {
+            //If we are moving in both x and y (on a diagonal) we move at a reduced speed
+            if (movement.x != 0 && movement.y != 0) rb.MovePosition(rb.position + movement * currentStats[1] * Time.fixedDeltaTime * 0.72f);
+            //if not on a diagonal we can move at full speed
+            else rb.MovePosition(rb.position + movement * currentStats[1] * Time.fixedDeltaTime);
 
-        //handles our animation for moving and stores the direction we are facing
-        if(gun.keyHistory.Count == 0 && anim.GetBool("Hit") != true) {
-            if (movement.x == 0 && movement.y == 1){
-                anim.Play("FrostbiteWalkUp");
-                direction = 0;
-            }
-            else if (movement.x == -1) { 
-                anim.Play("FrostbiteWalkLeft");
-                direction = 1;
-            }
-            else if (movement.x == 0 && movement.y == -1) { 
-                anim.Play("FrostbiteWalkDown");
-                direction = 2;
-            }
-            else if (movement.x == 1) { 
-                anim.Play("FrostbiteWalkRight"); 
-                direction = 3;
+            //handles our animation for moving and stores the direction we are facing
+            if (gun.keyHistory.Count == 0 && anim.GetBool("Hit") != true)
+            {
+                if (movement.x == 0 && movement.y == 1)
+                {
+                    anim.Play("FrostbiteWalkUp");
+                    direction = 0;
+                }
+                else if (movement.x == -1)
+                {
+                    anim.Play("FrostbiteWalkLeft");
+                    direction = 1;
+                }
+                else if (movement.x == 0 && movement.y == -1)
+                {
+                    anim.Play("FrostbiteWalkDown");
+                    direction = 2;
+                }
+                else if (movement.x == 1)
+                {
+                    anim.Play("FrostbiteWalkRight");
+                    direction = 3;
+                }
             }
         }
     }
@@ -79,7 +94,7 @@ public class FbBrain : Brain
     {
         if (damageTags.Contains(collision.gameObject.tag) && !iFrame)
         {
-            foreach (HitEffect effect in collision.gameObject.GetComponent<OnHit>().effects) OnHit(effect);
+            foreach (HitEffect effect in collision.gameObject.GetComponent<OnHit>().effects) OnHit(effect, collision);
             if (currentStats[(int)EntityStat.Health] <= 0)
             {
                 stateManager.SwitchState(stateManager.DeathState);
@@ -92,8 +107,9 @@ public class FbBrain : Brain
     }
 
     //applies the effects of and object we ran into. Currently needs to be a switch(or lookup I guess) cause of things like the healthbar being updated
-    private void OnHit(HitEffect effect)
+    private void OnHit(HitEffect effect, Collider2D collision)
     {
+        Debug.Log("Hit");
         switch (effect.targetedStat)
         {
             case EntityStat.Health:
@@ -112,6 +128,12 @@ public class FbBrain : Brain
                     }
                     break;
                 }
+            case EntityStat.KnockBack:
+            {
+                    //transform.position += new Vector3(transform.position.x - collision.transform.position.x, transform.position.y - collision.transform.position.y, 0) * effect.modifier;
+                    CallKnockBack(new Vector2(transform.position.x - collision.transform.position.x, transform.position.y - collision.transform.position.y), effect.modifier, movement);
+                    break;
+            }
 
         }
     }
@@ -168,4 +190,31 @@ public class FbBrain : Brain
         }
     }
 
+    public void CallKnockBack(Vector2 hitDirection, float knockbackForce, Vector2 inputDirection)
+    {
+        knockBackCoroutine = StartCoroutine(Knockback( hitDirection,  knockbackForce,  inputDirection));
+    }
+    public IEnumerator Knockback(Vector2 hitDirection, float knockbackForce, Vector2 inputDirection)
+    {
+        IsBeingKnockedBack = true;
+        Vector2 _hitForce;
+        Vector2 _combinedForce;
+
+        float _elapsedTime = 0f;
+
+        _hitForce = hitDirection * knockbackForce;
+
+        while (_elapsedTime < knockBackTime)
+        {
+            _elapsedTime += Time.fixedDeltaTime;
+
+            if (movement.x != 0 || movement.y != 0) _combinedForce = new Vector2(_hitForce.x, _hitForce.y * 0.5f) + inputDirection;
+            else _combinedForce = new Vector2(_hitForce.x, _hitForce.y * 0.5f);
+
+            
+            rb.MovePosition(rb.position + _combinedForce * 0.1f);
+            yield return new WaitForFixedUpdate();
+        }
+        IsBeingKnockedBack = false;
+    }
 }

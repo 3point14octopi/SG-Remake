@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
-using Unity.VisualScripting;
 
 
 public class UpgradeIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler

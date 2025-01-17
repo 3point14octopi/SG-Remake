@@ -20,6 +20,8 @@ public class Brain : MonoBehaviour
     [Tooltip("What should this do when it dies?")]
     [SerializeField] public List<Reaction> deathReactions = new List<Reaction>();
 
+    public bool iFrame = false;
+
     //room stuff
     public RoomTemplate mom;
     public int roomIndex = -1;
@@ -109,5 +111,10 @@ public class Brain : MonoBehaviour
         }
         yield return new WaitForSeconds(1);
         gameObject.SetActive(false);
+    }
+
+    public void ToggleIFrames(bool a)
+    {
+        iFrame = a;
     }
 }
