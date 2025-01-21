@@ -14,4 +14,9 @@ public class Pickup : MonoBehaviour
         gameObject.GetComponent<SpriteRenderer>().sprite = upgrade.uiPic;
     }
 
+    public void AssignUpgrade(Upgrade a)
+    {
+        upgrade = a;
+        gameObject.GetComponent<SpriteRenderer>().sprite = upgrade.uiPic;
+    }
 }
