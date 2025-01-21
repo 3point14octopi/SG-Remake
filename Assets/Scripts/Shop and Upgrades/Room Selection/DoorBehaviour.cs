@@ -7,6 +7,7 @@ public class DoorBehaviour : MonoBehaviour
 {
     private BossRoomSO boss;
     public SpriteRenderer sign;
+    public bool shopPortal = false;
     
     public void InstantiateBossDoor(BossRoomSO a)
     {
@@ -18,7 +19,11 @@ public class DoorBehaviour : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "Player") SceneManager.LoadScene(boss.sceneName);
+        if (collision.gameObject.tag == "Player")
+        {
+            if (!shopPortal) SceneManager.LoadScene(boss.sceneName);
+            else SceneManager.LoadScene("Shop");
+        }
     }
 
 }
