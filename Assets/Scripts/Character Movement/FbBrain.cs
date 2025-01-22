@@ -109,7 +109,6 @@ public class FbBrain : Brain
     //applies the effects of and object we ran into. Currently needs to be a switch(or lookup I guess) cause of things like the healthbar being updated
     private void OnHit(HitEffect effect, Collider2D collision)
     {
-        Debug.Log("Hit");
         switch (effect.targetedStat)
         {
             case EntityStat.Health:
@@ -117,6 +116,8 @@ public class FbBrain : Brain
                     if (currentStats[(int)effect.targetedStat] + effect.modifier <= Stats[(int)effect.targetedStat]){
                         currentStats[(int)effect.targetedStat] += effect.modifier;
                         healthbar.GetComponent<FbHealthBar>().HealthBar(currentStats[(int)effect.targetedStat]);
+                        Debug.Log("Brain thinks health is: " + currentStats[(int)EntityStat.Health]);
+
                         if (bleedingHearts) gun.currentAmmo.bullet.bulletEffects[(int)EntityStat.Health] = new HitEffect(EntityStat.Health, gun.rawDamage + gun.rawDamage * (0.25f * (Stats[0] - currentStats[0])));
                     }
                     break;
@@ -216,5 +217,22 @@ public class FbBrain : Brain
             yield return new WaitForFixedUpdate();
         }
         IsBeingKnockedBack = false;
+    }
+
+    /// <summary>
+    /// called by the DDOL and gives frostbiteher health
+    /// </summary>
+    /// <param name="h">health</param>
+    public void SetHealth(float h)
+    {
+        currentStats[(int)EntityStat.Health] = h;
+        healthbar.GetComponent<FbHealthBar>().HealthBar(currentStats[(int)EntityStat.Health]);
+    }
+
+    //called when the scene changes and the object is destoryed, when that happens important stats are sent to our DDOL
+    private void OnDestroy()
+    {
+        GameObject.FindWithTag("DDOL").GetComponent<IntraSceneStats>().health = currentStats[(int)EntityStat.Health];
+        Debug.Log("Brain thinks health is: " + currentStats[(int)EntityStat.Health]);
     }
 }

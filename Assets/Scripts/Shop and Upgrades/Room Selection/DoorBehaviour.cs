@@ -13,7 +13,6 @@ public class DoorBehaviour : MonoBehaviour
     {
         boss = a;
         sign.sprite = boss.signPic;
-        Debug.Log(name + " was given boss " + boss.bossName);
         
     }
 
