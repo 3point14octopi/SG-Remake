@@ -13,7 +13,6 @@ public class IntraSceneStats : MonoBehaviour
         if (!destroyed)
         {
             GameObject.FindWithTag("Player").GetComponent<FbBrain>().SetHealth(health);
-            Debug.Log("DDOL thinks health is: " + health + name);
         }
     }
 }

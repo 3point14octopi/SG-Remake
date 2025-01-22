@@ -17102,8 +17102,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b80d720aace53d140a3b5e85a6640910, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seedsLifetime: 1000
-  seedsCurrent: 1000
+  seedsLifetime: 0
+  seedsCurrent: 0
   counter: {fileID: 0}
 --- !u!114 &1413507036
 MonoBehaviour:

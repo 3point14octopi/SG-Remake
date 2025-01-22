@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class SeedBank : MonoBehaviour
 {
-    public int seedsLifetime = 1000;
-    public int seedsCurrent = 1000;
+    public int seedsLifetime = 0;
+    public int seedsCurrent = 0;
     public GameObject counter;
 
+    public bool CheckBalance()
+    {
+        if (seedsCurrent > 0) return true;
+        else return false;
+    }
     public void EarnSeed()
     {
         seedsCurrent++;

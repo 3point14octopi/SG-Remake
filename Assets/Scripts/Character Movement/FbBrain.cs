@@ -233,6 +233,5 @@ public class FbBrain : Brain
     private void OnDestroy()
     {
         GameObject.FindWithTag("DDOL").GetComponent<IntraSceneStats>().health = currentStats[(int)EntityStat.Health];
-        Debug.Log("Brain thinks health is: " + currentStats[(int)EntityStat.Health]);
     }
 }

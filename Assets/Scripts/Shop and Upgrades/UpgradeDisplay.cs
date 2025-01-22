@@ -19,10 +19,13 @@ public class UpgradeDisplay : MonoBehaviour
         if (!isBought)
         {
             if (collision.gameObject.tag == "Player" && Input.GetKeyDown(KeyCode.Space)) {
-
-                seedBank.GetComponent<SeedBank>().SpendSeed(price);
-                glass.SetActive(false);
-                isBought = true;
+                if (seedBank.GetComponent<SeedBank>().CheckBalance())
+                {
+                    seedBank.GetComponent<SeedBank>().SpendSeed(price);
+                    glass.SetActive(false);
+                    isBought = true;
+                }
+                else Debug.Log("Add ingame feedback for not enough seeds");
             }
         }
     }
