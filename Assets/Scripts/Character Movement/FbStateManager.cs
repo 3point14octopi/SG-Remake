@@ -244,6 +244,13 @@ public class FbStateManager : MonoBehaviour
             currentState = IdleState;
         }
     }
+    /// <summary>
+    /// Called by the DDOL when a scene is reset 
+    /// </summary>
+    public void RechargeAbilities() {
+        currentIceUses = maxIceUses;
+    
+    }
 
 
 

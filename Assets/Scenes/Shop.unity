@@ -13797,7 +13797,7 @@ GameObject:
   - component: {fileID: 70621106}
   - component: {fileID: 70621105}
   m_Layer: 5
-  m_Name: Image
+  m_Name: BeanCounter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13821,7 +13821,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -706.0896, y: 392.95}
+  m_AnchoredPosition: {x: -755.88, y: 392.95}
   m_SizeDelta: {x: 187.8269, y: 213.9376}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &70621105
@@ -14580,7 +14580,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &291081203
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15293,7 +15293,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 114, y: 402}
+  m_AnchoredPosition: {x: 251.8, y: 442.1}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &580312834
@@ -19160,6 +19160,10 @@ PrefabInstance:
       propertyPath: freezeScreen
       value: 
       objectReference: {fileID: 2057617317}
+    - target: {fileID: 4977549276091692933, guid: 6f7c800cfd775454294e410171119805, type: 3}
+      propertyPath: currentIceUses
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4977549276091692936, guid: 6f7c800cfd775454294e410171119805, type: 3}
       propertyPath: m_Mass
       value: 1
