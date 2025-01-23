@@ -232,6 +232,8 @@ public class FbBrain : Brain
     //called when the scene changes and the object is destoryed, when that happens important stats are sent to our DDOL
     private void OnDestroy()
     {
-        GameObject.FindWithTag("DDOL").GetComponent<IntraSceneStats>().health = currentStats[(int)EntityStat.Health];
+        GameObject DDOL = GameObject.FindWithTag("DDOL");
+        if(DDOL != null) DDOL.GetComponent<IntraSceneStats>().health = currentStats[(int)EntityStat.Health];
+
     }
 }

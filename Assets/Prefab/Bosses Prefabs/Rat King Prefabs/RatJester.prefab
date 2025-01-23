@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 6954464493162037067}
   - component: {fileID: -1345654187451256227}
   - component: {fileID: 1084975360}
+  - component: {fileID: 1990375746623586370}
+  - component: {fileID: 360805312063419234}
   m_Layer: 0
   m_Name: RatJester
   m_TagString: Untagged
@@ -141,7 +143,7 @@ MonoBehaviour:
   showStats: 1
   Stats:
   - 15
-  - 4
+  - 5
   - 0
   damageTags:
   - PlayerBullet
@@ -189,3 +191,38 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.21
+--- !u!114 &1990375746623586370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7735723738476192927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cb7a5673c5b7af43a62227b85d6e500, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effects:
+  - targetedStat: 0
+    modifier: -1
+  - targetedStat: 1
+    modifier: 4
+  - targetedStat: 2
+    modifier: 1
+--- !u!58 &360805312063419234
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7735723738476192927}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.2
