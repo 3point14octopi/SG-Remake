@@ -73,7 +73,6 @@ public class JesterRatBehaviour : MonoBehaviour
     {
         if(Mathf.Abs(player.transform.position.y - transform.position.y) > Mathf.Abs(player.transform.position.x - transform.position.x))
         {
-            Debug.Log("player is vertical");
             if (player.transform.position.y - transform.position.y > 0) anim.Play("RatJesterLookUp");
             else anim.Play("RatJesterLookDown");
         }
@@ -82,7 +81,6 @@ public class JesterRatBehaviour : MonoBehaviour
             if (player.transform.position.x - transform.position.x > 0)
             {
                 anim.Play("RatJesterLookRight");
-                Debug.Log("player is to the right");
             }
 
             else anim.Play("RatJesterLookLeft");
@@ -99,8 +97,6 @@ public class JesterRatBehaviour : MonoBehaviour
     private void Charge()
     {
         transform.position = Vector2.MoveTowards(transform.position, playerPosition, speed * 1.5f * Time.deltaTime);
-        //Vector2.MoveTowards
-        // Chase logic goes here
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
