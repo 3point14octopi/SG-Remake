@@ -116,7 +116,6 @@ public class FbBrain : Brain
                     if (currentStats[(int)effect.targetedStat] + effect.modifier <= Stats[(int)effect.targetedStat]){
                         currentStats[(int)effect.targetedStat] += effect.modifier;
                         healthbar.GetComponent<FbHealthBar>().HealthBar(currentStats[(int)effect.targetedStat]);
-                        Debug.Log("Brain thinks health is: " + currentStats[(int)EntityStat.Health]);
 
                         if (bleedingHearts) gun.currentAmmo.bullet.bulletEffects[(int)EntityStat.Health] = new HitEffect(EntityStat.Health, gun.rawDamage + gun.rawDamage * (0.25f * (Stats[0] - currentStats[0])));
                     }

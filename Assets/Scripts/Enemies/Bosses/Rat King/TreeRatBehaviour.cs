@@ -12,7 +12,7 @@ public class TreeRatBehaviour : MonoBehaviour
     private bool timeWaited = false; //used to know when the yield time is completed
     private float speed;
     private Animator anim;
-    private Vector2 destination;
+    public Vector3 destination;
 
     private GameObject ratLauncher; //gameobject reference to the launcher
 
@@ -22,14 +22,15 @@ public class TreeRatBehaviour : MonoBehaviour
     /// </summary>
     /// <param name="direction">0 = run right, 1 = down, 2 = left</param>
     /// <param name="launcher">rat launcher ref</param>
-    public void CreateRat(int direction, GameObject launcher)
+    public void CreateRat(RatLaunchStats ratLaunchStats, GameObject launcher)
     {
         ratLauncher = launcher;
         speed = gameObject.GetComponent<Brain>().Stats[(int)EntityStat.Speed];
         anim = gameObject.GetComponent<Animator>();
         currentState = ChargeUp;
-        WaitTime(3f);
-        switch (direction) //sets which way the rat should run and the animation based on the direction variable
+
+        transform.position = ratLaunchStats.launchPosition;
+        switch (ratLaunchStats.launchDirection) //sets which way the rat should run and the animation based on the direction variable
         {
             case 0:
                 destination = new Vector2(transform.position.x + 30, transform.position.y);
@@ -47,6 +48,7 @@ public class TreeRatBehaviour : MonoBehaviour
                 break;
         }
 
+        WaitTime(3f);
     }
 
     // Update is called once per frame
@@ -66,6 +68,7 @@ public class TreeRatBehaviour : MonoBehaviour
             ratLauncher.GetComponent<RatLauncher>().RemoveActive();
             Destroy(gameObject);
         }
+        else { Debug.Log(transform.position - destination); }
     }
     public void WaitTime(float f)
     {
