@@ -1,7 +1,9 @@
 using EntityStats;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class TreeRatBehaviour : MonoBehaviour
 {
@@ -15,6 +17,9 @@ public class TreeRatBehaviour : MonoBehaviour
     public Vector3 destination;
 
     private GameObject ratLauncher; //gameobject reference to the launcher
+    private int launcherIndex;
+    private Brain b;
+    private bool alive = true;
 
 
     /// <summary>
@@ -22,9 +27,11 @@ public class TreeRatBehaviour : MonoBehaviour
     /// </summary>
     /// <param name="direction">0 = run right, 1 = down, 2 = left</param>
     /// <param name="launcher">rat launcher ref</param>
-    public void CreateRat(RatLaunchStats ratLaunchStats, GameObject launcher)
+    public void CreateRat(RatLaunchStats ratLaunchStats, GameObject launcher, int index)
     {
+        b = gameObject.GetComponent<Brain>();
         ratLauncher = launcher;
+        launcherIndex = index;
         speed = gameObject.GetComponent<Brain>().Stats[(int)EntityStat.Speed];
         anim = gameObject.GetComponent<Animator>();
         currentState = ChargeUp;
@@ -52,9 +59,10 @@ public class TreeRatBehaviour : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         currentState();
+        if (!b.isAlive) Unsubscribe();
     }
     private void ChargeUp()
     {
@@ -62,13 +70,12 @@ public class TreeRatBehaviour : MonoBehaviour
     }
     private void Run() //runs toward the destination until we reach it then destroy ourselves
     {
-        transform.position = Vector2.MoveTowards(transform.position, destination, speed * 1.5f * Time.deltaTime);
+        if(alive) transform.position = Vector2.MoveTowards(transform.position, destination, speed * 1.5f * Time.deltaTime);
         if (transform.position.x == destination.x && transform.position.y == destination.y)
         {
-            ratLauncher.GetComponent<RatLauncher>().RemoveActive();
+            Unsubscribe();
             Destroy(gameObject);
         }
-        else { Debug.Log(transform.position - destination); }
     }
     public void WaitTime(float f)
     {
@@ -80,5 +87,16 @@ public class TreeRatBehaviour : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         currentState = Run;
         anim.SetBool("Charge", true);
+    }
+    /// <summary>
+    /// when the rat dies it lets the launcher know its index is free againg
+    /// </summary>
+    private void Unsubscribe()
+    {
+        if (alive)
+        {
+            ratLauncher.GetComponent<RatLauncher>().RemoveActive(launcherIndex);
+            alive = false;
+        }
     }
 }

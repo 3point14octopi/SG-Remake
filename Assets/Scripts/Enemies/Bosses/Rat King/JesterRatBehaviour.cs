@@ -20,21 +20,28 @@ public class JesterRatBehaviour : MonoBehaviour
 
     private float waitTime; //how long we yield return new time
     private bool timeWaited = false; //used to know when the yield time is completed
+    private Brain b;
+    private Brain bossBrain;
+    private bool alive = true;
 
     // Start is called before the first frame update
     private void Start()
     {
+        b = gameObject.GetComponent<Brain>();
         currentJesterState = InAir;
     }
 
     private void FixedUpdate()
     {
-        currentJesterState();
+        if(!bossBrain.isAlive) b.StartCoroutine(b.Die());
+        if (!b.isAlive) alive = false;
+        if(alive)currentJesterState();
     }
 
-    public void SpawnIn(GameObject p)
+    public void SpawnIn(GameObject p, GameObject boss)
     {
         player = p;
+        bossBrain = boss.GetComponent<Brain>();
         playerPosition = p.transform.position;
         gameObject.transform.position += new Vector3(0, 0, 1f); 
         speed = gameObject.GetComponent<Brain>().Stats[(int)EntityStat.Speed];

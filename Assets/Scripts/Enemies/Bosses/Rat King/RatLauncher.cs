@@ -7,12 +7,6 @@ public struct RatLaunchStats
 {
     public Vector3 launchPosition;
     public int launchDirection;
-    public bool isActive;
-
-    public void ToggleActive(bool a)
-    {
-        isActive = a;
-    }
 }
 
 public class RatLauncher : MonoBehaviour
@@ -20,20 +14,26 @@ public class RatLauncher : MonoBehaviour
     public GameObject ratPrefab;
     private GameObject activeRat;
     private int activeCount = 0;
+    private int testCount = 0;
 
     private int ratIndex;
     public List<RatLaunchStats> ratLaunchStats;
-   
+    private bool[] isActiveArray = new bool[45];
+
+    public GameObject ratKing;
+    private Brain bossBrain;
+
 
     private void Start()
     {
-        //foreach (RatLaunchStats a in ratLaunchStats) a.ToggleActive(false);
+        bossBrain = ratKing.GetComponent<Brain>();
     }
+
+
 
     private void Update()
     {
-        
-       LaunchRat();
+       if(bossBrain.isAlive) LaunchRat();
     }
 
     public void LaunchRat()
@@ -44,17 +44,22 @@ public class RatLauncher : MonoBehaviour
            do
            {
                 ratIndex = Random.Range(0, ratLaunchStats.Count);
-           } while (ratLaunchStats[ratIndex].isActive);
-            ratLaunchStats[ratIndex].ToggleActive(true);
-
+           } while (isActiveArray[ratIndex]);
+            ToggleActive(ratIndex, true);
             activeRat = (GameObject)Instantiate(ratPrefab, transform);
-            activeRat.GetComponent<TreeRatBehaviour>().CreateRat(ratLaunchStats[ratIndex], gameObject);
+            activeRat.GetComponent<TreeRatBehaviour>().CreateRat(ratLaunchStats[ratIndex], gameObject, ratIndex);
         }
 
     }
-
-    public void RemoveActive()
+    public void ToggleActive(int index, bool a)
     {
+        isActiveArray[index] = a;
+    }
+
+    public void RemoveActive(int index)
+    {
+        ToggleActive(index, false);
         activeCount--;
     }
+
 }

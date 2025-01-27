@@ -96,7 +96,7 @@ public class Brain : MonoBehaviour
         }
     }
 
-    private IEnumerator Die()
+    public IEnumerator Die()
     {
         isAlive = false;
         

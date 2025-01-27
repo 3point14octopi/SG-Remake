@@ -45,7 +45,7 @@ public class RatKingPhases : PhaseFrameWork
         if(ratTimer <= 0)
         {
             ratHusk = (GameObject)Instantiate(ratPrefab, gameObject.transform.position, Quaternion.identity);
-            ratHusk.GetComponent<JesterRatBehaviour>().SpawnIn(player);
+            ratHusk.GetComponent<JesterRatBehaviour>().SpawnIn(player, gameObject);
             ratTimer = ratSpawnRate;
         }
         else { ratTimer -= Time.deltaTime; }
