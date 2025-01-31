@@ -70,7 +70,7 @@ public class JesterRatBehaviour : MonoBehaviour
         if (timeWaited)
         {
             timeWaited = false;
-            gameObject.GetComponent<Brain>().ToggleIFrames(true);
+            gameObject.GetComponent<Brain>().ToggleIFrames(false);
             currentJesterState = LockOn;
             WaitTime(1f);
         }
@@ -103,6 +103,7 @@ public class JesterRatBehaviour : MonoBehaviour
 
     private void Charge()
     {
+        Debug.Log(playerPosition);
         transform.position = Vector2.MoveTowards(transform.position, playerPosition, speed * 1.5f * Time.deltaTime);
     }
     private void OnCollisionEnter2D(Collision2D collision)

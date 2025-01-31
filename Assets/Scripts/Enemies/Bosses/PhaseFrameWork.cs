@@ -26,6 +26,8 @@ public abstract class PhaseFrameWork : MonoBehaviour
     protected PhaseDelegate currentPhaseDelegate; //our current phase is stored in this delegate
     protected PhaseDelegate[] PhaseDelegateArray = new PhaseDelegate[5]; //all 5 phases are stored in this array
 
+    protected bool phaseStart = false; // a bool that can be used to trigger a loop at the beggining of each phase
+
 
     //executes the code of the current phase
     void FixedUpdate()
@@ -85,6 +87,8 @@ public abstract class PhaseFrameWork : MonoBehaviour
         {
             currentPhase++;
             currentPhaseDelegate = PhaseDelegateArray[currentPhase];
+            phaseStart = true;
+            Debug.Log("Time for phase: " + currentPhase);
 
         }
     }

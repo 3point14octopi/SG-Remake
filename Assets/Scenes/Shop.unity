@@ -15010,7 +15010,6 @@ MonoBehaviour:
   level1Bosses:
   - {fileID: 11400000, guid: 2d2074fca88b03849bc8b4d90e487154, type: 2}
   - {fileID: 11400000, guid: 08e2171e9d85b634ea095d5f2ac633f1, type: 2}
-  - {fileID: 11400000, guid: fe945d4093817ca48874b4be1990cf35, type: 2}
   level2Bosses: []
   level3Bosses: []
   level4Bosses: []

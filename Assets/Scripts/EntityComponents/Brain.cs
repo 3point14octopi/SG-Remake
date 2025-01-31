@@ -54,7 +54,7 @@ public class Brain : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (isAlive && damageTags.Contains(collision.gameObject.tag))
+        if (isAlive && damageTags.Contains(collision.gameObject.tag) && !iFrame)
         {
             foreach (HitEffect effect in collision.gameObject.GetComponent<OnHit>().effects) ApplyOnHit(effect);
             if (currentStats[(int)EntityStat.Health] <= 0)

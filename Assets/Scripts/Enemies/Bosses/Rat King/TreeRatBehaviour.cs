@@ -21,6 +21,8 @@ public class TreeRatBehaviour : MonoBehaviour
     private Brain b;
     private bool alive = true;
 
+    private RatLaunchStats savedStats;
+
 
     /// <summary>
     /// recieves the direction to aim from the launcher and calibrates
@@ -29,6 +31,7 @@ public class TreeRatBehaviour : MonoBehaviour
     /// <param name="launcher">rat launcher ref</param>
     public void CreateRat(RatLaunchStats ratLaunchStats, GameObject launcher, int index)
     {
+        savedStats = ratLaunchStats;
         b = gameObject.GetComponent<Brain>();
         ratLauncher = launcher;
         launcherIndex = index;
@@ -36,26 +39,26 @@ public class TreeRatBehaviour : MonoBehaviour
         anim = gameObject.GetComponent<Animator>();
         currentState = ChargeUp;
 
-        transform.position = ratLaunchStats.launchPosition;
+        transform.parent.position = ratLaunchStats.launchPosition;
         switch (ratLaunchStats.launchDirection) //sets which way the rat should run and the animation based on the direction variable
         {
             case 0:
                 destination = new Vector2(transform.position.x + 30, transform.position.y);
-                anim.Play("RatJesterLookRight");
+                anim.Play("TreeRatAppearRight");
                 break;
 
             case 1:
                 destination = new Vector2(transform.position.x, transform.position.y - 20);
-                anim.Play("RatJesterLookDown");
+                anim.Play("TreeRatAppearDown");
                 break;
 
             case 2:
                 destination = new Vector2(transform.position.x - 30, transform.position.y);
-                anim.Play("RatJesterLookLeft");
+                anim.Play("TreeRatAppearLeft");
                 break;
         }
 
-        WaitTime(3f);
+        WaitTime(1.2f);
     }
 
     // Update is called once per frame
@@ -70,11 +73,12 @@ public class TreeRatBehaviour : MonoBehaviour
     }
     private void Run() //runs toward the destination until we reach it then destroy ourselves
     {
-        if(alive) transform.position = Vector2.MoveTowards(transform.position, destination, speed * 1.5f * Time.deltaTime);
-        if (transform.position.x == destination.x && transform.position.y == destination.y)
+        if(alive) transform.parent.position = Vector2.MoveTowards(transform.parent.position, destination, speed * 1.5f * Time.deltaTime);
+        if (transform.parent.position.x == destination.x && transform.parent.position.y == destination.y)
         {
             Unsubscribe();
-            Destroy(gameObject);
+
+            Destroy(gameObject.transform.parent.gameObject);
         }
     }
     public void WaitTime(float f)
@@ -86,12 +90,43 @@ public class TreeRatBehaviour : MonoBehaviour
     {
         yield return new WaitForSeconds(waitTime);
         currentState = Run;
-        anim.SetBool("Charge", true);
+        switch (savedStats.launchDirection) //sets which way the rat should run and the animation based on the direction variable
+        {
+            case 0:
+                anim.Play("TreeRatRight");
+                break;
+
+            case 1:
+                anim.Play("TreeRatDown");
+                break;
+
+            case 2:
+                anim.Play("TreeRatLeft");
+                break;
+        }
+
     }
-    /// <summary>
-    /// when the rat dies it lets the launcher know its index is free againg
-    /// </summary>
-    private void Unsubscribe()
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Boss")
+        {
+            Unsubscribe();
+            StartCoroutine(KYS());
+            
+
+        }
+    }
+
+    public IEnumerator KYS()
+    {
+        yield return new WaitForSeconds(0.2f);
+        Destroy(gameObject);
+    }
+
+        /// <summary>
+        /// when the rat dies it lets the launcher know its index is free againg
+        /// </summary>
+        private void Unsubscribe()
     {
         if (alive)
         {

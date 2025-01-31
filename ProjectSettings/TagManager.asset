@@ -14,6 +14,7 @@ TagManager:
   - Hazard
   - R_PlayerBullet
   - L_EnemyBullet
+  - Boss
   layers:
   - Default
   - TransparentFX

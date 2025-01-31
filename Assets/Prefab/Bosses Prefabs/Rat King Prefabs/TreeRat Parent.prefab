@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8833035859667943450
+--- !u!1 &2860388005012648384
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,15 +8,15 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8833035859667943455}
-  - component: {fileID: 8833035859667943448}
-  - component: {fileID: 8833035859667943449}
-  - component: {fileID: 8979252095044998873}
-  - component: {fileID: 8164120184862858190}
-  - component: {fileID: 8979252095044998872}
-  - component: {fileID: 1283508928529747333}
-  - component: {fileID: 743318941193528519}
-  - component: {fileID: 1499177596476757991}
+  - component: {fileID: 2860388005012648389}
+  - component: {fileID: 2860388005012648386}
+  - component: {fileID: 2860388005012648387}
+  - component: {fileID: 6821691412051053097}
+  - component: {fileID: 3200886024402266644}
+  - component: {fileID: 2430724268595373826}
+  - component: {fileID: 5541939363737533535}
+  - component: {fileID: 6302735242691237149}
+  - component: {fileID: 5325852872986994237}
   m_Layer: 0
   m_Name: TreeRat
   m_TagString: Enemy
@@ -24,28 +24,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8833035859667943455
+--- !u!4 &2860388005012648389
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8833035859667943450}
+  m_GameObject: {fileID: 2860388005012648384}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 5423040218597101164}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &8833035859667943448
+--- !u!212 &2860388005012648386
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8833035859667943450}
+  m_GameObject: {fileID: 2860388005012648384}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -53665966, guid: a7eaf05e09851204d87faff2bf32b14f, type: 3}
+  m_Sprite: {fileID: 531287420, guid: 3e76a15c7a499a943b09b9a712d94297, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -91,14 +91,14 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &8833035859667943449
+--- !u!95 &2860388005012648387
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8833035859667943450}
+  m_GameObject: {fileID: 2860388005012648384}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 7f1b7e986a61edf4595ba2503bdc5abc, type: 2}
@@ -112,26 +112,26 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8979252095044998873
+--- !u!114 &6821691412051053097
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8833035859667943450}
+  m_GameObject: {fileID: 2860388005012648384}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8abc8fb4f84ac6945bd34a49bb656b71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   destination: {x: 0, y: 0, z: 0}
---- !u!114 &8164120184862858190
+--- !u!114 &3200886024402266644
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8833035859667943450}
+  m_GameObject: {fileID: 2860388005012648384}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 617a8db9c057fee459c667688e2ff7fe, type: 3}
@@ -152,14 +152,14 @@ MonoBehaviour:
   iFrame: 0
   mom: {fileID: 0}
   roomIndex: -1
---- !u!50 &8979252095044998872
+--- !u!50 &2430724268595373826
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8833035859667943450}
+  m_GameObject: {fileID: 2860388005012648384}
   m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 1
@@ -173,13 +173,13 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!58 &1283508928529747333
+--- !u!58 &5541939363737533535
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8833035859667943450}
+  m_GameObject: {fileID: 2860388005012648384}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -189,13 +189,13 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.18
---- !u!114 &743318941193528519
+--- !u!114 &6302735242691237149
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8833035859667943450}
+  m_GameObject: {fileID: 2860388005012648384}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4cb7a5673c5b7af43a62227b85d6e500, type: 3}
@@ -207,14 +207,14 @@ MonoBehaviour:
   - targetedStat: 1
     modifier: 4
   - targetedStat: 2
-    modifier: 10
---- !u!58 &1499177596476757991
+    modifier: 1
+--- !u!58 &5325852872986994237
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8833035859667943450}
+  m_GameObject: {fileID: 2860388005012648384}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -224,3 +224,35 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.21
+--- !u!1 &3841013833158896599
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5423040218597101164}
+  m_Layer: 0
+  m_Name: TreeRat Parent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5423040218597101164
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3841013833158896599}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.2883234, y: 1.3615043, z: -0.025079567}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2860388005012648389}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

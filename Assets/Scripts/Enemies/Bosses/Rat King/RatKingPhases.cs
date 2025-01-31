@@ -10,6 +10,8 @@ public class RatKingPhases : PhaseFrameWork
     public float smoothTime = 0.3f; // Time to reach the target smoothly
     private Vector2 velocity = Vector2.zero;
 
+    public GameObject ratlauncher;
+
     private GameObject ratHusk; // husk used to init the rats
     public GameObject ratPrefab;
     public float ratSpawnRate;
@@ -36,12 +38,6 @@ public class RatKingPhases : PhaseFrameWork
     protected override void PhaseOne()
     {
         ChasePlayer();
-    }
-
-
-
-    private void ChasePlayer()
-    {
         if(ratTimer <= 0)
         {
             ratHusk = (GameObject)Instantiate(ratPrefab, gameObject.transform.position, Quaternion.identity);
@@ -49,6 +45,54 @@ public class RatKingPhases : PhaseFrameWork
             ratTimer = ratSpawnRate;
         }
         else { ratTimer -= Time.deltaTime; }
+    }
+
+    protected override void PhaseTwo()
+    {
+        if (phaseStart) ratlauncher.GetComponent<RatLauncher>().waveNum = 8;
+        ChasePlayer();
+        if (ratTimer <= 0)
+        {
+            ratHusk = (GameObject)Instantiate(ratPrefab, gameObject.transform.position, Quaternion.identity);
+            ratHusk.GetComponent<JesterRatBehaviour>().SpawnIn(player, gameObject);
+            ratTimer = ratSpawnRate;
+        }
+        else { ratTimer -= Time.deltaTime; }
+    }
+
+    protected override void PhaseThree()
+    {
+        if (phaseStart) ratSpawnRate = 6;
+        ChasePlayer();
+        if (ratTimer <= 0)
+        {
+            ratHusk = (GameObject)Instantiate(ratPrefab, gameObject.transform.position, Quaternion.identity);
+            ratHusk.GetComponent<JesterRatBehaviour>().SpawnIn(player, gameObject);
+            ratTimer = ratSpawnRate;
+        }
+        else { ratTimer -= Time.deltaTime; }
+    }
+    protected override void PhaseFour()
+    {
+        if (phaseStart)
+        {
+            ratlauncher.GetComponent<RatLauncher>().waveNum = 5;
+            ratlauncher.GetComponent<RatLauncher>().isConstant = true;
+        }
+        ChasePlayer();
+        if (ratTimer <= 0)
+        {
+            ratHusk = (GameObject)Instantiate(ratPrefab, gameObject.transform.position, Quaternion.identity);
+            ratHusk.GetComponent<JesterRatBehaviour>().SpawnIn(player, gameObject);
+            ratTimer = ratSpawnRate;
+        }
+        else { ratTimer -= Time.deltaTime; }
+    }
+
+
+
+    private void ChasePlayer()
+    {
            
             // Get the current position of the Rat King and the player
             Vector2 currentPosition = transform.position;
